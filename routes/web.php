@@ -15,6 +15,4 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard' ,function(){
-    return view('layouts.admin');
-});
+Route::get('/department','DepartmentController@index')->name('show_department');

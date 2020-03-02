@@ -12,9 +12,10 @@ class DepartmentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $data = Department::paginate(5);
+        return view('department.index', compact('data'));
     }
 
     /**
