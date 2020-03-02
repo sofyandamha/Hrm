@@ -16,3 +16,7 @@ Route::get('/', function () {
 });
 
 Route::get('/department','DepartmentController@index')->name('show_department');
+
+Route::get('/department','DepartmentController@create')->name('insert_department');
+
+Route::get('/designation','DesignationController@index')->name('show_designation');
