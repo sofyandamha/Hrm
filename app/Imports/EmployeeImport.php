@@ -3,19 +3,37 @@
 namespace App\Imports;
 
 use App\Employee;
-use Maatwebsite\Excel\Concerns\ToModel;
+use Carbon\Carbon;
+use Carbon\CarbonImmutable;
+use Illuminate\Support\Collection;
+use Maatwebsite\Excel\Concerns\ToCollection;
 
-class EmployeeImport implements ToModel
+class EmployeeImport implements ToCollection
 {
     /**
-    * @param array $row
-    *
-    * @return \Illuminate\Database\Eloquent\Model|null
+    * @param Collection $collection
     */
-    public function model(array $row)
+
+    public function collection(Collection $collection)
     {
-        return new Employee([
-            //
-        ]);
+
+        foreach($collection as $key => $row)
+        {
+            if($key>=3){
+                // dd($collection);
+                $data =  Employee::where('scan_id', $row[0])
+                    ->where('full_name',$row[1])
+                    ->get();
+
+                   if($data->count() >0)
+                   {
+                   }
+                   else{
+                      $x =  Employee::firstOrCreate([
+                            'full_name'=> $row[1]
+                        ]);
+                   }
+                }
+        }
     }
 }

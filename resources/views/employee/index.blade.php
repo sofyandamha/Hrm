@@ -25,17 +25,10 @@
                                     </div>
                                 </div>
                             </form>
-
-
                     </div>
-
                 </div>
-
             </div>
-
-
           </div>
-
         <div class="card-body p-0">
           <div class="table-responsive">
             <table class="table table-striped table-md">
@@ -45,14 +38,16 @@
                     <th>Employee Name</th>
                     <th>Department Name</th>
                     <th>Work Time</th>
+                    <th>Status</th>
                     <th>Created By</th>
                     <th>Action</th>
                 </tr>
               @foreach ($data as $row)
                 <tr>
                     <td>{{$loop->iteration}}</td>
-                    <td>{{$row->firstname.' '.$row->lastname}}</td>
-                    <td>{{$row->name}}</td>
+                    <td>{{$row->full_name}}</td>
+                    <td></td>
+                    <td></td>
                     <td></td>
                     <td>{{$row->created_by}}</td>
                     <td>
@@ -76,6 +71,32 @@
                 {{ $data->links() }}
             </ul>
           </nav>
+        </div>
+      </div>
+    </div>
+</div>
+
+<div class="modal fade" tabindex="-1" role="dialog" id="modalBulk">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Bulk Employee</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            {{-- bulk data form excel --}}
+            <form action="{{ route('bulk_employee') }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                <div class="">
+                    <input type="file" name="namaEmployee" class="form-control">
+                </div>
+        </div>
+        <div class="modal-footer bg-whitesmoke br">
+          <input type="submit" class="btn btn-secondary float-left" value="Close" data-dismiss="modal">
+          <input type="submit" class="btn btn-primary" value="Submit">
+            </form>
         </div>
       </div>
     </div>

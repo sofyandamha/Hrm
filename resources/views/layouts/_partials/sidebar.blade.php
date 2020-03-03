@@ -24,11 +24,8 @@
                         <li class="dropdown  {{ Request::segment(1) === 'employee' ? 'active' : null }}">
                             <a href="#" class="nav-link" > <span>Manage Employee</span></a>
                         </li>
-                        <li class="dropdown  {{ Request::segment(1) === 'termination' ? 'active' : null }}">
-                            <a href="#" class="nav-link" > <span>Termination</span></a>
-                        </li>
-                        <li class="dropdown {{ Request::segment(1) === 'permanent' ? 'active' : null }}">
-                            <a href="#" class="nav-link" > <span>Employee Permanent</span></a>
+                        <li class="dropdown  {{ Request::segment(1) === 'historyemployee' ? 'active' : null }}">
+                            <a href="#" class="nav-link" > <span>History Employee</span></a>
                         </li>
                     </ul>
                 </li>
@@ -54,7 +51,7 @@
                         </li>
                     </ul>
                 </li>
-                <li class="dropdown {{ Request::segment(1) === 'payroll' ? 'active' : null }}">
+                <li class="dropdown {{ Request::segment(1) === 'payroll ' ? 'active' : null }}">
                     <a href="#" class="nav-link has-dropdown" ><i class="fas fa-money-bill-alt"></i> <span>Payroll</span></a>
                     <ul class="dropdown-menu">
                         <li class="dropdown">

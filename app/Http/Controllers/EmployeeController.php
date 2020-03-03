@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Employee;
 use Illuminate\Http\Request;
+use App\Imports\EmployeeImport;
+use Maatwebsite\Excel\Facades\Excel;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class EmployeeController extends Controller
 {
@@ -14,9 +17,10 @@ class EmployeeController extends Controller
      */
     public function index(Request $request)
     {
-        $data = Employee::orderBy('name', 'asc');
+        $data = Employee::orderBy('full_name', 'asc');
         if ($request->r) {
-            $data->where('name','like', '%'.$request->r.'%');
+            $data->where('full_name','like', '%'.$request->r.'%')
+                 ->orWhere('scan_id','like', '%'.$request->r.'%');
         }
         if ($request->has('page') ? $request->get('page') : 1) {
             $page    = $request->has('page') ? $request->get('page') : 1;
@@ -33,6 +37,24 @@ class EmployeeController extends Controller
         $data->appends($request->all());
 
         return view('employee.index', compact('data','tableinfo'));
+    }
+
+    public function importEmployee(Request $request)
+    {
+        // dd($request->hasFile('namaStaff'));
+        if ($request->hasFile('namaEmployee')) {
+            try{
+                Excel::import(new \App\Imports\EmployeeImport, $request->file('namaEmployee'));
+                // toast('Data Has Been Uploaded!','success');
+            }
+            catch(\Exception $e)
+            {
+                Alert::error('Error', $e->getMessage());
+            }
+        }
+        else{
+        }
+        return redirect()->back();
     }
 
     /**

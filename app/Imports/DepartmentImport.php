@@ -19,18 +19,15 @@ class DepartmentImport implements ToCollection
 
         foreach($collection as $key => $row)
         {
-            $price = 0;
             if($key>=3){
                 // dd($collection);
-                $data =  Department::where('id', $row[2])
-                    ->where('name',)
+                $data =  Department::where('name',$row[2])
                     ->get();
-
                    if($data->count() >0)
                    {
                    }
                    else{
-                      $row =  Department::firstOrCreate([
+                      $x =  Department::firstOrCreate([
                             'name'=> $row[2]
                         ]);
                    }
