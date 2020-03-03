@@ -33,17 +33,28 @@
                     </ul>
                 </li>
                 <li class="dropdown">
-                    <a href="#" class="nav-link has-dropdown" ><i class="fas fa-user-clock"></i> <span>Attendance</span></a>
+                    <a href="#" class="nav-link has-dropdown" ><i class="fas fa-sign-out-alt"></i> <span>Leave Management</span></a>
                     <ul class="dropdown-menu">
-                        <li class="dropdown">
-                            <a href="#" class="nav-link" > <span>Manage Work Shift</span></a>
+                        <li class="dropdown {{ Request::segment(1) === 'requestapplication' ? 'active' : null }}">
+                            <a href="#" class="nav-link" > <span>Request Application</span></a>
                         </li>
-                        <li class="dropdown">
-                            <a href="#" class="nav-link" > <span>Report</span></a>
+                        <li class="dropdown {{ Request::segment(1) === 'leavereport' ? 'active' : null }}">
+                            <a href="#" class="nav-link" > <span>Leave Report</span></a>
                         </li>
                     </ul>
                 </li>
-                <li class="dropdown">
+                <li class="dropdown {{ Request::segment(1) === 'attendance' ? 'active' : null }}">
+                    <a href="#" class="nav-link has-dropdown" ><i class="fas fa-user-clock"></i> <span>Attendance</span></a>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown {{ Request::segment(1) === 'manageworkshift' ? 'active' : null }}">
+                            <a href="#" class="nav-link" > <span>Manage Work Shift</span></a>
+                        </li>
+                        <li class="dropdown {{ Request::segment(1) === 'attendancereport' ? 'active' : null }}">
+                            <a href="#" class="nav-link" > <span>Attendance Report</span></a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="dropdown {{ Request::segment(1) === 'payroll' ? 'active' : null }}">
                     <a href="#" class="nav-link has-dropdown" ><i class="fas fa-money-bill-alt"></i> <span>Payroll</span></a>
                     <ul class="dropdown-menu">
                         <li class="dropdown">
