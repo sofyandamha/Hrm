@@ -12,7 +12,7 @@
                 <li class="dropdown {{ Request::segment(2) === 'home'? 'active' : null }}">
                     <a href="#" class="nav-link" ><i class="fas fa-fire"></i> <span>Dashboard</span></a>
                 </li>
-                <li class="dropdown {{ Request::segment(1) === 'department' ? 'active' : null }}">
+                <li class="dropdown {{ Request::segment(1) === 'department' || Request::segment(1) === 'employee'  ? 'active' : null }}">
                     <a href="#" class="nav-link has-dropdown" ><i class="fas fa-users-cog"></i> <span>Employee Management</span></a>
                     <ul class="dropdown-menu">
                         <li class="dropdown  {{ Request::segment(1) === 'department' ? 'active' : null }}">
