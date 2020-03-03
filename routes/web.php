@@ -27,4 +27,6 @@ Route::get('/department/{id}/delete','DepartmentController@deleteDepartment')->n
 
 Route::post('/updateDepartment','DepartmentController@updateDepartment')->name('update_department');
 
+Route::get('department/export/', 'DepartmentController@eksportDepartment')->name('eksportDepartment');
+
 Route::get('/designation','DesignationController@index')->name('show_designation');

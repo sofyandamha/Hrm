@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Department;
 use Illuminate\Http\Request;
+use App\Exports\DepartmentExport;
 use Maatwebsite\Excel\Facades\Excel;
 use RealRashid\SweetAlert\Facades\Alert;
 
@@ -83,6 +84,11 @@ class DepartmentController extends Controller
         else{
         }
         return redirect()->back();
+    }
+
+    public function eksportDepartment()
+    {
+        return Excel::download(new DepartmentExport, 'Department.xlsx');
     }
 
     /**

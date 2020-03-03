@@ -13,7 +13,8 @@
         <div class="card-body">
             <div class="form-group">
                 <div class="text-right">
-                    <a class="btn btn-warning" href="" data-toggle="modal" data-target="#modalBulk"><i class="fas fa-upload"></i></a>
+                    <a class="btn btn-warning" href="" data-toggle="modal" data-target="#modalBulk">Import <i class="fas fa-upload"></i></a>
+                    <a class="btn btn-warning" href="{{ route('eksportDepartment')}}" >Eksport <i class="fas fa-download"></i></a>
                 </div>
                 <form action="{{route('insert_department')}}" method="post">
                     @csrf
