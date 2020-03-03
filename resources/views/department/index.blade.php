@@ -12,7 +12,15 @@
         </div>
         <div class="card-body">
             <div class="form-group">
-
+                <form action="{{ route('bulk_department') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <div class="">
+                        <input type="file" name="namaStaff" class="form-control">
+                    </div>
+                    <div>
+                        <input class="btn btn-primary mt-2" type="Bulk" value="Submit">
+                    </div>
+                </form>
             </div>
         </div>
       </div>
@@ -28,19 +36,17 @@
               <tbody>
                 <tr>
                     <th>Department</th>
-                    <th>Created At</th>
-                    <th>Updated At</th>
                     <th>Created By</th>
-                    <th>Updated By</th>
                     <th>Action</th>
                 </tr>
               @foreach ($data as $row)
                 <tr>
                     <td>{{$row->name}}</td>
-                    <td>{{$row->created_at}}</td>
-                    <td>{{$row->updated_at}}</td>
                     <td>{{$row->created_by}}</td>
-                    <td>{{$row->updated_by}}</td>
+                    <td>
+                        <a class="btn btn-warning" href="{{route('edit_department',$row->id)}}"><i class="fas fa-edit"></i></a>
+                        <a class="btn btn-danger" href="{{route('delete_department',$row->id)}}"><i class="fas fa-trash"></i></a>
+                    </td>
                 </tr>
               @endforeach
                 </tbody>
