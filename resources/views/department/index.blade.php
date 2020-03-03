@@ -58,7 +58,21 @@
       <div class="card">
         <div class="card-header">
           <h4>Data Department</h4>
+
+          <div class="float-right">
+            <form action="{{route('show_department')}}" method="get">
+              <div class="input-group input-group-sm">
+            <input type="text" name="r" class="form-control" placeholder="Department Name" autocomplete="off">
+                <div class="input-group-btn">
+                  <button type="submit" class="btn btn-primary "><i class="fa fa-search"></i></button>
+                </div>
+              </div>
+        </form>
+      </div>
+
         </div>
+
+
         <div class="card-body p-0">
           <div class="table-responsive">
             <table class="table table-striped table-md">
@@ -82,7 +96,12 @@
             </table>
           </div>
         </div>
+
         <div class="card-footer text-right">
+            <div class="float-left">
+                <p>{{$tableinfo}}</p>
+              </div>
+
           <nav class="d-inline-block">
             <ul class="pagination mb-0">
                 {{ $data->links() }}

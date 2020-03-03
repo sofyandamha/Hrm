@@ -15,8 +15,25 @@ class DepartmentController extends Controller
      */
     public function index(Request $request)
     {
-        $data = Department::orderBy('name', 'desc')->paginate(10);
-        return view('department.index', compact('data'));
+        $data = Department::orderBy('name', 'desc');
+        if ($request->r) {
+            $data->where('name','like', '%'.$request->r.'%');
+        }
+        if ($request->has('page') ? $request->get('page') : 1) {
+            $page    = $request->has('page') ? $request->get('page') : 1;
+            $total   = $data->count();
+            $perPage = 10;
+            $showingTotal  = $page * $perPage;
+
+            $currentShowing = $showingTotal > $total ? $total : $showingTotal;
+            $showingStarted = $showingTotal - $perPage;
+            $tableinfo = "Showing $showingStarted to $currentShowing of $total entries";
+        }
+
+        $data = $data->paginate($perPage);
+        $data->appends($request->all());
+
+        return view('department.index', compact('data','tableinfo'));
     }
 
     public function insertDepartment(Request $request)
