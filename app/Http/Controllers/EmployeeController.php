@@ -12,9 +12,27 @@ class EmployeeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $data = Employee::orderBy('name', 'asc');
+        if ($request->r) {
+            $data->where('name','like', '%'.$request->r.'%');
+        }
+        if ($request->has('page') ? $request->get('page') : 1) {
+            $page    = $request->has('page') ? $request->get('page') : 1;
+            $total   = $data->count();
+            $perPage = 10;
+            $showingTotal  = $page * $perPage;
+
+            $currentShowing = $showingTotal > $total ? $total : $showingTotal;
+            $showingStarted = $showingTotal - $perPage;
+            $tableinfo = "Showing $showingStarted to $currentShowing of $total entries";
+        }
+
+        $data = $data->paginate($perPage);
+        $data->appends($request->all());
+
+        return view('employee.index', compact('data','tableinfo'));
     }
 
     /**

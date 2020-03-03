@@ -79,12 +79,14 @@
             <table class="table table-striped table-md">
               <tbody>
                 <tr>
+                    <th>Number</th>
                     <th>Department</th>
                     <th>Created By</th>
                     <th>Action</th>
                 </tr>
               @foreach ($data as $row)
                 <tr>
+                    <td>{{$loop->iteration}}</td>
                     <td>{{$row->name}}</td>
                     <td>{{$row->created_by}}</td>
                     <td>
