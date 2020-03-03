@@ -12,18 +12,47 @@
         </div>
         <div class="card-body">
             <div class="form-group">
-                <form action="{{ route('bulk_department') }}" method="POST" enctype="multipart/form-data">
+                <div class="text-right">
+                    <a class="btn btn-warning" href="" data-toggle="modal" data-target="#modalBulk"><i class="fas fa-upload"></i></a>
+                </div>
+                <form action="{{route('insert_department')}}" method="post">
                     @csrf
                     <div class="">
-                        <input type="file" name="namaStaff" class="form-control">
+                        <label for="name">Name Department :</label>
+                        <input type="text" name="name" class="form-control">
                     </div>
-                    <div>
-                        <input class="btn btn-primary mt-2" type="Bulk" value="Submit">
+                    <div class="">
+                        <input type="submit" class="btn btn-primary mt-2 float-right">
                     </div>
                 </form>
             </div>
         </div>
       </div>
+    </div>
+    <div class="modal fade" tabindex="-1" role="dialog" id="modalBulk">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Bulk Department</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+                {{-- bulk data form excel --}}
+                <form action="{{ route('bulk_department') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <div class="">
+                        <input type="file" name="namaStaff" class="form-control">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer bg-whitesmoke br">
+              <input type="submit" class="btn btn-secondary float-left" value="Close" data-dismiss="modal">
+              <input type="submit" class="btn btn-primary" value="Submit">
+            </div>
+          </div>
+        </div>
     </div>
     <div class="col-12 col-md-6 col-lg-6">
       <div class="card">
@@ -62,6 +91,6 @@
         </div>
       </div>
     </div>
-  </div>
+</div>
 
 @endsection

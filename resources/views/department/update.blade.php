@@ -8,7 +8,7 @@
     <div class="col-12 col-md-6 col-lg-6">
       <div class="card">
         <div class="card-header">
-          <h4>Data Edit Department</h4>
+          <h4>Edit Data Department</h4>
         </div>
         <div class="card-body">
             <div class="form-group">
@@ -19,7 +19,8 @@
                         <input type="hidden" class="form-control" name="id" value="{{$data->id}}">
                     </div>
                     <div class="">
-                        <input class="btn btn-primary mt-2" type="submit" value="Submit">
+                        <input class="btn btn-primary mt-2" type="submit" value="Cancel">
+                        <input class="btn btn-primary mt-2 float-right" type="submit" value="Submit">
                     </div>
                 </form>
             </div>
