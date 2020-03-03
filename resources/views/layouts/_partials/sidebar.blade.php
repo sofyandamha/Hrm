@@ -16,13 +16,10 @@
                     <a href="#" class="nav-link has-dropdown" ><i class="fas fa-users-cog"></i> <span>Employee Management</span></a>
                     <ul class="dropdown-menu">
                         <li class="dropdown  {{ Request::segment(1) === 'department' ? 'active' : null }}">
-                            <a href="#" class="nav-link" > <span>Department</span></a>
-                        </li>
-                        <li class="dropdown  {{ Request::segment(1) === 'designation' ? 'active' : null }}">
-                            <a href="#" class="nav-link" > <span>Designation</span></a>
+                            <a href="{{ route('department') }}" class="nav-link" > <span>Department</span></a>
                         </li>
                         <li class="dropdown  {{ Request::segment(1) === 'employee' ? 'active' : null }}">
-                            <a href="#" class="nav-link" > <span>Manage Employee</span></a>
+                            <a href="{{ route('employee') }}" class="nav-link" > <span>Manage Employee</span></a>
                         </li>
                         <li class="dropdown  {{ Request::segment(1) === 'historyemployee' ? 'active' : null }}">
                             <a href="#" class="nav-link" > <span>History Employee</span></a>
