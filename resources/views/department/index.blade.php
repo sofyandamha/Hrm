@@ -45,11 +45,11 @@
                     <div class="">
                         <input type="file" name="namaStaff" class="form-control">
                     </div>
-                </form>
             </div>
             <div class="modal-footer bg-whitesmoke br">
               <input type="submit" class="btn btn-secondary float-left" value="Close" data-dismiss="modal">
               <input type="submit" class="btn btn-primary" value="Submit">
+                </form>
             </div>
           </div>
         </div>
