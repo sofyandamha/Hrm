@@ -13,23 +13,23 @@
             <div class="card-body">
               <ul class="nav nav-pills" id="myTab3" role="tablist">
                 <li class="nav-item">
-                  <a class="nav-link active" id="takeRule1" data-toggle="tab" href="#takeRule2" role="tab" aria-controls="takeRule" aria-selected="true">Take Rule</a>
+                  <a class="nav-link {{old('tabName') == 'taxRule2' ? 'active' : '' }}" id="takeRule1" data-toggle="tab" href="#taxRule2" role="tab" aria-controls="takeRule">Take Rule</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" id="lateConfig1" data-toggle="tab" href="#lateConfig2" role="tab" aria-controls="lateConfig" aria-selected="false">Late Config</a>
+                  <a class="nav-link {{old('tabName') == 'lateConfig2' ? 'active' : '' }}" id="lateConfig1" data-toggle="tab" href="#lateConfig2" role="tab" aria-controls="lateConfig">Late Config</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" id="allowance1" data-toggle="tab" href="#allowance2" role="tab" aria-controls="allowance" aria-selected="false">Allowance</a>
+                  <a class="nav-link {{old('tabName') == 'allowance2' ? 'active' : '' }}" id="allowance1" data-toggle="tab" href="#allowance2" role="tab" aria-controls="allowance">Allowance</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" id="deduction1" data-toggle="tab" href="#deduction2" role="tab" aria-controls="deduction" aria-selected="false">Deduction</a>
+                  <a class="nav-link {{old('tabName') == 'deduction2' ? 'active' : '' }}" id="deduction1" data-toggle="tab" href="#deduction2" role="tab" aria-controls="deduction">Deduction</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" id="symbol1" data-toggle="tab" href="#symbol2" role="tab" aria-controls="symbol" aria-selected="false">Symbol</a>
+                    <a class="nav-link {{old('tabName') == 'symbol2' ? 'active' : '' }}" id="symbol1" data-toggle="tab" href="#symbol2" role="tab" aria-controls="symbol">Symbol</a>
                   </li>
               </ul>
               <div class="tab-content pt-4" id="myTabContent2">
-                <div class="tab-pane fade show active" id="takeRule2" role="tabpanel" aria-labelledby="takeRule1">
+                <div class="tab-pane fade {{old('tabName') == 'taxRule2' ? 'active show' : '' }}" id="taxRule2" role="tabpanel" aria-labelledby="takeRule1">
                     <div class="row">
                         <div class="col-md-5">
                             <div class="text-left mb-3">
@@ -104,7 +104,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="tab-pane fade" id="lateConfig2" role="tabpanel" aria-labelledby="lateConfig1">
+                <div class="tab-pane fade {{old('tabName') == 'lateConfig2' ? 'active show' : '' }}" id="lateConfig2" role="tabpanel" aria-labelledby="lateConfig1">
                     <div class="row">
                         <div class="col-md-5">
                             {{-- <div class="text-left mb-3">
@@ -154,7 +154,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="tab-pane fade" id="allowance2" role="tabpanel" aria-labelledby="allowance1">
+                <div class="tab-pane fade {{old('tabName') == 'allowance2' ? 'active show' : '' }}" id="allowance2" role="tabpanel" aria-labelledby="allowance1">
                     <div class="row">
                         <div class="col-md-5">
                             <div class="text-left mb-3">
@@ -229,7 +229,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="tab-pane fade" id="deduction2" role="tabpanel" aria-labelledby="deduction1">
+                <div class="tab-pane fade {{old('tabName') == 'deduction2' ? 'active show' : '' }}" id="deduction2" role="tabpanel" aria-labelledby="deduction1">
                     <div class="row">
                         <div class="col-md-5">
                             <div class="text-left mb-3">
@@ -304,7 +304,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="tab-pane fade" id="symbol2" role="tabpanel" aria-labelledby="symbol1">
+                <div class="tab-pane fade {{old('tabName') == 'symbol2' ? 'active show' : '' }}" id="symbol2" role="tabpanel" aria-labelledby="symbol1">
                     <div class="row">
                         <div class="col-md-5">
                             <form action="{{route('insert_symbol')}}" method="POST">

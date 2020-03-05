@@ -38,7 +38,7 @@ class TaxSetupController extends Controller
         $data->id_symbol = $request->symbol;
         $data->save();
 
-        return redirect()->route('show_taxsetup');
+        return redirect()->route('show_taxsetup')->withInput(['tabName'=>'taxRule2']);
     }
 
     public function editTaxsetup($id)
@@ -56,14 +56,14 @@ class TaxSetupController extends Controller
         $data->id_symbol = $request->symbol;
         $data->save();
 
-        return redirect()->route('show_taxsetup');
+        return redirect()->route('show_taxsetup')->withInput(['tabName'=>'taxRule2']);
     }
 
     public function deleteTaxsetup($id)
     {
         $data = Tax_setup::find($id);
         $data->delete();
-        return redirect()->back();
+        return redirect()->back()->withInput(['tabName'=>'taxRule2']);
     }
 
     public function importTaxsetup(Request $request)
@@ -81,7 +81,7 @@ class TaxSetupController extends Controller
         }
         else{
         }
-        return redirect()->back();
+        return redirect()->back()->withInput(['tabName'=>'taxRule2']);
     }
 
     public function eksportTaxsetup()

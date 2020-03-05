@@ -30,7 +30,7 @@ class AllowanceController extends Controller
         $data->id_symbol = $request->symbol;
         $data->save();
 
-        return redirect()->route('show_taxsetup');
+        return redirect()->route('show_taxsetup')->withInput(['tabName'=>'allowance2']);
     }
 
     public function editAllowance($id)
@@ -48,14 +48,14 @@ class AllowanceController extends Controller
         $data->id_symbol = $request->symbol;
         $data->save();
 
-        return redirect()->route('show_taxsetup');
+        return redirect()->route('show_taxsetup')->withInput(['tabName'=>'allowance2']);
     }
 
     public function deleteAllowance($id)
     {
         $data = Allowance::find($id);
         $data->delete();
-        return redirect()->back();
+        return redirect()->back()->withInput(['tabName'=>'allowance2']);
     }
 
     public function importAllowance(Request $request)
@@ -73,7 +73,7 @@ class AllowanceController extends Controller
         }
         else{
         }
-        return redirect()->back();
+        return redirect()->back()->withInput(['tabName'=>'allowance2']);
     }
 
     public function eksportAllowance()

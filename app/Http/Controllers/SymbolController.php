@@ -24,7 +24,7 @@ class SymbolController extends Controller
         $data->symbol_name = $request->symbol_name;
         $data->save();
 
-        return redirect()->route('show_taxsetup');
+        return redirect()->route('show_taxsetup',compact('tabName'))->withInput(['tabName'=>'symbol2']);
     }
 
     public function editSymbol($id)
@@ -39,14 +39,14 @@ class SymbolController extends Controller
         $data->symbol_name = $request->symbol_name;
         $data->save();
 
-        return redirect()->route('show_taxsetup');
+        return redirect()->route('show_taxsetup')->withInput(['tabName'=>'symbol2']);
     }
 
     public function deleteSymbol($id)
     {
         $data = Symbol::find($id);
         $data->delete();
-        return redirect()->back();
+        return redirect()->back()->withInput(['tabName'=>'symbol2']);
     }
 
     /**

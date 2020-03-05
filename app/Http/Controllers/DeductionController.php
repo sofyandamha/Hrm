@@ -29,7 +29,7 @@ class DeductionController extends Controller
         $data->id_symbol = $request->symbol;
         $data->save();
 
-        return redirect()->route('show_taxsetup');
+        return redirect()->route('show_taxsetup')->withInput(['tabName'=>'deduction2']);
     }
 
     public function editDeduction($id)
@@ -47,7 +47,7 @@ class DeductionController extends Controller
         $data->id_symbol = $request->symbol;
         $data->save();
 
-        return redirect()->route('show_taxsetup');
+        return redirect()->route('show_taxsetup')->withInput(['tabName'=>'deduction2']);
     }
 
     public function deleteDeduction($id)
@@ -72,7 +72,7 @@ class DeductionController extends Controller
         }
         else{
         }
-        return redirect()->back();
+        return redirect()->back()->withInput(['tabName'=>'deduction2']);
     }
 
     public function eksportDeduction()

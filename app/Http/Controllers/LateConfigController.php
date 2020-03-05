@@ -23,7 +23,7 @@ class LateConfigController extends Controller
         $data->late_config = $request->late_config;
         $data->save();
 
-        return redirect()->back();
+        return redirect()->back()->withInput(['tabName'=>'lateConfig2']);
     }
 
     public function editLateconfig($id)
@@ -38,14 +38,14 @@ class LateConfigController extends Controller
         $data->late_config = $request->late_config;
         $data->save();
 
-        return redirect()->route('show_taxsetup');
+        return redirect()->route('show_taxsetup')->withInput(['tabName'=>'lateConfig2']);
     }
 
     public function deleteLateconfig($id)
     {
         $data = Late_config::find($id);
         $data->delete();
-        return redirect()->back();
+        return redirect()->back()->withInput(['tabName'=>'lateConfig2']);
     }
 
     /**
