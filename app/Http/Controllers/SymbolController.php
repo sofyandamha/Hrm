@@ -24,7 +24,7 @@ class SymbolController extends Controller
         $data->symbol_name = $request->symbol_name;
         $data->save();
 
-        return redirect()->route('show_taxsetup',compact('tabName'))->withInput(['tabName'=>'symbol2']);
+        return redirect()->route('show_taxsetup')->withInput(['tabName'=>'symbol2']);
     }
 
     public function editSymbol($id)
