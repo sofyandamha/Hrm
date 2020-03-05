@@ -12,7 +12,7 @@
                 <li class="dropdown {{ Request::segment(2) === 'home'? 'active' : null }}">
                     <a href="#" class="nav-link" ><i class="fas fa-fire"></i> <span>Dashboard</span></a>
                 </li>
-                <li class="dropdown {{ Request::segment(1) === 'department' || Request::segment(1) === 'employee'  ? 'active' : null }}">
+                {{-- <li class="dropdown {{ Request::segment(1) === 'department' || Request::segment(1) === 'employee' || Request::segment(1) === 'historyemployee' ? 'active' : null }}">
                     <a href="#" class="nav-link has-dropdown" ><i class="fas fa-users-cog"></i> <span>Employee Management</span></a>
                     <ul class="dropdown-menu">
                         <li class="dropdown  {{ Request::segment(1) === 'department' ? 'active' : null }}">
@@ -25,7 +25,7 @@
                             <a href="#" class="nav-link" > <span>History Employee</span></a>
                         </li>
                     </ul>
-                </li>
+                </li> --}}
                 <li class="dropdown">
                     <a href="#" class="nav-link has-dropdown" ><i class="fas fa-sign-out-alt"></i> <span>Leave Management</span></a>
                     <ul class="dropdown-menu">
@@ -48,7 +48,7 @@
                         </li>
                     </ul>
                 </li>
-                <li class="dropdown {{ Request::segment(1) === 'payroll ' ? 'active' : null }}">
+                <li class="dropdown">
                     <a href="#" class="nav-link has-dropdown" ><i class="fas fa-money-bill-alt"></i> <span>Payroll</span></a>
                     <ul class="dropdown-menu">
                         <li class="dropdown">
@@ -85,6 +85,20 @@
                         </li>
                         <li class="dropdown">
                             <a href="#" class="nav-link" > <span>Notice Board</span></a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="dropdown {{ Request::segment(1) === 'department' || Request::segment(1) === 'employee' || Request::segment(1) === 'payroll' ? 'active' : null }}">
+                    <a href="#" class="nav-link has-dropdown" ><i class="fas fa-server"></i> <span>Master Data</span></a>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown {{Request::segment(1) === 'department' ? 'active' : null}}">
+                            <a href="{{route('show_department')}}" class="nav-link" > <span>Department</span></a>
+                        </li>
+                        <li class="dropdown {{ Request::segment(1) === 'employee' ? 'active' : null}}">
+                            <a href="{{route('show_employee')}}" class="nav-link" > <span>Employee</span></a>
+                        </li>
+                        <li class="dropdown {{ Request::segment(1) === 'payroll' ? 'active' : null}}">
+                            <a href="{{route('show_taxsetup')}}" class="nav-link" > <span>Payroll</span></a>
                         </li>
                     </ul>
                 </li>

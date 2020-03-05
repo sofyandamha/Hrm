@@ -8,13 +8,13 @@
     <div class="col-12 col-md-6 col-lg-6">
       <div class="card">
         <div class="card-header">
-          <h4>Add New Department</h4></h4>
+          <h4>Add New Department</h4>
         </div>
         <div class="card-body">
             <div class="form-group">
-                <div class="text-right">
-                    <a class="btn btn-warning" href="" data-toggle="modal" data-target="#modalBulk">Import <i class="fas fa-upload"></i></a>
-                    <a class="btn btn-warning" href="{{ route('eksportDepartment')}}" >Eksport <i class="fas fa-download"></i></a>
+                <div class="text-left mb-3">
+                    <a class="btn btn-warning" href="" data-toggle="modal" data-target="#modalBulk"><i class="fas fa-upload"></i> Import</a>
+                    <a class="btn btn-warning" href="{{ route('eksportDepartment')}}" ><i class="fas fa-download"></i> Eksport</a>
                 </div>
                 <form action="{{route('insert_department')}}" method="post">
                     @csrf
@@ -68,7 +68,7 @@
                   <button type="submit" class="btn btn-primary "><i class="fa fa-search"></i></button>
                 </div>
               </div>
-        </form>
+            </form>
       </div>
 
         </div>
