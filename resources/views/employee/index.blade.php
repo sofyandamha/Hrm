@@ -16,8 +16,9 @@
                 <div class="row">
                     <div class="col-md-3">
                         <div class="text-left">
-                            <a class="btn btn-warning " href="" data-toggle="modal" data-target="#modalBulk">Import <i class="fas fa-upload"></i></a>
-                            <a class="btn btn-warning " href="{{ route('eksportEmployee')}}" >Eksport <i class="fas fa-download"></i></a>
+                            <a class="btn btn-success " href="" ><i class="fas fa-upload"></i> Add</a>
+                            <a class="btn btn-warning " href="" data-toggle="modal" data-target="#modalBulk"><i class="fas fa-upload"></i> Import</a>
+                            <a class="btn btn-warning " href="{{ route('eksportEmployee')}}" ><i class="fas fa-download"></i> Eksport</a>
                         </div>
                     </div>
                     <div class="col-md-7"></div>
