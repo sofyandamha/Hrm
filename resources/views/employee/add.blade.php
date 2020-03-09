@@ -13,13 +13,15 @@
         <div class="card-body">
             <form action="{{route('insert_employee')}}" method="post">
                     @csrf
-                <div class="form-group">
-                    <label for="name">Scan Id :</label>
-                        <input type="time" name="in_time" class="form-control">
-                </div>
-                <div class="form-group">
-                    <label for="name">Nik :</label>
-                        <input type="time" name="out_time" class="form-control">
+                <div class="row">
+                    <div class="form-group">
+                        <label for="name">Scan Id :</label>
+                            <input type="time" name="in_time" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="name">Nik :</label>
+                            <input type="time" name="out_time" class="form-control">
+                    </div>
                 </div>
                 <div class="form-group">
                     <input type="submit" class="btn btn-primary mt-2 float-right">

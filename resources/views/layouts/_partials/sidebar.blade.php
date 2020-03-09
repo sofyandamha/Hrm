@@ -76,6 +76,15 @@
                         </li>
                     </ul>
                 </li>
+
+                <li class="dropdown">
+                    <a href="#" class="nav-link has-dropdown" ><i class="fas fa-street-view"></i> <span>Scheduling</span></a>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown">
+                            <a href="#" class="nav-link" > <span>Schedule</span></a>
+                        </li>
+                    </ul>
+                </li>
                 <li class="dropdown {{ Request::segment(1) === 'department' || Request::segment(1) === 'employee' || Request::segment(1) === 'payroll' || Request::segment(1) === 'leaveType' || Request::segment(1) === 'status' || Request::segment(1) === 'workingTime' ? 'active' : null }}">
                     <a href="#" class="nav-link has-dropdown" ><i class="fas fa-server"></i> <span>Master Data</span></a>
                     <ul class="dropdown-menu">
