@@ -34,7 +34,7 @@ class DepartmentController extends Controller
         $data = $data->paginate($perPage);
         $data->appends($request->all());
 
-        return view('department.index', compact('data','tableinfo'));
+        return view('department.index', compact('data','tableinfo','perPage','page'));
     }
 
     public function insertDepartment(Request $request)

@@ -61,7 +61,7 @@
                 </tr>
               @foreach ($data as $row)
                 <tr>
-                    <td>{{$loop->iteration}}</td>
+                    <td>{{ $loop->iteration + $perPage * ($page - 1) }}</td>
                     <td>{{$row->name}}</td>
                     <td>{{$row->created_by}}</td>
                     <td>
