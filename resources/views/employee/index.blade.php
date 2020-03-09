@@ -41,10 +41,10 @@
               <tbody>
                 <tr>
                     <th>No</th>
+                    <th>Scan_id</th>
+                    <th>NIK</th>
                     <th>Employee Name</th>
-                    <th>Department Name</th>
-                    <th>Work Time</th>
-                    <th>Status</th>
+                    <th>BirthDay</th>
                     <th>Created By</th>
                     <th>Action</th>
                 </tr>

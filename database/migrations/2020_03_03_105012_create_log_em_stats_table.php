@@ -18,7 +18,6 @@ class CreateLogEmStatsTable extends Migration
             $table->integer('id_employee')->nullable();
             $table->integer('id_department')->nullable();
             $table->integer('id_status')->nullable();
-            $table->timestamp('in_work')->nullable();
             $table->integer('id_work_time')->nullable();
             $table->timestamp('end_work')->nullable();
             $table->integer('is_active')->nullable();

@@ -27,7 +27,7 @@ Route::get('/department/export/', 'DepartmentController@eksportDepartment')->nam
 // Employee
 Route::get('/employee','EmployeeController@index')->name('show_employee');
 Route::post('/employee','EmployeeController@importEmployee')->name('bulk_employee');
-Route::post('/employee/addEmployee','EmployeeController@addEmployee')->name('addEmployee');
+Route::get('/employee/addEmployee','EmployeeController@addEmployee')->name('addEmployee');
 Route::post('/insertEmployee','EmployeeController@insertEmployee')->name('insert_employee');
 Route::get('/employee/{id}/edit','EmployeeController@editEmployee')->name('edit_employee');
 Route::get('/employee/{id}/delete','EmployeeController@deleteEmployee')->name('delete_employee');

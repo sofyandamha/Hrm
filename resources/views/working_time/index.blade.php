@@ -20,11 +20,11 @@
                     @csrf
                 <div class="form-group">
                     <label for="name">In Time :</label>
-                        <input type="number" name="in_time" class="form-control">
+                        <input type="time" name="in_time" class="form-control">
                 </div>
                 <div class="form-group">
                     <label for="name">Out Time :</label>
-                        <input type="number" name="out_time" class="form-control">
+                        <input type="time" name="out_time" class="form-control">
                 </div>
                 <div class="">
                     <input type="submit" class="btn btn-primary mt-2 float-right">

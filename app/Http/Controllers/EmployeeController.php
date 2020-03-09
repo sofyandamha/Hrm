@@ -50,6 +50,9 @@ class EmployeeController extends Controller
         $data = new Employee();
         $data->scan_id = $request->scan_id;
         $data->full_name = $request->full_name;
+        $data->address = $request->address;
+        $data->nik = $request->nik;
+        $data->birth_date = $request->birth_date;
         $data->save();
 
         return redirect()->route('show_employee');
@@ -66,6 +69,9 @@ class EmployeeController extends Controller
         $data = Employee::find($request->id);
         $data->scan_id = $request->scan_id;
         $data->full_name = $request->full_name;
+        $data->address = $request->address;
+        $data->nik = $request->nik;
+        $data->birth_date = $request->birth_date;
         $data->save();
 
         return redirect()->route('show_employee');
