@@ -18,16 +18,8 @@
             </div>
             <form action="{{route('insert_workingTime')}}" method="post">
                     @csrf
-                <div class="form-group">
-                    <label for="name">In Time :</label>
-                        <input type="time" name="in_time" class="form-control">
-                </div>
-                <div class="form-group">
-                    <label for="name">Out Time :</label>
-                        <input type="time" name="out_time" class="form-control">
-                </div>
                     <div class="form-group">
-                        <label>Time Picker</label>
+                        <label>In Time</label>
                         <div class="input-group">
                           <div class="input-group-prepend">
                             <div class="input-group-text">
@@ -38,7 +30,7 @@
                         </div>
                       </div>
                       <div class="form-group">
-                        <label>Time Picker</label>
+                        <label>Out Time</label>
                         <div class="input-group">
                           <div class="input-group-prepend">
                             <div class="input-group-text">
