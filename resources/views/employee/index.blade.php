@@ -50,7 +50,7 @@
                 </tr>
               @foreach ($data as $row)
                 <tr>
-                    <td>{{$loop->iteration}}</td>
+                    <td>{{ $loop->iteration + $perPage * ($currentPage - 1) }}</td>
                     <td>{{$row->full_name}}</td>
                     <td></td>
                     <td></td>
