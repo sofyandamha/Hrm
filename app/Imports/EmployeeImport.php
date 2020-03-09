@@ -21,16 +21,16 @@ class EmployeeImport implements ToCollection
         {
             if($key>=3){
                 // dd($collection);
-                $data =  Employee::where('scan_id', $row[1])
-                    ->where('full_name',$row[2])
+                $data =  Employee::where('scan_id', $row[0])
+                    ->where('full_name',$row[1])
                     ->get();
 
                    if($data->count() >0)
                    {
                    }
                    else{
-                      $x =  Employee::firstOrCreate(['scan_id'=>$row[1],
-                            'full_name'=> $row[2]
+                      $x =  Employee::firstOrCreate(['scan_id'=>$row[0],
+                            'full_name'=> $row[1]
                         ]);
                    }
                 }

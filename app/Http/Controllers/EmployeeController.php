@@ -37,7 +37,7 @@ class EmployeeController extends Controller
         $data = $data->paginate($perPage);
         $data->appends($request->all());
 
-        return view('employee.index', compact('data','tableinfo'));
+        return view('employee.index', compact('data','tableinfo','perPage','page'));
     }
 
     public function addEmployee()

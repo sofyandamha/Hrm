@@ -44,16 +44,27 @@
                     <th>Scan_id</th>
                     <th>NIK</th>
                     <th>Employee Name</th>
-                    <th>BirthDay</th>
+                    <th>Address</th>
+                    <th>Birthday</th>
+                    <th>Status</th>
                     <th>Created By</th>
                     <th>Action</th>
                 </tr>
               @foreach ($data as $row)
                 <tr>
+<<<<<<< HEAD
                     <td>{{ $loop->iteration + $perPage * ($currentPage - 1) }}</td>
                     <td>{{$row->full_name}}</td>
                     <td></td>
                     <td></td>
+=======
+                    <td>{{ $loop->iteration + $perPage * ($page - 1) }}</td>
+                    <td>{{$row->scan_id}}</td>
+                    <td>{{ $row->nik }}</td>
+                    <td>{{ $row->full_name }}</td>
+                    <td>{{ $row->address }}</td>
+                    <td>{{ $row->birth_date }}</td>
+>>>>>>> 74a58f35c97bebf8aa42dcbb3e9d94a9f9f96284
                     <td></td>
                     <td>{{$row->created_by}}</td>
                     <td>
