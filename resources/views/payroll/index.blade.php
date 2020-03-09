@@ -39,18 +39,12 @@
                             <form action="{{route('insert_taxsetup')}}" method="POST">
                                 @csrf
                                 <div class="form-group">
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                        <span class="input-group-text">Tax Rule</span>
-                                        </div>
+                                        <label>Tax Rule</label>
                                         <input type="text" class="form-control" name="tax_rule">
-                                    </div>
                                 </div>
                                 <div class="form-group">
+                                    <label>Tax Rate</label>
                                     <div class="input-group mb-3">
-                                        <div class="input-group-prepend">
-                                          <span class="input-group-text">Tax Rate</span>
-                                        </div>
                                         <input type="number" class="form-control" name="tax_rate" aria-label="">
                                         <select class="custom-select select" data-placeholder="Choose Type..." required name="symbol">
                                             <option value=""></option>

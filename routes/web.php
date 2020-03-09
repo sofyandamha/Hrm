@@ -27,6 +27,7 @@ Route::get('/department/export/', 'DepartmentController@eksportDepartment')->nam
 // Employee
 Route::get('/employee','EmployeeController@index')->name('show_employee');
 Route::post('/employee','EmployeeController@importEmployee')->name('bulk_employee');
+Route::post('/employee/addEmployee','EmployeeController@addEmployee')->name('addEmployee');
 Route::post('/insertEmployee','EmployeeController@insertEmployee')->name('insert_employee');
 Route::get('/employee/{id}/edit','EmployeeController@editEmployee')->name('edit_employee');
 Route::get('/employee/{id}/delete','EmployeeController@deleteEmployee')->name('delete_employee');
@@ -52,7 +53,7 @@ Route::get('/payroll/{id}/editLateconfig','LateConfigController@editLateconfig')
 Route::post('/payroll/updateLateconfig','LateConfigController@updateLateconfig')->name('update_lateconfig');
 Route::get('/payroll/{id}/editAllowance','AllowanceController@editAllowance')->name('edit_allowance');
 Route::post('/payroll/updateAllowance','AllowanceController@updateAllowance')->name('update_allowance');
-Route::get('/payroll/{id}/editAllowance','DeductionController@editDeduction')->name('edit_deduction');
+Route::get('/payroll/{id}/editDeduction','DeductionController@editDeduction')->name('edit_deduction');
 Route::post('/payroll/updateDeduction','DeductionController@updateDeduction')->name('update_deduction');
 Route::get('/payroll/{id}/editSymbol','SymbolController@editSymbol')->name('edit_symbol');
 Route::post('/payroll/updateSymbol','SymbolController@updateSymbol')->name('update_symbol');
@@ -69,3 +70,27 @@ Route::get('/payroll/deduction/export/', 'DeductionController@eksportDeduction')
 
 
 // Route::get('/designation','DesignationController@index')->name('show_designation');
+
+// Leave
+Route::get('/leaveType','LeaveTypeController@index')->name('show_leaveType');
+Route::post('/leaveType','LeaveTypeController@insertLeavetype')->name('insert_leaveType');
+Route::get('/leaveType/{id}/editLeaveType','LeaveTypeController@editLeavetype')->name('edit_leaveType');
+Route::post('/leaveType/updateLeavetype','LeaveTypeController@updateLeavetype')->name('update_leaveType');
+Route::get('/leaveType/{id}/deleteLeaveType','LeaveTypeController@deleteLeavetype')->name('delete_leaveType');
+
+// status
+Route::get('/status','StatusController@index')->name('show_statusEmployee');
+Route::post('/status','StatusController@insertStatusemployee')->name('insert_statusEmployee');
+Route::post('/status/{id}/editStatus','StatusController@editStatusemployee')->name('edit_statusEmployee');
+Route::post('/status/updateStatusemployee','StatusController@editStatusemployee')->name('update_statusEmployee');
+Route::post('/status/{id}/deleteStatus','StatusController@editStatusemployee')->name('delete_statusEmployee');
+
+// working time
+Route::get('/workingTime','WorkingTimeController@index')->name('show_workingTime');
+Route::post('/workingTime','WorkingTimeController@importWorkingtime')->name('bulk_workingTime');
+Route::post('/insertWorkingtime','WorkingTimeController@insertWorkingtime')->name('insert_workingTime');
+Route::get('/Workingtime/{id}/editWorkingtime','WorkingTimeController@editWorkingtime')->name('edit_workingTime');
+Route::post('/updateWorkingtime','WorkingTimeController@updateWorkingtime')->name('update_workingTime');
+Route::get('/workingTime/{id}/deleteWorkingtime','WorkingTimeController@deleteWorkingtime')->name('delete_workingTime');
+
+

@@ -16,7 +16,7 @@
                 <div class="row">
                     <div class="col-md-3">
                         <div class="text-left">
-                            <a class="btn btn-success " href="" ><i class="fas fa-upload"></i> Add</a>
+                            <a class="btn btn-success " href="{{ route('addEmployee') }}" ><i class="fas fa-upload"></i> Add</a>
                             <a class="btn btn-warning " href="" data-toggle="modal" data-target="#modalBulk"><i class="fas fa-upload"></i> Import</a>
                             <a class="btn btn-warning " href="{{ route('eksportEmployee')}}" ><i class="fas fa-download"></i> Eksport</a>
                         </div>
@@ -40,7 +40,7 @@
             <table class="table table-striped table-md">
               <tbody>
                 <tr>
-                    <th>Number</th>
+                    <th>No</th>
                     <th>Employee Name</th>
                     <th>Department Name</th>
                     <th>Work Time</th>

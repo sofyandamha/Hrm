@@ -2,13 +2,13 @@
 
 namespace App\Imports;
 
-use App\Employee;
 use Carbon\Carbon;
+use App\WorkingTime;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToCollection;
 
-class EmployeeImport implements ToCollection
+class WorkingTimeImport implements ToCollection
 {
     /**
     * @param Collection $collection
@@ -19,18 +19,17 @@ class EmployeeImport implements ToCollection
 
         foreach($collection as $key => $row)
         {
-            if($key>=3){
+            if($key>=1){
                 // dd($collection);
-                $data =  Employee::where('scan_id', $row[1])
-                    ->where('full_name',$row[2])
+                $data =  WorkingTime::where('id',$row[0])
                     ->get();
-
                    if($data->count() >0)
                    {
                    }
                    else{
-                      $x =  Employee::firstOrCreate(['scan_id'=>$row[1],
-                            'full_name'=> $row[2]
+                      $x =  Allowance::firstOrCreate([
+                            'in_time'=> $row[1],
+                            'out_time'=> $row[2]
                         ]);
                    }
                 }

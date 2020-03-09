@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Employee;
 use Illuminate\Http\Request;
+use App\Exports\EmployeeExport;
 use App\Imports\EmployeeImport;
 use Maatwebsite\Excel\Facades\Excel;
 use RealRashid\SweetAlert\Facades\Alert;
@@ -39,6 +40,44 @@ class EmployeeController extends Controller
         return view('employee.index', compact('data','tableinfo'));
     }
 
+    public function addEmployee()
+    {
+        return view('employee.add');
+    }
+
+    public function insertEmployee(Request $request)
+    {
+        $data = new Employee();
+        $data->scan_id = $request->scan_id;
+        $data->full_name = $request->full_name;
+        $data->save();
+
+        return redirect()->route('show_employee');
+    }
+
+    public function editEmployee($id)
+    {
+        $editEmp = Employee::find($id);
+        return view('employee.update', compact('editEmp'));
+    }
+
+    public function updateEmployee(Request $request)
+    {
+        $data = Employee::find($request->id);
+        $data->scan_id = $request->scan_id;
+        $data->full_name = $request->full_name;
+        $data->save();
+
+        return redirect()->route('show_employee');
+    }
+
+    public function deleteEmployee($id)
+    {
+        $data = Employee::find($id);
+        $data->delete();
+        return redirect()->back();
+    }
+
     public function importEmployee(Request $request)
     {
         // dd($request->hasFile('namaStaff'));
@@ -55,6 +94,11 @@ class EmployeeController extends Controller
         else{
         }
         return redirect()->back();
+    }
+
+    public function eksportEmployee()
+    {
+        return Excel::download(new EmployeeExport, 'Employee.xlsx');
     }
 
     /**

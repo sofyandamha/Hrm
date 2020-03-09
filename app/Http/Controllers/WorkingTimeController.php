@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\WorkingTime;
 use Illuminate\Http\Request;
+use App\Imports\WorkingTimeImport;
+use Maatwebsite\Excel\Facades\Excel;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class WorkingTimeController extends Controller
 {
@@ -12,9 +15,78 @@ class WorkingTimeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $data = WorkingTime::orderBy('in_time','asc');
+        if ($request->r) {
+            $data->where('in_time','like', '%'.$request->r.'%')->orWhere('out_time','like', '%'.$request->r.'%');
+        }
+        if ($request->has('page') ? $request->get('page') : 1) {
+            $page    = $request->has('page') ? $request->get('page') : 1;
+            $total   = $data->count();
+            $perPage = 10;
+            $showingTotal  = $page * $perPage;
+
+            $currentShowing = $showingTotal > $total ? $total : $showingTotal;
+            $showingStarted = $showingTotal - $perPage;
+            $tableinfo = "Showing $showingStarted to $currentShowing of $total entries";
+        }
+
+        $data = $data->paginate($perPage);
+        $data->appends($request->all());
+
+        return view('working_time.index', compact('data','tableinfo'));
+    }
+
+    public function insertWorkingtime(Request $request)
+    {
+        $data = new WorkingTime();
+        $data->in_time = $request->in_time;
+        $data->out_time = $request->out_time;
+        $data->save();
+
+        return redirect()->route('show_workingTime');
+    }
+
+    public function editWorkingtime($id)
+    {
+        $data = WorkingTime::find($id);
+        return view('working_time.update', compact('data'));
+    }
+
+    public function deleteWorkingtime($id)
+    {
+        $data = WorkingTime::find($id);
+        $data->delete();
+        return redirect()->back();
+    }
+
+    public function updateWorkingtime(Request $request)
+    {
+        $data = WorkingTime::find($request->id);
+        $data->in_time = $request->in_time;
+        $data->out_time = $request->out_time;
+        $data->save();
+
+        return redirect()->route('show_workingTime');
+    }
+
+    public function importWorkingtime(Request $request)
+    {
+        // dd($request->hasFile('namaStaff'));
+        if ($request->hasFile('namaWorkingtime')) {
+            try{
+                Excel::import(new \App\Imports\WorkingTimeImport, $request->file('namaWorkingtime'));
+                // toast('Data Has Been Uploaded!','success');
+            }
+            catch(\Exception $e)
+            {
+                Alert::error('Error', $e->getMessage());
+            }
+        }
+        else{
+        }
+        return redirect()->back();
     }
 
     /**

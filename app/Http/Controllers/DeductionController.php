@@ -54,7 +54,7 @@ class DeductionController extends Controller
     {
         $data = Deduction::find($id);
         $data->delete();
-        return redirect()->back();
+        return redirect()->back()->withInput(['tabName'=>'deduction2']);
     }
 
     public function importDeduction(Request $request)

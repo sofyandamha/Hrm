@@ -52,18 +52,6 @@
                     <a href="#" class="nav-link has-dropdown" ><i class="fas fa-money-bill-alt"></i> <span>Payroll</span></a>
                     <ul class="dropdown-menu">
                         <li class="dropdown">
-                            <a href="#" class="nav-link" > <span>Tax Rule Setup</span></a>
-                        </li>
-                        <li class="dropdown">
-                            <a href="#" class="nav-link" > <span>Late Configuration</span></a>
-                        </li>
-                        <li class="dropdown">
-                            <a href="#" class="nav-link" > <span>Allowance</span></a>
-                        </li>
-                        <li class="dropdown">
-                            <a href="#" class="nav-link" > <span>Deduction</span></a>
-                        </li>
-                        <li class="dropdown">
                             <a href="#" class="nav-link" > <span>Monthly Pay Grade</span></a>
                         </li>
                         <li class="dropdown">
@@ -88,7 +76,7 @@
                         </li>
                     </ul>
                 </li>
-                <li class="dropdown {{ Request::segment(1) === 'department' || Request::segment(1) === 'employee' || Request::segment(1) === 'payroll' ? 'active' : null }}">
+                <li class="dropdown {{ Request::segment(1) === 'department' || Request::segment(1) === 'employee' || Request::segment(1) === 'payroll' || Request::segment(1) === 'leaveType' || Request::segment(1) === 'status' || Request::segment(1) === 'workingTime' ? 'active' : null }}">
                     <a href="#" class="nav-link has-dropdown" ><i class="fas fa-server"></i> <span>Master Data</span></a>
                     <ul class="dropdown-menu">
                         <li class="dropdown {{Request::segment(1) === 'department' ? 'active' : null}}">
@@ -99,6 +87,15 @@
                         </li>
                         <li class="dropdown {{ Request::segment(1) === 'payroll' ? 'active' : null}}">
                             <a href="{{route('show_taxsetup')}}" class="nav-link" > <span>Payroll</span></a>
+                        </li>
+                        <li class="dropdown {{ Request::segment(1) === 'leaveType' ? 'active' : null}}">
+                            <a href="{{route('show_leaveType')}}" class="nav-link" > <span>Leave Type</span></a>
+                        </li>
+                        <li class="dropdown {{ Request::segment(1) === 'status' ? 'active' : null}}">
+                            <a href="{{route('show_statusEmployee')}}" class="nav-link" > <span>Status Employee</span></a>
+                        </li>
+                        <li class="dropdown {{ Request::segment(1) === 'workingTime' ? 'active' : null}}">
+                            <a href="{{route('show_workingTime')}}" class="nav-link" > <span>Working Time</span></a>
                         </li>
                     </ul>
                 </li>
