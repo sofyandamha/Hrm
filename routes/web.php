@@ -82,8 +82,8 @@ Route::get('/leaveType/{id}/deleteLeaveType','LeaveTypeController@deleteLeavetyp
 Route::get('/status','StatusController@index')->name('show_statusEmployee');
 Route::post('/status','StatusController@insertStatusemployee')->name('insert_statusEmployee');
 Route::post('/status/{id}/editStatus','StatusController@editStatusemployee')->name('edit_statusEmployee');
-Route::post('/status/updateStatusemployee','StatusController@editStatusemployee')->name('update_statusEmployee');
-Route::post('/status/{id}/deleteStatus','StatusController@editStatusemployee')->name('delete_statusEmployee');
+Route::post('/status/updateStatusemployee','StatusController@updateStatusemployee')->name('update_statusEmployee');
+Route::post('/status/{id}/deleteStatus','StatusController@deleteStatusemployee')->name('delete_statusEmployee');
 
 // working time
 Route::get('/workingTime','WorkingTimeController@index')->name('show_workingTime');
@@ -92,5 +92,14 @@ Route::post('/insertWorkingtime','WorkingTimeController@insertWorkingtime')->nam
 Route::get('/Workingtime/{id}/editWorkingtime','WorkingTimeController@editWorkingtime')->name('edit_workingTime');
 Route::post('/updateWorkingtime','WorkingTimeController@updateWorkingtime')->name('update_workingTime');
 Route::get('/workingTime/{id}/deleteWorkingtime','WorkingTimeController@deleteWorkingtime')->name('delete_workingTime');
+
+// schedule
+Route::get('/schedule','ScheduleController@index')->name('show_schedule');
+Route::get('/schedule/addSchedule','ScheduleController@addSchedule')->name('addSchedule');
+Route::post('/insertSchedule','ScheduleController@insertSchedule')->name('insert_schedule');
+Route::get('/schedule/{id}/editSchedule','ScheduleController@editSchedule')->name('edit_schedule');
+Route::post('/updateSchedule','ScheduleController@updateSchedule')->name('update_schedule');
+Route::get('/schedule/{id}/deleteSchedule','ScheduleController@deleteSchedule')->name('delete_schedule');
+
 
 

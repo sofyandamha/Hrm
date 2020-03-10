@@ -22,6 +22,7 @@
 
 
 
+
   <!-- Page Specific JS File -->
   <script src="{{ asset('/assets/js/page/forms-advanced-forms.js') }}"></script>
 
@@ -35,7 +36,7 @@
   <!-- Page Specific JS File -->
   <script src="{{ asset('/assets/js/page/components-multiple-upload.js') }}"></script>
 
-<script>
+{{-- <script>
     $('#exampleModal').on('show.bs.modal', function(event){
           var button = $(event.relatedTarget)
           var price = button.data('mytitle')
@@ -47,5 +48,18 @@
           modal.find('.modal-body #idtrans').val(idtrans)
           modal.find('.modal-body #exampleModalLabel').val(itemname)
       })
+</script> --}}
+<script type="text/javascript">
+    $(function() {
+        $('#month').datepicker( {
+        changeMonth: true,
+        changeYear: true,
+        showButtonPanel: true,
+        dateFormat: 'MM yy',
+        onClose: function(dateText, inst) {
+            $(this).datepicker('setDate', new Date(inst.selectedYear, inst.selectedMonth, 1));
+        }
+        });
+    });
 </script>
 
