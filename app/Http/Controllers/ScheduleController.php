@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Date;
 use App\Employee;
+use Carbon\Carbon;
 use App\Department;
 use App\log_em_stat;
 use App\WorkingTime;
@@ -12,6 +14,9 @@ class ScheduleController extends Controller
 {
     public function index(Request $request)
     {
+
+
+
         $data = log_em_stat::orderBy('id_employee', 'asc');
         // if ($request->r) {
         //     $data->where('id_employee','like', '%'.$request->r.'%')
@@ -45,10 +50,29 @@ class ScheduleController extends Controller
 
     public function addSchedule()
     {
-        $employee = Employee::all();
-        $department = Department::all();
-        $workingtime = WorkingTime::all();
-        return view('schedule.add', compact('employee','department','workingtime'));
+
+        $firstofthismonth =  Carbon::now()->firstOfMonth();
+        $lastofthismonth =   Carbon::now()->lastOfMonth();
+        $thismonth = Carbon::now()->format('m'); //angka this month
+        $i = $firstofthismonth->format('d'); //1
+        $y = $lastofthismonth->format('d'); //31
+        $check  = Date::where('full_date',  $firstofthismonth)->get();
+        if (count($check) > 0) {
+
+        }
+        else{
+            for ($i;  $i<= $y ; $i++) {
+                $month = '2020-'.$thismonth.'-'.$i;
+                // dd($month);
+                $data  = new Date();
+                $data->full_date = $month;
+                $data->save();
+            }
+        }
+        // $employee = Employee::all();
+        // $department = Department::all();
+        // $workingtime = WorkingTime::all();
+        // return view('schedule.add', compact('employee','department','workingtime'));
     }
 
     public function insertSchedule(Request $request)
