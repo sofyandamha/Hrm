@@ -58,8 +58,38 @@ class ScheduleController extends Controller
         $data->id_department = $request->department_name;
         $data->id_work_time = $request->working_time;
         $data->is_supervisor = $request->is_supervisor;
+        $data->month = $request->is_month;
         $data->save();
 
         return redirect()->route('show_schedule');
+    }
+
+    public function editSchedule($id)
+    {
+        $editSchedule = log_em_stat::find($id);
+        $employee = Employee::all();
+        $department = Department::all();
+        $workingtime = WorkingTime::all();
+        return view('schedule.update', compact('editSchedule','employee','department','workingtime'));
+    }
+
+    public function updateSchedule(Request $request)
+    {
+        $data = log_em_stat::find($request->id);
+        $data->id_employee = $request->employee_name;
+        $data->id_department = $request->department_name;
+        $data->id_work_time = $request->working_time;
+        $data->is_supervisor = $request->is_supervisor;
+        $data->month = $request->is_month;
+        $data->save();
+
+        return redirect()->route('show_schedule');
+    }
+
+    public function deleteSchedule($id)
+    {
+        $data = log_em_stat::find($id);
+        $data->delete();
+        return redirect()->back();
     }
 }

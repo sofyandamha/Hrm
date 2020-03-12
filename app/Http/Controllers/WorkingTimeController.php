@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\WorkingTime;
 use Illuminate\Http\Request;
+use App\Exports\WorkingTimeExport;
 use App\Imports\WorkingTimeImport;
 use Maatwebsite\Excel\Facades\Excel;
 use RealRashid\SweetAlert\Facades\Alert;
@@ -17,9 +18,9 @@ class WorkingTimeController extends Controller
      */
     public function index(Request $request)
     {
-        $data = WorkingTime::orderBy('in_time','asc');
+        $data = WorkingTime::orderBy('workingTime_name','asc');
         if ($request->r) {
-            $data->where('in_time','like', '%'.$request->r.'%')->orWhere('out_time','like', '%'.$request->r.'%');
+            $data->where('workingTime_name','like', '%'.$request->r.'%')->orWhere('out_time','like', '%'.$request->r.'%');
         }
         if ($request->has('page') ? $request->get('page') : 1) {
             $page    = $request->has('page') ? $request->get('page') : 1;
@@ -41,6 +42,7 @@ class WorkingTimeController extends Controller
     public function insertWorkingtime(Request $request)
     {
         $data = new WorkingTime();
+        $data->workingTime_name = $request->workingTime_name;
         $data->in_time = $request->in_time;
         $data->out_time = $request->out_time;
         $data->save();
@@ -64,6 +66,7 @@ class WorkingTimeController extends Controller
     public function updateWorkingtime(Request $request)
     {
         $data = WorkingTime::find($request->id);
+        $data->workingTime_name = $request->workingTime_name;
         $data->in_time = $request->in_time;
         $data->out_time = $request->out_time;
         $data->save();
@@ -87,6 +90,11 @@ class WorkingTimeController extends Controller
         else{
         }
         return redirect()->back();
+    }
+
+    public function eksportWorkingtime()
+    {
+        return Excel::download(new WorkingTimeExport, 'WorkingTime.xlsx');
     }
 
     /**

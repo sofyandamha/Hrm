@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class log_em_stat extends Model
 {
-    protected $fillable = ['id','id_employee','id_department','id_status','id_work_time','end_work','in_work','is_active','full_name'];
+    protected $fillable = ['id','id_employee','id_department','id_status','id_work_time','is_active','full_name','month'];
 
     public function Employee()
     {

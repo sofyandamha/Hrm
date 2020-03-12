@@ -14,8 +14,10 @@
                 <form action=" {{route('update_workingTime')}}" method="POST">
                     @csrf
                     <div class="form-group">
+                        <input type="text" class="form-control" name="workingTime_name" value="{{$data->workingTime_name}}">
+                    </div>
+                    <div class="form-group">
                         <input type="number" class="form-control" name="in_time" value="{{$data->in_time}}">
-                        <input type="hidden" class="form-control" name="id" value="{{$data->id}}">
                     </div>
                     <div class="form-group">
                         <input type="number" class="form-control" name="out_time" value="{{$data->out_time}}">

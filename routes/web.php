@@ -85,13 +85,16 @@ Route::post('/status/{id}/editStatus','StatusController@editStatusemployee')->na
 Route::post('/status/updateStatusemployee','StatusController@updateStatusemployee')->name('update_statusEmployee');
 Route::post('/status/{id}/deleteStatus','StatusController@deleteStatusemployee')->name('delete_statusEmployee');
 
+
 // working time
 Route::get('/workingTime','WorkingTimeController@index')->name('show_workingTime');
 Route::post('/workingTime','WorkingTimeController@importWorkingtime')->name('bulk_workingTime');
 Route::post('/insertWorkingtime','WorkingTimeController@insertWorkingtime')->name('insert_workingTime');
-Route::get('/Workingtime/{id}/editWorkingtime','WorkingTimeController@editWorkingtime')->name('edit_workingTime');
+Route::get('/workingtime/{id}/editWorkingtime','WorkingTimeController@editWorkingtime')->name('edit_workingTime');
 Route::post('/updateWorkingtime','WorkingTimeController@updateWorkingtime')->name('update_workingTime');
 Route::get('/workingTime/{id}/deleteWorkingtime','WorkingTimeController@deleteWorkingtime')->name('delete_workingTime');
+Route::get('/workingTime/export/', 'WorkingTimeController@eksportWorkingtime')->name('eksportWorkingtime');
+
 
 // schedule
 Route::get('/schedule','ScheduleController@index')->name('show_schedule');

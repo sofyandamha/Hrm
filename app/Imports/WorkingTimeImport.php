@@ -20,16 +20,17 @@ class WorkingTimeImport implements ToCollection
         foreach($collection as $key => $row)
         {
             if($key>=1){
-                // dd($collection);
-                $data =  WorkingTime::where('id',$row[0])
+                // dd($row[0]);
+                $data =  WorkingTime::where('workingTime_name',$row[6])
                     ->get();
                    if($data->count() >0)
                    {
                    }
                    else{
-                      $x =  Allowance::firstOrCreate([
-                            'in_time'=> $row[1],
-                            'out_time'=> $row[2]
+                      $x =  WorkingTime::firstOrCreate([
+                            'workingTime_name'=> $row[6],
+                            'in_time'=> $row[7],
+                            'out_time'=> $row[8]
                         ]);
                    }
                 }

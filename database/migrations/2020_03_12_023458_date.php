@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateEmployeesTable extends Migration
+class Date extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,12 @@ class CreateEmployeesTable extends Migration
      */
     public function up()
     {
-        Schema::create('employees', function (Blueprint $table) {
+        Schema::create('date', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('scan_id')->nullable();
-            $table->string('full_name')->nullable();
-            $table->string('address')->nullable();
-            $table->string('nik')->nullable();
-            $table->timestamp('birth_date')->nullable();
-            $table->integer('is_officeHour')->nullable();
-            $table->integer('id_status')->nullable();
+            $table->timestamp('full_date');
+            $table->timestamp('day_ofWeek');
+            $table->integer('day_numberinWeek');
+            $table->integer('is_holiday');
             $table->integer('created_by')->nullable();
             $table->integer('updated_by')->nullable();
             $table->timestamps();
@@ -35,6 +32,6 @@ class CreateEmployeesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('employees');
+        Schema::dropIfExists('date');
     }
 }

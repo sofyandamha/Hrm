@@ -21,7 +21,7 @@
   <script src="{{ asset('/assets/modules/jquery-selectric/jquery.selectric.min.js') }}"></script>
 
 
-
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
 
   <!-- Page Specific JS File -->
   <script src="{{ asset('/assets/js/page/forms-advanced-forms.js') }}"></script>
@@ -50,16 +50,10 @@
       })
 </script> --}}
 <script type="text/javascript">
-    $(function() {
-        $('#month').datepicker( {
-        changeMonth: true,
-        changeYear: true,
-        showButtonPanel: true,
-        dateFormat: 'MM yy',
-        onClose: function(dateText, inst) {
-            $(this).datepicker('setDate', new Date(inst.selectedYear, inst.selectedMonth, 1));
-        }
-        });
-    });
+    $("#datemonth").datepicker( {
+    format: "mm-yyyy",
+    startView: "months",
+    minViewMode: "months"
+});
 </script>
 

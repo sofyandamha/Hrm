@@ -14,11 +14,18 @@
             <div class="form-group">
                 <div class="text-left mb-3">
                     <a class="btn btn-warning" href="" data-toggle="modal" data-target="#modalBulk"><i class="fas fa-upload"></i> Import</a>
+                    <a class="btn btn-warning" href="{{ route('eksportWorkingtime') }}" ><i class="fas fa-upload"></i> Eksport</a>
                 </div>
             </div>
             <form action="{{route('insert_workingTime')}}" method="post">
                     @csrf
-                    <div class="form-group">
+                      <div class="form-group">
+                        <label>Working Time Name</label>
+                        <div class="input-group">
+                          <input type="text" name="workingTime_name" class="form-control">
+                        </div>
+                      </div>
+                      <div class="form-group">
                         <label>In Time</label>
                         <div class="input-group">
                           <div class="input-group-prepend">
@@ -55,7 +62,7 @@
           <div class="float-right">
             <form action="{{route('show_workingTime')}}" method="get">
               <div class="input-group input-group-sm">
-            <input type="text" name="r" class="form-control" placeholder="Working Time" autocomplete="off">
+            <input type="text" name="r" class="form-control" placeholder="Working Time Name" autocomplete="off">
                 <div class="input-group-btn">
                   <button type="submit" class="btn btn-primary "><i class="fa fa-search"></i></button>
                 </div>
@@ -72,6 +79,7 @@
               <tbody>
                 <tr>
                     <th>No</th>
+                    <th>Working Time Name</th>
                     <th>In Time</th>
                     <th>Out Time</th>
                     <th>Created By</th>
@@ -80,6 +88,7 @@
               @foreach ($data as $row)
                 <tr>
                     <td>{{$loop->iteration}}</td>
+                    <td>{{$row->workingTime_name}}</td>
                     <td>{{$row->in_time}}</td>
                     <td>{{$row->out_time}}</td>
                     <td>{{$row->created_by}}</td>

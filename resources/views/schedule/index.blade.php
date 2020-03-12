@@ -45,6 +45,7 @@
                     <th>Department Name</th>
                     <th>Working Time</th>
                     <th>Is Supervisor</th>
+                    <th>at Month</th>
                     <th>Created By</th>
                     <th>Action</th>
                 </tr>
@@ -53,12 +54,13 @@
                     <td>{{ $loop->iteration + $perPage * ($page - 1) }}</td>
                     <td>{{ $row->employee->full_name }}</td>
                     <td>{{ $row->department->name }}</td>
-                    <td>{{ $row->workingtime->in_time." - ".$row->workingtime->out_time }}</td>
+                    <td>{{ $row->workingtimge->workingTime_name.' : '.$row->workingtime->in_time." - ".$row->workingtime->out_time }}</td>
                     <td>@if ($row->is_supervisor == 1)
                         {{ "Yes" }}
                     @else
                         {{ "NO"}}
                     @endif</td>
+                    <td>{{ $row->month }}</td>
                     <td>{{$row->created_by}}</td>
                     <td>
                         <a class="btn btn-warning" href="{{route('edit_schedule',$row->id)}}"><i class="fas fa-edit"></i></a>
