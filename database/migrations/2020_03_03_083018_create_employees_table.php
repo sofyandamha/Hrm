@@ -20,7 +20,6 @@ class CreateEmployeesTable extends Migration
             $table->string('address')->nullable();
             $table->string('nik')->nullable();
             $table->timestamp('birth_date')->nullable();
-            $table->integer('is_officeHour')->nullable();
             $table->integer('is_supervisor')->nullable();
             $table->integer('id_department')->nullable();
             $table->integer('id_status')->nullable();

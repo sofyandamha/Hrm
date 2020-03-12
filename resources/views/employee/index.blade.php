@@ -56,7 +56,12 @@
                     <td>{{ $loop->iteration + $perPage * ($page - 1) }}</td>
                     <td>{{$row->scan_id}}</td>
                     <td>{{ $row->nik }}</td>
-                    <td>{{ $row->full_name }}</td>
+                    <td> @if ($row->is_supervisor == 1)
+                        {{ $row->full_name }} <div class="badge badge-warning">Supervisor</div>
+                    @else
+                        {{ $row->full_name }}
+                    @endif
+                    </td>
                     <td>
                         @isset($row->department->name)
                             {{ $row->department->name }}

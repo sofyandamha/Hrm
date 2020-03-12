@@ -10,7 +10,7 @@
           <div class="card-header">
             <h4>Add New Schedule</h4>
           </div>
-          <form method="POST" action="{{ route('insert_schedule')}}" enctype="multipart/form-data">
+          <form method="POST" action="{{ route('insert_schedule')}}">
               @csrf
             <div class="card-body">
                 <div class="form-group">

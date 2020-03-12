@@ -44,7 +44,6 @@
                     <th>Employee Name</th>
                     <th>Department Name</th>
                     <th>Working Time</th>
-                    <th>Is Supervisor</th>
                     <th>at Month</th>
                     <th>Created By</th>
                     <th>Action</th>
@@ -55,11 +54,6 @@
                     <td>{{ $row->employee->full_name }}</td>
                     <td>{{ $row->department->name }}</td>
                     <td>{{ $row->workingtimge->workingTime_name.' : '.$row->workingtime->in_time." - ".$row->workingtime->out_time }}</td>
-                    <td>@if ($row->is_supervisor == 1)
-                        {{ "Yes" }}
-                    @else
-                        {{ "NO"}}
-                    @endif</td>
                     <td>{{ $row->month }}</td>
                     <td>{{$row->created_by}}</td>
                     <td>

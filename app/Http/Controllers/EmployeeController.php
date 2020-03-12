@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Employee;
+use App\Department;
 use Illuminate\Http\Request;
 use App\Exports\EmployeeExport;
 use App\Imports\EmployeeImport;
@@ -19,10 +20,15 @@ class EmployeeController extends Controller
     public function index(Request $request)
     {
         $data = Employee::orderBy('full_name', 'asc');
+
         if ($request->r) {
             $data->where('full_name','like', '%'.$request->r.'%')
-                 ->orWhere('scan_id','like', '%'.$request->r.'%');
+                 ->orWhere('scan_id','like', '%'.$request->r.'%')
+                 ->orWhereHas('Department', function ($query) use ($request) {
+                    $query->Where('name', 'like', '%' . $request->r . '%');
+                });
         }
+
         if ($request->has('page') ? $request->get('page') : 1) {
             $page    = $request->has('page') ? $request->get('page') : 1;
             $total   = $data->count();
@@ -42,16 +48,19 @@ class EmployeeController extends Controller
 
     public function addEmployee()
     {
-        return view('employee.add');
+        $department = Department::all();
+        return view('employee.add', compact('department'));
     }
 
     public function insertEmployee(Request $request)
     {
         $data = new Employee();
+        $data->id_department = $request->department_name;
         $data->scan_id = $request->scan_id;
         $data->full_name = $request->full_name;
         $data->address = $request->address;
         $data->nik = $request->nik;
+        $data->is_supervisor = $request->is_supervisor;
         $data->birth_date = $request->birth_date;
         $data->save();
 
@@ -61,7 +70,8 @@ class EmployeeController extends Controller
     public function editEmployee($id)
     {
         $editEmp = Employee::find($id);
-        return view('employee.update', compact('editEmp'));
+        $data = Department::all();
+        return view('employee.update', compact('editEmp','data'));
     }
 
     public function updateEmployee(Request $request)
@@ -71,6 +81,7 @@ class EmployeeController extends Controller
         $data->full_name = $request->full_name;
         $data->address = $request->address;
         $data->nik = $request->nik;
+        $data->is_supervisor = $request->is_supervisor;
         $data->birth_date = $request->birth_date;
         $data->save();
 
