@@ -100,15 +100,17 @@ class ScheduleController extends Controller
 
     public function insertSchedule(Request $request)
     {
-        $data = new log_em_stat();
-        $data->id_employee = $request->employee_name;
-        $data->id_department = $request->department_name;
-        $data->id_work_time = $request->working_time;
-        $data->is_supervisor = $request->is_supervisor;
-        $data->month = $request->is_month;
-        $data->save();
 
-        return redirect()->route('show_schedule');
+        dd($request->all());
+        // $data = new log_em_stat();
+        // $data->id_employee = $request->employee_name;
+        // $data->id_department = $request->department_name;
+        // $data->id_work_time = $request->working_time;
+        // $data->is_supervisor = $request->is_supervisor;
+        // $data->month = $request->is_month;
+        // $data->save();
+
+        // return redirect()->route('show_schedule');
     }
 
     public function editSchedule($id)
