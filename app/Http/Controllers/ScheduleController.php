@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Date;
 use App\Employee;
+use App\Schedule;
 use Carbon\Carbon;
 use App\Department;
 use App\log_em_stat;
@@ -100,17 +101,14 @@ class ScheduleController extends Controller
 
     public function insertSchedule(Request $request)
     {
-
-        dd($request->all());
-        // $data = new log_em_stat();
-        // $data->id_employee = $request->employee_name;
-        // $data->id_department = $request->department_name;
-        // $data->id_work_time = $request->working_time;
-        // $data->is_supervisor = $request->is_supervisor;
-        // $data->month = $request->is_month;
-        // $data->save();
-
-        // return redirect()->route('show_schedule');
+        foreach ($request->schedule_detail as $row) {
+                $data  = new Schedule();
+                $data->id_date = $row['date_id'];
+                $data->id_working_time = $row['working_time'];
+                $data->id_emp = $request->employee_id;
+                $data->save();
+        }
+        return redirect()->route('show_schedule');
     }
 
     public function editSchedule($id)

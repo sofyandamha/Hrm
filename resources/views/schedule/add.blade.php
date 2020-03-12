@@ -32,11 +32,11 @@
                         @foreach ($datatgl as $row  => $schedule_detail)
                             <tr>
                                 <td>
-                                    <input type="text" name="schedule_detail[{{$row}}][date_id][]" value="{{$schedule_detail->id}}" hidden>
+                                    <input type="text" name="schedule_detail[{{$row}}][date_id]" value="{{$schedule_detail->id}}" hidden>
                                     {{ date('l d F Y', strtotime($schedule_detail->full_date)) }}
                                 </td>
                                 <td>
-                                    <select name="schedule_detail[{{$row}}][working_time][]" class="form-control select2">
+                                    <select name="schedule_detail[{{$row}}][working_time]" class="form-control select2">
                                         @foreach ($workingtime as $row)
                                             <option value="{{ $row->id }}">{{$row->in_time." - ".$row->out_time }}</option>
                                         @endforeach
