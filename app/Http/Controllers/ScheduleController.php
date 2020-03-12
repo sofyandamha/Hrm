@@ -12,11 +12,31 @@ use Illuminate\Http\Request;
 
 class ScheduleController extends Controller
 {
+
+    public function __construct() {
+        $firstofthismonth =  Carbon::now()->firstOfMonth(); // get this first day in month now
+        $lastofthismonth =  Carbon::now()->lastOfMonth(); // get this last day in month now
+        $thismonth = Carbon::now()->format('m'); // get this month now
+        $thisyear = Carbon::now()->format('Y'); // get this year now
+        $i = $firstofthismonth->format('d'); // 1
+        $y = $lastofthismonth->format('d'); // 31
+        $check  = Date::where('full_date',  $firstofthismonth)->get(); // check data month
+        if (count($check) > 0) {
+
+        }
+        else{
+            for ($i;  $i<= $y ; $i++) {
+                $month = $thisyear.'-'.$thismonth.'-'.$i;
+                // dd($month);
+                $data  = new Date();
+                $data->full_date = $month;
+                $data->save();
+            }
+        }
+    }
+
     public function index(Request $request)
     {
-
-
-
         $data = log_em_stat::orderBy('id_employee', 'asc');
         // if ($request->r) {
         //     $data->where('id_employee','like', '%'.$request->r.'%')
@@ -50,29 +70,10 @@ class ScheduleController extends Controller
 
     public function addSchedule()
     {
-
-        $firstofthismonth =  Carbon::now()->firstOfMonth();
-        $lastofthismonth =   Carbon::now()->lastOfMonth();
-        $thismonth = Carbon::now()->format('m'); //angka this month
-        $i = $firstofthismonth->format('d'); //1
-        $y = $lastofthismonth->format('d'); //31
-        $check  = Date::where('full_date',  $firstofthismonth)->get();
-        if (count($check) > 0) {
-
-        }
-        else{
-            for ($i;  $i<= $y ; $i++) {
-                $month = '2020-'.$thismonth.'-'.$i;
-                // dd($month);
-                $data  = new Date();
-                $data->full_date = $month;
-                $data->save();
-            }
-        }
-        // $employee = Employee::all();
-        // $department = Department::all();
-        // $workingtime = WorkingTime::all();
-        // return view('schedule.add', compact('employee','department','workingtime'));
+        $employee = Employee::all();
+        $department = Department::all();
+        $workingtime = WorkingTime::all();
+        return view('schedule.add', compact('employee','department','workingtime'));
     }
 
     public function insertSchedule(Request $request)

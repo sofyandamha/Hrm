@@ -20,7 +20,6 @@ class CreateLogEmStatsTable extends Migration
             $table->integer('id_status')->nullable();
             $table->integer('id_work_time')->nullable();
             $table->integer('is_active')->nullable();
-            $table->integer('is_supervisor')->nullable();
             $table->string('month')->nullable();
             $table->integer('created_by')->nullable();
             $table->integer('updated_by')->nullable();
