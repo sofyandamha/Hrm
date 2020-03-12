@@ -48,7 +48,7 @@ class ScheduleController extends Controller
         return view('schedule.index', compact('data','tableinfo','perPage','page'));
     }
 
-    public function addSchedule()
+    public function addSchedule(Request $request)
     {
 
         $firstofthismonth =  Carbon::now()->firstOfMonth();
@@ -69,10 +69,12 @@ class ScheduleController extends Controller
                 $data->save();
             }
         }
-        // $employee = Employee::all();
-        // $department = Department::all();
-        // $workingtime = WorkingTime::all();
-        // return view('schedule.add', compact('employee','department','workingtime'));
+        $datatgl = Date::where('full_date','like','%'.$thismonth.'%')->get();
+        // dd($datatgl);
+        $employee = Employee::all();
+        $department = Department::all();
+        $workingtime = WorkingTime::all();
+        return view('schedule.add', compact('employee','department','workingtime','datatgl'));
     }
 
     public function insertSchedule(Request $request)
