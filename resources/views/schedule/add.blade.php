@@ -29,7 +29,7 @@
                     <tbody>
                         @foreach ($datatgl as $row)
                             <tr>
-                                <td>{{ date('D-m-Y', strtotime($row->full_date)) }}</td>
+                                <td>{{ date('l-F-Y', strtotime($row->full_date)) }}</td>
                                 <td>
                                     <select name="working_time" class="form-control select2">
                                         @foreach ($workingtime as $row)
