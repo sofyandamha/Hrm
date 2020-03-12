@@ -68,12 +68,34 @@ class ScheduleController extends Controller
         return view('schedule.index', compact('data','tableinfo','perPage','page'));
     }
 
-    public function addSchedule()
+    public function addSchedule(Request $request)
     {
+
+        $firstofthismonth =  Carbon::now()->firstOfMonth();
+        $lastofthismonth =   Carbon::now()->lastOfMonth();
+        $thismonth = Carbon::now()->format('m'); //angka this month
+        $i = $firstofthismonth->format('d'); //1
+        $y = $lastofthismonth->format('d'); //31
+        $check  = Date::where('full_date',  $firstofthismonth)->get();
+        if (count($check) > 0) {
+
+        }
+        else{
+            for ($i;  $i<= $y ; $i++) {
+                $month = '2020-'.$thismonth.'-'.$i;
+                // dd($month);
+                $data  = new Date();
+                $data->full_date = $month;
+                $data->save();
+            }
+        }
+
+        $datatgl = Date::where('full_date','like','%'.$thismonth.'%')->get();
+        // dd($datatgl);
         $employee = Employee::all();
         $department = Department::all();
         $workingtime = WorkingTime::all();
-        return view('schedule.add', compact('employee','department','workingtime'));
+        return view('schedule.add', compact('employee','department','workingtime','datatgl'));
     }
 
     public function insertSchedule(Request $request)
