@@ -44,6 +44,7 @@
                     <th>Scan_id</th>
                     <th>NIK</th>
                     <th>Employee Name</th>
+                    <th>Department Name</th>
                     <th>Address</th>
                     <th>Birthday</th>
                     <th>Status</th>
@@ -56,6 +57,11 @@
                     <td>{{$row->scan_id}}</td>
                     <td>{{ $row->nik }}</td>
                     <td>{{ $row->full_name }}</td>
+                    <td>
+                        @isset($row->department->name)
+                            {{ $row->department->name }}
+                        @endisset
+                    </td>
                     <td>{{ $row->address }}</td>
                     <td>{{ $row->birth_date }}</td>
                     <td></td>
