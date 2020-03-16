@@ -18,6 +18,9 @@ class CreateAttendancesTable extends Migration
             $table->integer('id_employee')->nullable();
             $table->string('in_time')->nullable();
             $table->string('out_time')->nullable();
+            $table->timestamp('tanggal')->nullable();
+            $table->integer('create_by')->nullable();
+            $table->integer('update_by')->nullable();
             $table->timestamps();
         });
     }

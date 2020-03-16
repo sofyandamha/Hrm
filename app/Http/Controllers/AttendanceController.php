@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Attendance;
 use Illuminate\Http\Request;
+use App\Imports\WorkShiftImport;
+use Maatwebsite\Excel\Facades\Excel;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class AttendanceController extends Controller
 {
@@ -15,6 +18,29 @@ class AttendanceController extends Controller
     public function index()
     {
         //
+    }
+
+    public function indexWorkshift()
+    {
+        return view('attendance.workshift.index');
+    }
+
+    public function importWorkshift(Request $request)
+    {
+        // dd($request->hasFile('namaStaff'));
+        if ($request->hasFile('namaWorkshift')) {
+            try{
+                Excel::import(new \App\Imports\WorkShiftImport, $request->file('namaWorkshift'));
+                // toast('Data Has Been Uploaded!','success');
+            }
+            catch(\Exception $e)
+            {
+                Alert::error('Error', $e->getMessage());
+            }
+        }
+        else{
+        }
+        return redirect()->back();
     }
 
     /**

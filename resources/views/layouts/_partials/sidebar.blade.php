@@ -40,11 +40,11 @@
                 <li class="dropdown">
                     <a href="#" class="nav-link has-dropdown" ><i class="fas fa-user-clock"></i> <span>Attendance</span></a>
                     <ul class="dropdown-menu">
-                        <li class="dropdown {{ Request::segment(1) === 'manageworkshift' ? 'active' : null }}">
-                            <a href="#" class="nav-link" > <span>Manage Work Shift</span></a>
+                        <li class="dropdown {{ Request::segment(2) === 'workshift' ? 'active' : null }}">
+                            <a href="{{ route('show_workshift') }}" class="nav-link" > <span>Manage Work Shift</span></a>
                         </li>
-                        <li class="dropdown {{ Request::segment(1) === 'attendancereport' ? 'active' : null }}">
-                            <a href="#" class="nav-link" > <span>Attendance Report</span></a>
+                        <li class="dropdown {{ Request::segment(2) === 'report' ? 'active' : null }}">
+                            <a href="{{ route('show_report') }}" class="nav-link" > <span>Attendance Report</span></a>
                         </li>
                     </ul>
                 </li>

@@ -75,7 +75,6 @@ Route::get('/payroll/deduction/export/', 'DeductionController@eksportDeduction')
 Route::get('/leaveMaagement/requestApp','LeaveManagementController@indexRequestapp')->name('show_requestApp');
 Route::get('/leaveMaagement/leaveReport','LeaveManagementController@indexLeavereport')->name('show_leaveReport');
 
-
 // Leave Type
 Route::get('/leaveType','LeaveTypeController@index')->name('show_leaveType');
 Route::post('/leaveType','LeaveTypeController@insertLeavetype')->name('insert_leaveType');
@@ -84,8 +83,13 @@ Route::post('/leaveType/updateLeavetype','LeaveTypeController@updateLeavetype')-
 Route::get('/leaveType/{id}/deleteLeaveType','LeaveTypeController@deleteLeavetype')->name('delete_leaveType');
 
 // Attendance
-Route::get('/attendance/manageWorkshift','LeaveManagementController@indexManageworkshift')->name('show_manageWorkshift');
-Route::get('/attendance/attendanceReport','LeaveManagementController@indexAttendancereport')->name('show_attendanceReport');
+Route::get('/attendance/workshift','AttendanceController@indexWorkshift')->name('show_workshift');
+Route::post('/attendance/workshift/import','AttendanceController@importWorkshift')->name('bulk_workshift');
+Route::get('/attendance/workshift/export','AttendanceController@eksportWorkshift')->name('export_workshift');
+Route::get('/attendance/workshift/add','AttendanceController@addWorkshift')->name('add_workshift');
+Route::get('/attendance/workshift/insert','AttendanceController@insertWorkshift')->name('insert_workshift');
+
+Route::get('/attendance/report','AttendanceController@indexReport')->name('show_report');
 
 // status
 Route::get('/status','StatusController@index')->name('show_statusEmployee');
