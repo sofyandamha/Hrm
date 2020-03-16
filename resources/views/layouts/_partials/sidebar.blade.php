@@ -29,11 +29,11 @@
                 <li class="dropdown">
                     <a href="#" class="nav-link has-dropdown" ><i class="fas fa-sign-out-alt"></i> <span>Leave Management</span></a>
                     <ul class="dropdown-menu">
-                        <li class="dropdown {{ Request::segment(1) === 'requestapplication' ? 'active' : null }}">
-                            <a href="#" class="nav-link" > <span>Request Application</span></a>
+                        <li class="dropdown {{ Request::segment(2) === 'requestApp' ? 'active' : null }}">
+                            <a href="{{ route('show_requestApp') }}" class="nav-link" > <span>Request Application</span></a>
                         </li>
-                        <li class="dropdown {{ Request::segment(1) === 'leavereport' ? 'active' : null }}">
-                            <a href="#" class="nav-link" > <span>Leave Report</span></a>
+                        <li class="dropdown {{ Request::segment(2) === 'leaveReport' ? 'active' : null }}">
+                            <a href="route('show_leaveReport')" class="nav-link" > <span>Leave Report</span></a>
                         </li>
                     </ul>
                 </li>

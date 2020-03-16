@@ -71,12 +71,21 @@ Route::get('/payroll/deduction/export/', 'DeductionController@eksportDeduction')
 
 // Route::get('/designation','DesignationController@index')->name('show_designation');
 
-// Leave
+// Leave Management
+Route::get('/leaveMaagement/requestApp','LeaveManagementController@indexRequestapp')->name('show_requestApp');
+Route::get('/leaveMaagement/leaveReport','LeaveManagementController@indexLeavereport')->name('show_leaveReport');
+
+
+// Leave Type
 Route::get('/leaveType','LeaveTypeController@index')->name('show_leaveType');
 Route::post('/leaveType','LeaveTypeController@insertLeavetype')->name('insert_leaveType');
 Route::get('/leaveType/{id}/editLeaveType','LeaveTypeController@editLeavetype')->name('edit_leaveType');
 Route::post('/leaveType/updateLeavetype','LeaveTypeController@updateLeavetype')->name('update_leaveType');
 Route::get('/leaveType/{id}/deleteLeaveType','LeaveTypeController@deleteLeavetype')->name('delete_leaveType');
+
+// Attendance
+Route::get('/attendance/manageWorkshift','LeaveManagementController@indexManageworkshift')->name('show_manageWorkshift');
+Route::get('/attendance/attendanceReport','LeaveManagementController@indexAttendancereport')->name('show_attendanceReport');
 
 // status
 Route::get('/status','StatusController@index')->name('show_statusEmployee');
