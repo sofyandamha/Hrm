@@ -72,8 +72,12 @@ Route::get('/payroll/deduction/export/', 'DeductionController@eksportDeduction')
 // Route::get('/designation','DesignationController@index')->name('show_designation');
 
 // Leave Management
-Route::get('/leaveMaagement/requestApp','LeaveManagementController@indexRequestapp')->name('show_requestApp');
-Route::get('/leaveMaagement/leaveReport','LeaveManagementController@indexLeavereport')->name('show_leaveReport');
+Route::get('/leaveMaagement/requestApp','LeaveManagamentController@indexRequestapp')->name('show_requestApp');
+Route::get('/leaveMaagement/requestApp/add','LeaveManagamentController@addRequestapp')->name('add_requestApp');
+Route::post('/leaveMaagement/requestApp/insert','LeaveManagamentController@insertRequestapp')->name('insert_requestApp');
+Route::post('/leaveMaagement/requestApp/{id}/edit','LeaveManagamentController@editRequestapp')->name('edit_requestApp');
+Route::post('/leaveMaagement/requestApp/delete','LeaveManagamentController@deleteRequestapp')->name('delete_requestApp');
+Route::get('/leaveMaagement/leaveReport','LeaveManagamentController@indexLeavereport')->name('show_leaveReport');
 
 // Leave Type
 Route::get('/leaveType','LeaveTypeController@index')->name('show_leaveType');

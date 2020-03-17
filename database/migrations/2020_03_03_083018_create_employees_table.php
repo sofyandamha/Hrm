@@ -23,6 +23,7 @@ class CreateEmployeesTable extends Migration
             $table->integer('is_supervisor')->nullable();
             $table->integer('id_department')->nullable();
             $table->integer('id_status')->nullable();
+            $table->string('cabang')->nullable();
             $table->integer('created_by')->nullable();
             $table->integer('updated_by')->nullable();
             $table->timestamps();

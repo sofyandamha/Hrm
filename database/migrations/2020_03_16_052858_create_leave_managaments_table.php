@@ -15,6 +15,14 @@ class CreateLeaveManagamentsTable extends Migration
     {
         Schema::create('leave_managaments', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->integer('id_employee')->nullable();
+            $table->integer('id_leave_type')->nullable();
+            $table->string('start_leave')->nullable();
+            $table->string('end_leave')->nullable();
+            $table->string('remak')->nullable();
+            $table->integer('status')->nullable();
+            $table->integer('created_by')->nullable();
+            $table->integer('updated_by')->nullable();
             $table->timestamps();
         });
     }

@@ -26,7 +26,7 @@
                         </li>
                     </ul>
                 </li> --}}
-                <li class="dropdown">
+                <li class="dropdown {{ Request::segment(2) === 'requestApp' || Request::segment(2) === 'leaveReport' ? 'active' : null }} ">
                     <a href="#" class="nav-link has-dropdown" ><i class="fas fa-sign-out-alt"></i> <span>Leave Management</span></a>
                     <ul class="dropdown-menu">
                         <li class="dropdown {{ Request::segment(2) === 'requestApp' ? 'active' : null }}">
