@@ -61,7 +61,9 @@
                     <td>{{ $row->start_leave}}<b>  to  </b>{{ $row->end_leave }}</td>
                     <td>{{ $row->created_at->format('Y-m-d')}}</td>
                     <td>
-
+                        {{
+                            round((strtotime($row->end_leave) - strtotime($row->start_leave)) / (60 * 60 * 24))
+                        }}
                     </td>
                     <td>{{ $row->remak}}</td>
                     <td>
