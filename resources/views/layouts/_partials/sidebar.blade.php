@@ -8,7 +8,12 @@
           <ul class="sidebar-menu">
             <li class="menu-header">Dashboard</li>
 
-            <li class="menu-header">Menu</li>
+          <li class="menu-header">Menu {{Auth()->user()->getRoleNames()}}</li>
+            @role('Manager')
+                I am a Manager!
+            @else
+                I am not a Manager...
+            @endrole
                 <li class="dropdown {{ Request::segment(2) === 'home'? 'active' : null }}">
                     <a href="#" class="nav-link" ><i class="fas fa-fire"></i> <span>Dashboard</span></a>
                 </li>
