@@ -21,18 +21,21 @@ class LoginController extends Controller
             'password' => 'required|string|min:6',
         ]);
 
-        $valid_email = filter_var($request->email, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
+    $loginType = filter_var($request->email, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
 
-        $login = [
-            $valid_email => $request->email,
-            'password' => $request->password
-        ];
+    //TAMPUNG INFORMASI LOGINNYA, DIMANA KOLOM TYPE PERTAMA BERSIFAT DINAMIS BERDASARKAN VALUE DARI PENGECEKAN DIATAS
+    $login = [
+        $loginType => $request->email,
+        'password' => $request->password
+    ];
 
-        if (Auth()->attempt($login)) {
-            // return redirect()->route('show_employee');
-            dd($login);
-        }
-        dd("GAGAL");
-        // return redirect()->route('show_login')->with(['error' => 'Email atau Password salah !!!']);
+    // dd(auth()->attempt($login));
+
+    if (auth()->attempt($login)) {
+        //JIKA BERHASIL, MAKA REDIRECT KE HALAMAN HOME
+
+        return redirect()->route('show_department');
+    }
+        return redirect()->route('show_login');
     }
 }
