@@ -33,7 +33,7 @@ class LoginController extends Controller
 
     if (auth()->attempt($login)) {
         //JIKA BERHASIL, MAKA REDIRECT KE HALAMAN HOME
-
+        // dd($login);
         return redirect()->route('show_department');
     }
         return redirect()->route('show_login');

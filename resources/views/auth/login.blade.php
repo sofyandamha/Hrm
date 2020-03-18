@@ -89,7 +89,11 @@
         </section>
 
         <footer class="main-footer" id="printPageButton" >
-            @include('layouts._partials.footer')
+            <div class="footer-center">
+                Copyright &copy; {{date('Y')}} <div class="bullet"></div></a>
+            </div>
+            <div class="footer-center">
+            </div>
         </footer>
     </div>
 
