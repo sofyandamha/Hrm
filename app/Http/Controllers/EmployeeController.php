@@ -20,6 +20,11 @@ class EmployeeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function index(Request $request)
     {
         // $data = Employee::orderBy('full_name', 'asc');
