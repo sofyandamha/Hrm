@@ -38,11 +38,19 @@ class EmployeeController extends Controller
         ->leftJoin('roles', 'model_has_roles.role_id', '=', 'roles.id')
         ->select('employees.scan_id', 'employees.full_name', 'employees.id_department','employees.address','employees.nik','employees.birth_date','employees.id_status','employees.created_by','roles.id');
         if ($request->r) {
-            $data->where('full_name','like', '%'.$request->r.'%')
-                 ->orWhere('scan_id','like', '%'.$request->r.'%')
-                 ->orWhereHas('Department', function ($query) use ($request) {
-                    $query->Where('name', 'like', '%' . $request->r . '%');
-                });
+            // $data->where('full_name','like', '%'.$request->r.'%')
+            //      ->orWhere('scan_id','like', '%'.$request->r.'%')
+            //      ->orWhereHas('Department', function ($query) use ($request) {
+            //         $query->Where('name', 'like', '%' . $request->r . '%');
+            //     });
+            $data = DB::table('employees')
+                    ->leftJoin('model_has_roles', 'model_has_roles.model_id', '=', 'employees.id')
+                    ->leftJoin('roles', 'model_has_roles.role_id', '=', 'roles.id')
+                    ->leftJoin('departments','employees.id_department','=','departments.id')
+                    ->select('employees.scan_id', 'employees.full_name', 'employees.id_department','employees.address','employees.nik','employees.birth_date','employees.id_status','employees.created_by','roles.id','departments.name')
+                    ->where('full_name','like','%'.$request->r.'%')
+                    ->orWhere('scan_id','like','%'.$request->r.'%')
+                    ->orWhere('departments.name','like','%'.$request->r.'%');
         }
 
         if ($request->has('page') ? $request->get('page') : 1) {
