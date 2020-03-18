@@ -13,27 +13,28 @@ use Illuminate\Http\Request;
 
 class ScheduleController extends Controller
 {
-
     public function __construct() {
-        $firstofthismonth =  Carbon::now()->firstOfMonth(); // get this first day in month now
-        $lastofthismonth =  Carbon::now()->lastOfMonth(); // get this last day in month now
-        $thismonth = Carbon::now()->format('m'); // get this month now
-        $thisyear = Carbon::now()->format('Y'); // get this year now
-        $i = $firstofthismonth->format('d'); // 1
-        $y = $lastofthismonth->format('d'); // 31
-        $check  = Date::where('full_date',  $firstofthismonth)->get(); // check data month
-        if (count($check) > 0) {
+        $this->middleware('auth');
 
-        }
-        else{
-            for ($i;  $i<= $y ; $i++) {
-                $month = $thisyear.'-'.$thismonth.'-'.$i;
-                // dd($month);
-                $data  = new Date();
-                $data->full_date = $month;
-                $data->save();
-            }
-        }
+        // $firstofthismonth =  Carbon::now()->firstOfMonth(); // get this first day in month now
+        // $lastofthismonth =  Carbon::now()->lastOfMonth(); // get this last day in month now
+        // $thismonth = Carbon::now()->format('m'); // get this month now
+        // $thisyear = Carbon::now()->format('Y'); // get this year now
+        // $i = $firstofthismonth->format('d'); // 1
+        // $y = $lastofthismonth->format('d'); // 31
+        // $check  = Date::where('full_date',  $firstofthismonth)->get(); // check data month
+        // if (count($check) > 0) {
+
+        // }
+        // else{
+        //     for ($i;  $i<= $y ; $i++) {
+        //         $month = $thisyear.'-'.$thismonth.'-'.$i;
+        //         // dd($month);
+        //         $data  = new Date();
+        //         $data->full_date = $month;
+        //         $data->save();
+        //     }
+        // }
     }
 
     public function index(Request $request)

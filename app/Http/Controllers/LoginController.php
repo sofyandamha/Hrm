@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
@@ -29,13 +30,17 @@ class LoginController extends Controller
         'password' => $request->password
     ];
 
-    // dd(auth()->attempt($login));
-
     if (auth()->attempt($login)) {
         //JIKA BERHASIL, MAKA REDIRECT KE HALAMAN HOME
         // dd($login);
         return redirect()->route('show_department');
     }
-        return redirect()->route('show_login');
+        return redirect()->route('login');
     }
+
+    public function logout(Request $request) {
+        auth()->logout();
+        return redirect('/login');
+
+      }
 }

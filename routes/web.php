@@ -16,7 +16,8 @@ Route::get('/', function () {
 });
 
 
-Route::get('/login','LoginController@indexLogin')->name('show_login');
+Route::get('/login','LoginController@indexLogin')->name('login');
+Route::get('/logout','LoginController@logout')->name('logout');
 Route::post('/login/auth','LoginController@authLogin')->name('auth_login');
 
 
@@ -31,7 +32,7 @@ Route::get('/department/export/', 'DepartmentController@eksportDepartment')->nam
 
 // Employee
 Route::get('/employee','EmployeeController@index')->name('show_employee');
-Route::post('/employee','EmployeeController@importEmployee')->name('bulk_employee');
+Route::post('/employeebulk','EmployeeController@importEmployee')->name('bulk_employee');
 Route::get('/employee/addEmployee','EmployeeController@addEmployee')->name('addEmployee');
 Route::post('/insertEmployee','EmployeeController@insertEmployee')->name('insert_employee');
 Route::get('/employee/{id}/edit','EmployeeController@editEmployee')->name('edit_employee');
