@@ -15,6 +15,11 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+
+Route::get('/login','LoginController@indexLogin')->name('show_login');
+Route::post('/login/auth','LoginController@authLogin')->name('auth_login');
+
+
 // Department
 Route::get('/department','DepartmentController@index')->name('show_department');
 Route::post('/department','DepartmentController@importDepartment')->name('bulk_department');

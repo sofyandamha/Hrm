@@ -38,7 +38,8 @@ class EmployeeImport implements ToCollection
                     }
                         $x =  Employee::firstOrCreate(['scan_id'=>$row[0],
                             'full_name'=> $row[1],
-                            'id_department' => $depart_id
+                            'id_department' => $depart_id,
+                            'password' => bycrpt('123456')
                         ]);
                    }
                 }

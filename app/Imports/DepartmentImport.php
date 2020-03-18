@@ -28,8 +28,7 @@ class DepartmentImport implements ToCollection
                    }
                    else{
                       $x =  Department::firstOrCreate([
-                            'name'=> $row[1],
-                            'is_officeHour'=> 0
+                            'name'=> $row[1]
                         ]);
                    }
                 }

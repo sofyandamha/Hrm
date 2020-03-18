@@ -55,25 +55,36 @@
                 <tr>
                     <td>{{ $loop->iteration + $perPage * ($page - 1) }}</td>
                     <td>{{$row->scan_id}}</td>
+
                     <td>{{ $row->nik }}</td>
-                    <td> @if ($row->is_supervisor == 1)
-                        {{ $row->full_name }} <div class="badge badge-warning">Supervisor</div>
-                    @else
+                    <td>
                         {{ $row->full_name }}
-                    @endif
+                        @foreach ($role as $roleku)
+                            @if ($roleku->id == $row->id )
+                                <br><div class="badge badge-warning"> {{ $roleku->name }} </div>
+                            @else
+
+                            @endif
+                        @endforeach
+
+                        {{-- <div class="badge badge-warning"></div> --}}
                     </td>
                     <td>
-                        @isset($row->department->name)
-                            {{ $row->department->name }}
-                        @endisset
+                        @foreach ($department as $departments)
+                            @if ($departments->id == $row->id_department)
+                                {{ $departments->name }}
+                            @else
+
+                            @endif
+                        @endforeach
                     </td>
                     <td>{{ $row->address }}</td>
                     <td>{{ $row->birth_date }}</td>
                     <td></td>
                     <td>{{$row->created_by}}</td>
                     <td>
-                        <a class="btn btn-warning" href="{{route('edit_employee',$row->id)}}"><i class="fas fa-edit"></i></a>
-                        <a class="btn btn-danger" href="{{route('delete_employee',$row->id)}}"><i class="fas fa-trash"></i></a>
+                        <a class="btn btn-warning" href="{{route('edit_employee',$row->scan_id)}}"><i class="fas fa-edit"></i></a>
+                        <a class="btn btn-danger" href="{{route('delete_employee',$row->scan_id)}}"><i class="fas fa-trash"></i></a>
                     </td>
                 </tr>
               @endforeach

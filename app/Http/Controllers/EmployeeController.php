@@ -4,9 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Employee;
 use App\Department;
+use App\Model_has_role;
 use Illuminate\Http\Request;
 use App\Exports\EmployeeExport;
 use App\Imports\EmployeeImport;
+use Illuminate\Support\Facades\DB;
+use Spatie\Permission\Models\Role;
 use Maatwebsite\Excel\Facades\Excel;
 use RealRashid\SweetAlert\Facades\Alert;
 
@@ -19,8 +22,16 @@ class EmployeeController extends Controller
      */
     public function index(Request $request)
     {
-        $data = Employee::orderBy('full_name', 'asc');
-
+        // $data = Employee::orderBy('full_name', 'asc');
+        // $data = DB::select('SELECT c.`scan_id`,c.`full_name`,c.`id_department`,c.`address`,c.`nik`,c.`birth_date`,c.`id_status`,c.`created_by`,b.id FROM model_has_roles a
+		// JOIN roles b ON a.role_id = b.id
+        // JOIN `employees` c ON a.model_id = c.`id`');
+        $role = Role::all();
+        $department = Department::all();
+        $data = DB::table('employees')
+        ->leftJoin('model_has_roles', 'model_has_roles.model_id', '=', 'employees.id')
+        ->leftJoin('roles', 'model_has_roles.role_id', '=', 'roles.id')
+        ->select('employees.scan_id', 'employees.full_name', 'employees.id_department','employees.address','employees.nik','employees.birth_date','employees.id_status','employees.created_by','roles.id');
         if ($request->r) {
             $data->where('full_name','like', '%'.$request->r.'%')
                  ->orWhere('scan_id','like', '%'.$request->r.'%')
@@ -43,7 +54,7 @@ class EmployeeController extends Controller
         $data = $data->paginate($perPage);
         $data->appends($request->all());
 
-        return view('employee.index', compact('data','tableinfo','perPage','page'));
+        return view('employee.index', compact('data','tableinfo','perPage','page','role','department'));
     }
 
     public function addEmployee()
@@ -69,21 +80,52 @@ class EmployeeController extends Controller
 
     public function editEmployee($id)
     {
-        $editEmp = Employee::find($id);
+        // $editEmp = Employee::find($id);
+
+        $editEmp = DB::table('employees')
+        ->leftJoin('model_has_roles', 'model_has_roles.model_id', '=', 'employees.id')
+        ->leftJoin('roles', 'model_has_roles.role_id', '=', 'roles.id')
+        ->where('employees.scan_id', $id)
+        ->select('employees.id','employees.scan_id', 'employees.full_name', 'employees.id_department','employees.address','employees.nik','employees.birth_date','employees.id_status','employees.created_by','roles.id as role_id')->first();
+        // dd($editEmp);
+
         $data = Department::all();
-        return view('employee.update', compact('editEmp','data'));
+        $role = Role::all();
+
+        // dd($editEmp);
+        return view('employee.update', compact('editEmp','data','role'));
     }
 
     public function updateEmployee(Request $request)
     {
-        $data = Employee::find($request->id);
-        $data->scan_id = $request->scan_id;
+        // dd($request->all());
+        $data = Employee::find($request->scan_id);
+
         $data->full_name = $request->full_name;
         $data->address = $request->address;
         $data->nik = $request->nik;
-        $data->is_supervisor = $request->is_supervisor;
+        // $data->is_supervisor = $request->is_supervisor;
         $data->birth_date = $request->birth_date;
+
+        $check = Model_has_role::where('model_id',$request->id_emp)->get();
+        // dd($check->count());
+        if ($check->count() >0) {
+
+            DB::table('model_has_roles')
+            ->where('model_id', $request->id_emp)
+            ->update(['role_id' => $request->role]);
+
+        }else{
+            DB::table('model_has_roles')->insert([
+                [
+                        'role_id' => $request->role,
+                        'model_type' => 'App\Employee',
+                        'model_id' => $request->id_emp
+                ]]);
+        }
+
         $data->save();
+
 
         return redirect()->route('show_employee');
     }

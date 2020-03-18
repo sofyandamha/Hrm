@@ -13,15 +13,20 @@
         <div class="card-body">
             <form action="{{route('update_employee')}}" method="post">
                     @csrf
-                    <input type="hidden" name="id" value="{{ $editEmp->id }}">
+                    <input type="hidden" name="id_emp" value="{{ $editEmp->id }}">
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
                                 <label for="name">Department Name :</label>
                                 <select name="department_name" class="form-control select2">
-                                    <option value="{{ $editEmp->department->id }}">{{ $editEmp->department->name }}</option>
-                                    @foreach ($data as $row)
-                                        <option value="{{ $row->id }}">{{ $row->name }}</option>
+                                    @foreach($data as $dep)
+                                    <option
+                                    value="{{ $dep->id}}"
+                                    @if($dep->id == $editEmp->id_department)
+                                    selected
+                                    @endif
+                                    >{{  $dep->name }}
+                                    </option>
                                     @endforeach
                                 </select>
                         </div>
@@ -64,15 +69,19 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label class="d-block">is Supervisor :</label>
-                            <div class="form-check form-check-inline">
-                              <input name="is_supervisor" class="form-check-input" type="checkbox" id="inlineCheckbox1" value="1"
-                              @if ($editEmp->is_supervisor==1)
-                                  checked
-                              @else
-                                  none
-                              @endif>
-                            </div>
+                            <label class="d-block">Role :</label>
+                            <select name="role" class="form-control select2">
+                                {{-- <option value="{{ $role->id }}">{{ $role->name }}</option> --}}
+                                @foreach($role as $rol)
+                                <option
+                                value="{{ $rol->id}}"
+                                @if($rol->id == $editEmp->role_id)
+                                selected
+                                @endif
+                                >{{  $rol->name }}
+                                </option>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
                 </div>
