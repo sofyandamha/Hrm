@@ -36,7 +36,7 @@ class EmployeeController extends Controller
         $data = DB::table('employees')
         ->leftJoin('model_has_roles', 'model_has_roles.model_id', '=', 'employees.id')
         ->leftJoin('roles', 'model_has_roles.role_id', '=', 'roles.id')
-        ->select('employees.scan_id', 'employees.full_name', 'employees.id_department','employees.address','employees.nik','employees.birth_date','employees.id_status','employees.created_by','roles.id');
+        ->select('employees.id as idemp', 'employees.scan_id', 'employees.full_name', 'employees.id_department','employees.address','employees.nik','employees.birth_date','employees.id_status','employees.created_by','roles.id');
         if ($request->r) {
             // $data->where('full_name','like', '%'.$request->r.'%')
             //      ->orWhere('scan_id','like', '%'.$request->r.'%')
@@ -47,7 +47,7 @@ class EmployeeController extends Controller
                     ->leftJoin('model_has_roles', 'model_has_roles.model_id', '=', 'employees.id')
                     ->leftJoin('roles', 'model_has_roles.role_id', '=', 'roles.id')
                     ->leftJoin('departments','employees.id_department','=','departments.id')
-                    ->select('employees.scan_id', 'employees.full_name', 'employees.id_department','employees.address','employees.nik','employees.birth_date','employees.id_status','employees.created_by','roles.id','departments.name')
+                    ->select('employees.id as idemp', 'employees.scan_id', 'employees.full_name', 'employees.id_department','employees.address','employees.nik','employees.birth_date','employees.id_status','employees.created_by','roles.id','departments.name')
                     ->where('full_name','like','%'.$request->r.'%')
                     ->orWhere('scan_id','like','%'.$request->r.'%')
                     ->orWhere('departments.name','like','%'.$request->r.'%');
@@ -66,6 +66,7 @@ class EmployeeController extends Controller
 
         $data = $data->paginate($perPage);
         $data->appends($request->all());
+        // dd($data);
 
         return view('employee.index', compact('data','tableinfo','perPage','page','role','department'));
     }
@@ -112,7 +113,8 @@ class EmployeeController extends Controller
     public function updateEmployee(Request $request)
     {
         // dd($request->all());
-        $data = Employee::find($request->scan_id);
+        $data = Employee::find($request->id_emp);
+        // dd($data);
 
         $data->full_name = $request->full_name;
         $data->address = $request->address;
@@ -145,7 +147,9 @@ class EmployeeController extends Controller
 
     public function deleteEmployee($id)
     {
+        // dd($request->all());
         $data = Employee::find($id);
+        // dd($data);
         $data->delete();
         return redirect()->back();
     }

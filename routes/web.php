@@ -20,7 +20,7 @@ Route::get('/login','LoginController@indexLogin')->name('login');
 Route::get('/logout','LoginController@logout')->name('logout');
 Route::post('/login/auth','LoginController@authLogin')->name('auth_login');
 
-Route::group(['middleware' => ['role:Manager']], function () {
+Route::group(['middleware' => ['role:Manager|Head HRD']], function () {
     Route::get('/department','DepartmentController@index')->name('show_department');
     Route::post('/department','DepartmentController@importDepartment')->name('bulk_department');
     Route::post('/insertDepartment','DepartmentController@insertDepartment')->name('insert_department');
@@ -28,12 +28,8 @@ Route::group(['middleware' => ['role:Manager']], function () {
     Route::get('/department/{id}/delete','DepartmentController@deleteDepartment')->name('delete_department');
     Route::post('/updateDepartment','DepartmentController@updateDepartment')->name('update_department');
     Route::get('/department/export/', 'DepartmentController@eksportDepartment')->name('eksportDepartment');
-});
-
-
 // Department
 
-Route::group(['middleware' => ['role:Employee']], function () {
     // Employee
     Route::get('/employee','EmployeeController@index')->name('show_employee');
     Route::post('/employeebulk','EmployeeController@importEmployee')->name('bulk_employee');
@@ -130,7 +126,5 @@ Route::group(['middleware' => ['role:Employee']], function () {
     Route::get('/schedule/{id}/editSchedule','ScheduleController@editSchedule')->name('edit_schedule');
     Route::post('/updateSchedule','ScheduleController@updateSchedule')->name('update_schedule');
     Route::get('/schedule/{id}/deleteSchedule','ScheduleController@deleteSchedule')->name('delete_schedule');
-
-
 });
 

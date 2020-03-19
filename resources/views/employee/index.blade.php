@@ -84,7 +84,7 @@
                     <td>{{$row->created_by}}</td>
                     <td>
                         <a class="btn btn-warning" href="{{route('edit_employee',$row->scan_id)}}"><i class="fas fa-edit"></i></a>
-                        <a class="btn btn-danger" href="{{route('delete_employee',$row->scan_id)}}"><i class="fas fa-trash"></i></a>
+                        <a class="btn btn-danger" href="{{route('delete_employee',$row->idemp)}}"><i class="fas fa-trash"></i></a>
                     </td>
                 </tr>
               @endforeach
