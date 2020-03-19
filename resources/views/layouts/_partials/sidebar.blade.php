@@ -9,11 +9,11 @@
             <li class="menu-header">Dashboard</li>
 
           <li class="menu-header">Menu {{Auth()->user()->getRoleNames()}}</li>
-            @role('Manager')
+            {{-- @role('Manager')
                 I am a Manager!
             @else
                 I am not a Manager...
-            @endrole
+            @endrole --}}
                 <li class="dropdown {{ Request::segment(2) === 'home'? 'active' : null }}">
                     <a href="#" class="nav-link" ><i class="fas fa-fire"></i> <span>Dashboard</span></a>
                 </li>
@@ -27,7 +27,8 @@
                             <a href="{{ route('show_employee') }}" class="nav-link" > <span>Manage Employee</span></a>
                         </li>
                         <li class="dropdown  {{ Request::segment(1) === 'historyemployee' ? 'active' : null }}">
-                            <a href="#" class="nav-link" > <span>History Employee</span></a>
+                            <a href="#" class="
+                            nav-link" > <span>History Employee</span></a>
                         </li>
                     </ul>
                 </li> --}}

@@ -51,6 +51,11 @@
 
       <!-- Main Content -->
       <div class="main-content">
+        @if (session('status'))
+            <div class="alert alert-warning">
+                {{ session('status') }}
+            </div>
+        @endif
         @yield('content')
       </div>
 

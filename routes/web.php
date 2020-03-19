@@ -20,7 +20,9 @@ Route::get('/login','LoginController@indexLogin')->name('login');
 Route::get('/logout','LoginController@logout')->name('logout');
 Route::post('/login/auth','LoginController@authLogin')->name('auth_login');
 
-Route::group(['middleware' => ['role:Manager|Head HRD']], function () {
+Route::get('/dashboard','DashboardController@index')->name('dashbord');
+
+Route::group(['middleware' => ['role:Head HRD']], function () {
     Route::get('/department','DepartmentController@index')->name('show_department');
     Route::post('/department','DepartmentController@importDepartment')->name('bulk_department');
     Route::post('/insertDepartment','DepartmentController@insertDepartment')->name('insert_department');
