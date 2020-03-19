@@ -76,8 +76,12 @@
                         @endif
                     </td>
                     <td>
+                    @if ($row->status == 1)
+                        No Action
+                    @else
                         <a class="btn btn-warning" href="{{route('edit_requestApp',$row->id)}}"><i class="fas fa-edit"></i></a>
                         <a class="btn btn-danger" href="{{route('delete_requestApp',$row->id)}}"><i class="fas fa-trash"></i></a>
+                    @endif
                     </td>
                 </tr>
               @endforeach
