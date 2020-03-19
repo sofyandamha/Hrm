@@ -9,29 +9,9 @@
             <li class="menu-header">Dashboard</li>
 
           <li class="menu-header">Menu {{Auth()->user()->getRoleNames()}}</li>
-            {{-- @role('Manager')
-                I am a Manager!
-            @else
-                I am not a Manager...
-            @endrole --}}
                 <li class="dropdown {{ Request::segment(2) === 'home'? 'active' : null }}">
                     <a href="#" class="nav-link" ><i class="fas fa-fire"></i> <span>Dashboard</span></a>
                 </li>
-                {{-- <li class="dropdown {{ Request::segment(1) === 'department' || Request::segment(1) === 'employee' || Request::segment(1) === 'historyemployee' ? 'active' : null }}">
-                    <a href="#" class="nav-link has-dropdown" ><i class="fas fa-users-cog"></i> <span>Employee Management</span></a>
-                    <ul class="dropdown-menu">
-                        <li class="dropdown  {{ Request::segment(1) === 'department' ? 'active' : null }}">
-                            <a href="{{ route('show_department') }}" class="nav-link" > <span>Department</span></a>
-                        </li>
-                        <li class="dropdown  {{ Request::segment(1) === 'employee' ? 'active' : null }}">
-                            <a href="{{ route('show_employee') }}" class="nav-link" > <span>Manage Employee</span></a>
-                        </li>
-                        <li class="dropdown  {{ Request::segment(1) === 'historyemployee' ? 'active' : null }}">
-                            <a href="#" class="
-                            nav-link" > <span>History Employee</span></a>
-                        </li>
-                    </ul>
-                </li> --}}
                 <li class="dropdown {{ Request::segment(2) === 'requestApp' || Request::segment(2) === 'leaveReport' ? 'active' : null }} ">
                     <a href="#" class="nav-link has-dropdown" ><i class="fas fa-sign-out-alt"></i> <span>Leave Management</span></a>
                     <ul class="dropdown-menu">
@@ -91,6 +71,8 @@
                         </li>
                     </ul>
                 </li>
+
+                @role('Super Admin')
                 <li class="dropdown {{ Request::segment(1) === 'department' || Request::segment(1) === 'employee' || Request::segment(1) === 'payroll' || Request::segment(1) === 'leaveType' || Request::segment(1) === 'status' || Request::segment(1) === 'workingTime' ? 'active' : null }}">
                     <a href="#" class="nav-link has-dropdown" ><i class="fas fa-server"></i> <span>Master Data</span></a>
                     <ul class="dropdown-menu">
@@ -114,5 +96,6 @@
                         </li>
                     </ul>
                 </li>
+                @endrole
           </ul>
           </aside>

@@ -22,7 +22,39 @@ Route::post('/login/auth','LoginController@authLogin')->name('auth_login');
 
 Route::get('/dashboard','DashboardController@index')->name('dashbord');
 
-Route::group(['middleware' => ['role:Head HRD']], function () {
+Route::group(['middleware' => ['role:Employee|Super Admin']], function () {
+
+    // Leave Management
+    Route::get('/leaveMaagement/requestApp','LeaveManagamentController@indexRequestapp')->name('show_requestApp');
+    Route::get('/leaveMaagement/requestApp/add','LeaveManagamentController@addRequestapp')->name('add_requestApp');
+    Route::post('/leaveMaagement/requestApp/insert','LeaveManagamentController@insertRequestapp')->name('insert_requestApp');
+    Route::post('/leaveMaagement/requestApp/{id}/edit','LeaveManagamentController@editRequestapp')->name('edit_requestApp');
+    Route::post('/leaveMaagement/requestApp/delete','LeaveManagamentController@deleteRequestapp')->name('delete_requestApp');
+    Route::get('/leaveMaagement/leaveReport','LeaveManagamentController@indexLeavereport')->name('show_leaveReport');
+
+    // Attendance
+    Route::get('/attendance/workshift','AttendanceController@indexWorkshift')->name('show_workshift');
+    Route::post('/attendance/workshift/import','AttendanceController@importWorkshift')->name('bulk_workshift');
+    Route::get('/attendance/workshift/export','AttendanceController@eksportWorkshift')->name('export_workshift');
+    Route::get('/attendance/workshift/add','AttendanceController@addWorkshift')->name('add_workshift');
+    Route::get('/attendance/workshift/insert','AttendanceController@insertWorkshift')->name('insert_workshift');
+
+    Route::get('/attendance/report','AttendanceController@indexReport')->name('show_report');
+
+    // schedule
+    Route::get('/schedule','ScheduleController@index')->name('show_schedule');
+    Route::get('/schedule/addSchedule','ScheduleController@addSchedule')->name('addSchedule');
+    Route::post('/insertSchedule','ScheduleController@insertSchedule')->name('insert_schedule');
+    Route::get('/schedule/{id}/editSchedule','ScheduleController@editSchedule')->name('edit_schedule');
+    Route::post('/updateSchedule','ScheduleController@updateSchedule')->name('update_schedule');
+    Route::get('/schedule/{id}/deleteSchedule','ScheduleController@deleteSchedule')->name('delete_schedule');
+});
+
+Route::group(['middleware' => ['role:Super Admin']], function(){
+
+    //Master Data
+
+    // Department
     Route::get('/department','DepartmentController@index')->name('show_department');
     Route::post('/department','DepartmentController@importDepartment')->name('bulk_department');
     Route::post('/insertDepartment','DepartmentController@insertDepartment')->name('insert_department');
@@ -30,7 +62,6 @@ Route::group(['middleware' => ['role:Head HRD']], function () {
     Route::get('/department/{id}/delete','DepartmentController@deleteDepartment')->name('delete_department');
     Route::post('/updateDepartment','DepartmentController@updateDepartment')->name('update_department');
     Route::get('/department/export/', 'DepartmentController@eksportDepartment')->name('eksportDepartment');
-// Department
 
     // Employee
     Route::get('/employee','EmployeeController@index')->name('show_employee');
@@ -79,29 +110,12 @@ Route::group(['middleware' => ['role:Head HRD']], function () {
 
     // Route::get('/designation','DesignationController@index')->name('show_designation');
 
-    // Leave Management
-    Route::get('/leaveMaagement/requestApp','LeaveManagamentController@indexRequestapp')->name('show_requestApp');
-    Route::get('/leaveMaagement/requestApp/add','LeaveManagamentController@addRequestapp')->name('add_requestApp');
-    Route::post('/leaveMaagement/requestApp/insert','LeaveManagamentController@insertRequestapp')->name('insert_requestApp');
-    Route::post('/leaveMaagement/requestApp/{id}/edit','LeaveManagamentController@editRequestapp')->name('edit_requestApp');
-    Route::post('/leaveMaagement/requestApp/delete','LeaveManagamentController@deleteRequestapp')->name('delete_requestApp');
-    Route::get('/leaveMaagement/leaveReport','LeaveManagamentController@indexLeavereport')->name('show_leaveReport');
-
     // Leave Type
     Route::get('/leaveType','LeaveTypeController@index')->name('show_leaveType');
     Route::post('/leaveType','LeaveTypeController@insertLeavetype')->name('insert_leaveType');
     Route::get('/leaveType/{id}/editLeaveType','LeaveTypeController@editLeavetype')->name('edit_leaveType');
     Route::post('/leaveType/updateLeavetype','LeaveTypeController@updateLeavetype')->name('update_leaveType');
     Route::get('/leaveType/{id}/deleteLeaveType','LeaveTypeController@deleteLeavetype')->name('delete_leaveType');
-
-    // Attendance
-    Route::get('/attendance/workshift','AttendanceController@indexWorkshift')->name('show_workshift');
-    Route::post('/attendance/workshift/import','AttendanceController@importWorkshift')->name('bulk_workshift');
-    Route::get('/attendance/workshift/export','AttendanceController@eksportWorkshift')->name('export_workshift');
-    Route::get('/attendance/workshift/add','AttendanceController@addWorkshift')->name('add_workshift');
-    Route::get('/attendance/workshift/insert','AttendanceController@insertWorkshift')->name('insert_workshift');
-
-    Route::get('/attendance/report','AttendanceController@indexReport')->name('show_report');
 
     // status
     Route::get('/status','StatusController@index')->name('show_statusEmployee');
@@ -119,14 +133,5 @@ Route::group(['middleware' => ['role:Head HRD']], function () {
     Route::post('/updateWorkingtime','WorkingTimeController@updateWorkingtime')->name('update_workingTime');
     Route::get('/workingTime/{id}/deleteWorkingtime','WorkingTimeController@deleteWorkingtime')->name('delete_workingTime');
     Route::get('/workingTime/export/', 'WorkingTimeController@eksportWorkingtime')->name('eksportWorkingtime');
-
-
-    // schedule
-    Route::get('/schedule','ScheduleController@index')->name('show_schedule');
-    Route::get('/schedule/addSchedule','ScheduleController@addSchedule')->name('addSchedule');
-    Route::post('/insertSchedule','ScheduleController@insertSchedule')->name('insert_schedule');
-    Route::get('/schedule/{id}/editSchedule','ScheduleController@editSchedule')->name('edit_schedule');
-    Route::post('/updateSchedule','ScheduleController@updateSchedule')->name('update_schedule');
-    Route::get('/schedule/{id}/deleteSchedule','ScheduleController@deleteSchedule')->name('delete_schedule');
 });
 

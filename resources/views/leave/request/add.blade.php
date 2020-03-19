@@ -18,10 +18,14 @@
                         <div class="form-group">
                                 <label for="name">Employee Name :</label>
                                 <select name="employee_name" class="form-control select2">
-                                    <option value=""></option>
-                                    @foreach ($employee as $employees)
-                                        <option value="{{ $employees->id }}">{{ $employees->full_name }}</option>
-                                    @endforeach
+                                    @if (Auth()->user()->id == 1)
+                                        <option value=""></option>
+                                        @foreach ($employee as $employees)
+                                            <option value="{{ $employees->id }}">{{ $employees->full_name }}</option>
+                                        @endforeach
+                                    @else
+                                        <option value="{{ Auth()->user()->id }}">{{ Auth()->user()->full_name }}</option>
+                                    @endif
                                 </select>
                         </div>
                     </div>

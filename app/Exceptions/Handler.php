@@ -51,7 +51,9 @@ class Handler extends ExceptionHandler
     public function render($request, Exception $exception)
     {
         if ($exception instanceof \Spatie\Permission\Exceptions\UnauthorizedException) {
-            return redirect('/dashboard')->with('status', 'You Dont Have Authorized to Access That Page!');
+            // Toast::warning('status', 'You Dont Have Authorized to Access That Page!');
+            toast()->warning('You Dont Have Authorized to Access That Page!');
+            return redirect('/dashboard');
         }
 
         return parent::render($request, $exception);
