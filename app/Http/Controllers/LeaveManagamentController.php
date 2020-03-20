@@ -80,6 +80,28 @@ class LeaveManagamentController extends Controller
         return redirect()->route('show_requestApp');
     }
 
+    public function editRequestapp($id)
+    {
+        $edit_requestApp = Leave_managament::find($id);
+        $leave_type = Leave_type::all();
+        $employee = Employee::all();
+
+        return view('leave.request.update', compact('edit_requestApp','leave_type','employee'));
+    }
+
+    public function updateRequestapp(Request $request)
+    {
+        $data = Leave_managament::find($request->id);
+    }
+
+    public function deleteRequestapp($id)
+    {
+        $data = Leave_managament::find($id);
+        $data->delete();
+
+        return redirect()->back();
+    }
+
     /**
      * Show the form for creating a new resource.
      *

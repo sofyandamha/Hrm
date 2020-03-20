@@ -20,6 +20,8 @@ Route::get('/login','LoginController@indexLogin')->name('login');
 Route::get('/logout','LoginController@logout')->name('logout');
 Route::post('/login/auth','LoginController@authLogin')->name('auth_login');
 
+Route::get('/profile','UserController@index')->name('show_profile');
+
 Route::get('/dashboard','DashboardController@index')->name('show_dashboard');
 
 Route::group(['middleware' => ['role:Employee|Super Admin']], function () {
@@ -29,7 +31,8 @@ Route::group(['middleware' => ['role:Employee|Super Admin']], function () {
     Route::get('/leaveMaagement/requestApp/add','LeaveManagamentController@addRequestapp')->name('add_requestApp');
     Route::post('/leaveMaagement/requestApp/insert','LeaveManagamentController@insertRequestapp')->name('insert_requestApp');
     Route::get('/leaveMaagement/requestApp/{id}/edit','LeaveManagamentController@editRequestapp')->name('edit_requestApp');
-    Route::get('/leaveMaagement/requestApp/delete','LeaveManagamentController@deleteRequestapp')->name('delete_requestApp');
+    Route::get('/leaveMaagement/requestApp/update','LeaveManagamentController@updateRequestapp')->name('update_requestApp');
+    Route::get('/leaveMaagement/requestApp/{id}/delete','LeaveManagamentController@deleteRequestapp')->name('delete_requestApp');
     Route::get('/leaveMaagement/leaveReport','LeaveManagamentController@indexLeavereport')->name('show_leaveReport');
 
     // Attendance

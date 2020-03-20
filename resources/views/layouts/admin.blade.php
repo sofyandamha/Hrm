@@ -34,9 +34,12 @@
               <div class="dropdown-title">Welcome, {{ Auth()->user()->full_name}}</div>
 
               <div class="dropdown-divider"></div>
+            <a href="{{ route('show_profile') }}" class="dropdown-item has-icon text-danger">
+                <i class="fas fa-user"></i> My Profile
+            </a>
             <a href="{{ route('logout') }}" class="dropdown-item has-icon text-danger">
                 <i class="fas fa-sign-out-alt"></i> Logout
-              </a>
+            </a>
             </div>
           </li>
         </ul>
