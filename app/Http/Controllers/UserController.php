@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Employee;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    public function index()
+    public function index($id)
     {
-        return view('dashboard.profile');
+        $employee = Employee::find($id);
+        return view('dashboard.profile',compact('employee'));
     }
 }

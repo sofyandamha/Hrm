@@ -17,22 +17,23 @@
                     <div class="col-md-6">
                         <div class="form-group">
                                 <label for="name">Employee Name :</label>
+                                @if (Auth()->user()->id == 1)
                                 <select name="employee_name" class="form-control select2">
-                                    @if (Auth()->user()->id == 1)
                                         <option value=""></option>
                                         @foreach ($employee as $employees)
                                             <option value="{{ $employees->id }}">{{ $employees->full_name }}</option>
                                         @endforeach
-                                    @else
-                                        <option value="{{ Auth()->user()->id }}">{{ Auth()->user()->full_name }}</option>
-                                    @endif
                                 </select>
+                                @else
+                                    <input type="hidden"  value="{{ Auth()->user()->id }}" name="employee_name">
+                                    <input class="form-control" value="{{ Auth()->user()->full_name }}" type="text" readonly>
+                                @endif
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="leaveType">Leave Type :</label>
-                            <select class="form-control select2" name="leave_type" id="leaveType">
+                            <select class="form-control select2" name="leave_type" id="leaveType" onchange="rangeDate()" >
                                 <option value=""></option>
                                 @foreach ($leave_type as $leave_types)
                                     <option value="{{ $leave_types->id }}">{{ $leave_types->leave_type }}</option>
@@ -48,11 +49,11 @@
                             <div class="form-row">
                                 <div class="form-group col-md-6">
                                   <label for="inputEmail4">Start :</label>
-                                  <input type="text" class="form-control datepicker" id="" name="start_leave">
+                                  <input type="text" class="form-control" id="start_leave" name="start_leave">
                                 </div>
                                 <div class="form-group col-md-6">
                                   <label for="inputPassword4">End :</label>
-                                  <input type="text" class="form-control datepicker" id="" name="end_leave">
+                                  <input type="text" class="form-control" id="end_leave" name="end_leave">
                                 </div>
                             </div>
                         </div>
