@@ -20,10 +20,12 @@ class AttendanceController extends Controller
         $this->middleware('auth');
     }
 
-    public function index()
+    public function indexReport()
     {
-        //
+        return view('attendance.report.index');
+
     }
+
 
     public function indexWorkshift()
     {

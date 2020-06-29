@@ -37,6 +37,7 @@
                                 </td>
                                 <td>
                                     <select name="schedule_detail[{{$row}}][working_time]" class="form-control select2">
+                                        <option value="">Off</option>
                                         @foreach ($workingtime as $row)
                                             <option value="{{ $row->id }}">{{$row->in_time." - ".$row->out_time }}</option>
                                         @endforeach

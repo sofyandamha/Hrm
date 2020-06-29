@@ -73,24 +73,24 @@ class ScheduleController extends Controller
     public function addSchedule(Request $request)
     {
 
-        $firstofthismonth =  Carbon::now()->firstOfMonth();
-        $lastofthismonth =   Carbon::now()->lastOfMonth();
-        $thismonth = Carbon::now()->format('m'); //angka this month
-        $i = $firstofthismonth->format('d'); //1
-        $y = $lastofthismonth->format('d'); //31
-        $check  = Date::where('full_date',  $firstofthismonth)->get();
-        if (count($check) > 0) {
+        // $firstofthismonth =  Carbon::now()->firstOfMonth();
+        // $lastofthismonth =   Carbon::now()->lastOfMonth();
+        $thismonth = Carbon::now()->addMonths(1)->format('Y-m'); //angka this month
+        // $i = $firstofthismonth->format('d'); //1
+        // $y = $lastofthismonth->format('d'); //31
+        // $check  = Date::where('full_date',  $firstofthismonth)->get();
+        // if (count($check) > 0) {
 
-        }
-        else{
-            for ($i;  $i<= $y ; $i++) {
-                $month = '2020-'.$thismonth.'-'.$i;
-                // dd($month);
-                $data  = new Date();
-                $data->full_date = $month;
-                $data->save();
-            }
-        }
+        // }
+        // else{
+        //     for ($i;  $i<= $y ; $i++) {
+        //         $month = '2020-'.$thismonth.'-'.$i;
+        //         // dd($month);
+        //         $data  = new Date();
+        //         $data->full_date = $month;
+        //         $data->save();
+        //     }
+        // }
 
         $datatgl = Date::where('full_date','like','%'.$thismonth.'%')->get();
         // dd($datatgl);
