@@ -21,7 +21,8 @@
   <script src="{{ asset('/assets/modules/jquery-selectric/jquery.selectric.min.js') }}"></script>
 
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/datepicker/0.6.5/datepicker.min.js"></script>
+  {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.0/js/bootstrap-datepicker.min.js"></script> --}}
 
   <!-- Page Specific JS File -->
   <script src="{{ asset('/assets/js/page/forms-advanced-forms.js') }}"></script>
@@ -54,6 +55,21 @@
     format: "mm-yyyy",
     startView: "months",
     minViewMode: "months"
-});
+    });
+
+    // function rangeDate() {
+        $("#start_leave").datepicker( {
+            changeYear: true,
+            changeMonth: true,
+            setDate: new Date(),
+            startDate:'+1d',
+            format: "dd-mm-yyyy",
+        });
+        $("#end_leave").datepicker( {
+            setDate: new Date(),
+            dateFormat: "dd-mm-yyyy",
+            minDate: '0',
+        });
+    // }
 </script>
 

@@ -20,7 +20,7 @@ Route::get('/login','LoginController@indexLogin')->name('login');
 Route::get('/logout','LoginController@logout')->name('logout');
 Route::post('/login/auth','LoginController@authLogin')->name('auth_login');
 
-Route::get('/profile','UserController@index')->name('show_profile');
+Route::get('/profile/{id}','UserController@index')->name('show_profile');
 
 Route::get('/dashboard','DashboardController@index')->name('show_dashboard');
 

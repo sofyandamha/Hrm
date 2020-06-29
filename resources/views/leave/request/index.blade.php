@@ -52,6 +52,7 @@
                     <th>Action</th>
                 </tr>
               @foreach ($data as $row)
+                @if (Auth()->user()->id == $row->id_employee || Auth()->user()->id == 1)
                 <tr>
                     {{-- <td>{{ $loop->iteration + $perPage * ($page - 1) }}</td> --}}
                     <td>{{$row->employee->scan_id}}</td>
@@ -89,6 +90,7 @@
                         @endif
                     </td>
                 </tr>
+                @endif
               @endforeach
                 </tbody>
             </table>

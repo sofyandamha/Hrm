@@ -10,7 +10,7 @@
 
           <li class="menu-header">Menu {{Auth()->user()->getRoleNames()}}</li>
                 <li class="dropdown {{ Request::segment(2) === 'home'? 'active' : null }}">
-                    <a href="#" class="nav-link" ><i class="fas fa-fire"></i> <span>Dashboard</span></a>
+                    <a href="{{ route('show_dashboard') }}" class="nav-link" ><i class="fas fa-fire"></i> <span>Dashboard</span></a>
                 </li>
                 <li class="dropdown {{ Request::segment(2) === 'requestApp' || Request::segment(2) === 'leaveReport' ? 'active' : null }} ">
                     <a href="#" class="nav-link has-dropdown" ><i class="fas fa-sign-out-alt"></i> <span>Leave Management</span></a>

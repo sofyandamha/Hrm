@@ -18,13 +18,13 @@
                                 <div class="row">
                                     <div class="col-md-4">
                                         <div class="author-box-center">
-                                            <img alt="image" src="assets/img/avatar/avatar-1.png" class="rounded-circle author-box-picture">
+                                            <img alt="image" src="http://210.210.175.1:8998/assets/img/icon-freshbox.png" class="rounded-circle author-box-picture">
                                             <div class="clearfix"></div>
                                             <div class="author-box-name mt-2">
-                                                <a href="#">Nama Lengkap</a>
+                                                <a href="#">{{ $employee->full_name }}</a>
                                             </div>
-                                            <div class="author-box-job">Employee Id</div>
-                                            <div class="author-box-job">Department => Jobs</div>
+                                            <div class="author-box-job">Scand ID: {{ $employee->scan_id }}</div>
+                                            <div class="author-box-job">Department: {{ $employee->department->name }}</div>
                                         </div>
                                     </div>
                                     <div class="row col-12 col-sm-12 col-md-8">
@@ -113,27 +113,33 @@
                                             <li class="nav-item">
                                                 <a class="nav-link" data-toggle="tab" href="#leavedetails" role="tab" aria-controls="leavedetails" aria-selected="false">Leave Details</a>
                                             </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" data-toggle="tab" href="#changepasswords" role="tab" aria-controls="changepasswords" aria-selected="false">Change Password</a>
+                                            </li>
                                         </ul>
                                     </div>
                                     <div class="col-12 col-sm-12 col-md-9">
                                         <div class="tab-content no-padding" id="myTab2Content">
-                                            <div class="tab-pane fade show active" id="basicdetails" role="tabpanel" aria-labelledby="home-tab4">
+                                            <div class="tab-pane fade show active" id="basicdetails" role="tabpanel" aria-labelledby="basic-tab4">
                                                 Basic Details
                                             </div>
-                                            <div class="tab-pane fade" id="bankdetails" role="tabpanel" aria-labelledby="profile-tab4">
+                                            <div class="tab-pane fade" id="bankdetails" role="tabpanel" aria-labelledby="bank-tab4">
                                                 Bank Details
                                             </div>
-                                            <div class="tab-pane fade" id="documentdetails" role="tabpanel" aria-labelledby="contact-tab4">
+                                            <div class="tab-pane fade" id="documentdetails" role="tabpanel" aria-labelledby="document-tab4">
                                                 Document Details
                                             </div>
-                                            <div class="tab-pane fade" id="salarydetails" role="tabpanel" aria-labelledby="contact-tab4">
+                                            <div class="tab-pane fade" id="salarydetails" role="tabpanel" aria-labelledby="salary-tab4">
                                                 Salary Details
                                             </div>
-                                            <div class="tab-pane fade" id="timecarddetails" role="tabpanel" aria-labelledby="contact-tab4">
+                                            <div class="tab-pane fade" id="timecarddetails" role="tabpanel" aria-labelledby="time-tab4">
                                                 Timecard Details
                                             </div>
-                                            <div class="tab-pane fade" id="leavedetails" role="tabpanel" aria-labelledby="contact-tab4">
+                                            <div class="tab-pane fade" id="leavedetails" role="tabpanel" aria-labelledby="leave-tab4">
                                                 Leave Details
+                                            </div>
+                                            <div class="tab-pane fade" id="changepasswords" role="tabpanel" aria-labelledby="change-tab4">
+                                                Change Passwords
                                             </div>
                                         </div>
                                     </div>
