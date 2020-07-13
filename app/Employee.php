@@ -20,6 +20,11 @@ class Employee extends Authenticatable
     {
         return $this->belongsTo('App\Department','id_department','id');
     }
+    
+    public function Attendance()
+    {
+        return $this->belongsTo('App\Employee','id_employee','scan_id');
+    }
 
 
 

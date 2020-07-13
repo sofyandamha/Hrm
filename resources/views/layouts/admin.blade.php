@@ -129,5 +129,7 @@
     </div>
     @include('layouts._partials.js')
     @include('sweetalert::alert')
+
+    @stack('jsCustom');
 </body>
 </html>

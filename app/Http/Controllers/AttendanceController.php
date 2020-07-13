@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Employee;
 use App\Attendance;
+use App\Department;
 use Illuminate\Http\Request;
 use App\Imports\WorkShiftImport;
 use Maatwebsite\Excel\Facades\Excel;
@@ -20,9 +22,39 @@ class AttendanceController extends Controller
         $this->middleware('auth');
     }
 
-    public function indexReport()
-    {
-        return view('attendance.report.index');
+    public function indexReport(Request $request)
+    {   
+        // dd($request->all());
+        $employee = Employee::where('id','!=',1)->orderBy('id', 'asc')->get();
+        $department = Department::all();
+
+        // dd($department);
+        $data = Attendance::orderBy('id_employee', 'asc');
+        if ($request->has('scan_id')) {
+            if ($request->scan_id != "") {
+                $data->where('id_employee', $request->scan_id);
+            }
+        }
+        if ($request->has('date_attendance')) {
+           if ($request->date_attendance != "") {
+                $data->where('tanggal','like','%'.$request->date_attendance.'%');
+           }
+        }
+        if ($request->has('page') ? $request->get('page') : 1) {
+            $page    = $request->has('page') ? $request->get('page') : 1;
+            $total   = $data->count();
+            $perPage = 30;
+            $showingTotal  = $page * $perPage;
+
+            $currentShowing = $showingTotal > $total ? $total : $showingTotal;
+            $showingStarted = $showingTotal - $perPage;
+            $tableinfo = "Showing $showingStarted to $currentShowing of $total entries";
+        }
+
+        $data = $data->paginate($perPage);
+        $data->appends($request->all());
+
+        return view('attendance.report.index', compact('data','employee','department','tableinfo','perPage','page'));
 
     }
 
