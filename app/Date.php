@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Date extends Model
 {
-    protected $table = 'Date';
+    protected $table = 'date';
     protected $fillable = ['full_date'];
 
 }
