@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Employee;
+use Carbon\Carbon;
 use App\Attendance;
 use App\Department;
 use Illuminate\Http\Request;
 use App\Imports\WorkShiftImport;
+use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 use RealRashid\SweetAlert\Facades\Alert;
 
@@ -25,36 +27,34 @@ class AttendanceController extends Controller
     public function indexReport(Request $request)
     {   
         // dd($request->all());
-        $employee = Employee::where('id','!=',1)->orderBy('id', 'asc')->get();
-        $department = Department::all();
-
-        // dd($department);
-        $data = Attendance::orderBy('id_employee', 'asc');
-        if ($request->has('scan_id')) {
-            if ($request->scan_id != "") {
-                $data->where('id_employee', $request->scan_id);
-            }
-        }
-        if ($request->has('date_attendance')) {
-           if ($request->date_attendance != "") {
-                $data->where('tanggal','like','%'.$request->date_attendance.'%');
+        $scanid = "9014";
+        $month = "2020-01";
+           if ($request->scan_id != "") {
+               $scanid = $request->scan_id;
            }
-        }
-        if ($request->has('page') ? $request->get('page') : 1) {
-            $page    = $request->has('page') ? $request->get('page') : 1;
-            $total   = $data->count();
-            $perPage = 30;
-            $showingTotal  = $page * $perPage;
-
-            $currentShowing = $showingTotal > $total ? $total : $showingTotal;
-            $showingStarted = $showingTotal - $perPage;
-            $tableinfo = "Showing $showingStarted to $currentShowing of $total entries";
-        }
-
-        $data = $data->paginate($perPage);
-        $data->appends($request->all());
-
-        return view('attendance.report.index', compact('data','employee','department','tableinfo','perPage','page'));
+            if ($request->date_attendance != "") {
+                $month =  $request->date_attendance;
+            }
+            
+        $data = DB::select(DB::raw("
+        SELECT 
+		e.full_name AS 'Full_Name' , 
+		d.full_date AS 'Jadwal_Masuk', 
+		w.in_time AS 'Jam_Masuk', w.out_time AS 'Jam_Keluar', 
+		a.tanggal AS 'Tanggal_Scan' , a.in_time AS 'Scan_Masuk', 
+		a.out_time AS 'Scan_Keluar' 
+        FROM
+            employees e LEFT JOIN attendancebulks a 
+        on e.scan_id = a.id_employee
+        JOIN schedules s ON s.id_emp = e.scan_id AND  e.scan_id= $scanid
+        JOIN date d ON d.id = s.id_date
+        JOIN working_times w ON w.id = s.id_work_time
+        where e.scan_id = a.id_employee AND a.tanggal = d.full_date  AND a.tanggal LIKE '$month%';
+                        "));
+        $department = Department::get();
+        $employee = Employee::get();
+       
+        return view('attendance.report.index', compact('data','department','employee'));
 
     }
 

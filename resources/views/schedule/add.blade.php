@@ -18,7 +18,7 @@
                         <select name="employee_id" class="form-control select2">
                             <option value=""></option>
                             @foreach ($employee as $row)
-                            <option value="{{ $row->id }}">{{ $row->full_name }}</option>
+                            <option value="{{ $row->scan_id }}">{{ $row->full_name }}</option>
                             @endforeach
                         </select>
                 </div>
@@ -37,7 +37,7 @@
                                 </td>
                                 <td>
                                     <select name="schedule_detail[{{$row}}][working_time]" class="form-control select2">
-                                        <option value="">Off</option>
+                                        <option value="0">Off</option>
                                         @foreach ($workingtime as $row)
                                             <option value="{{ $row->id }}">{{$row->in_time." - ".$row->out_time }}</option>
                                         @endforeach

@@ -17,7 +17,7 @@
                     <div class="col-md-3">
                         <div class="text-left">
                             <a class="btn btn-success " href="{{ route('addSchedule') }}" ><i class="fas fa-upload"></i> Add</a>
-                            {{-- <a class="btn btn-warning " href="" data-toggle="modal" data-target="#modalBulk"><i class="fas fa-upload"></i> Import</a> --}}
+                            <a class="btn btn-warning " href="" data-toggle="modal" data-target="#modalBulk"><i class="fas fa-upload"></i> Import</a>
                             {{-- <a class="btn btn-warning " href="route('eksportSchedule')" ><i class="fas fa-download"></i> Eksport</a> --}}
                         </div>
                     </div>
@@ -82,7 +82,7 @@
     </div>
 </div>
 
-{{-- <div class="modal fade" tabindex="-1" role="dialog" id="modalBulk">
+<div class="modal fade" tabindex="-1" role="dialog" id="modalBulk">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -92,10 +92,10 @@
           </button>
         </div>
         <div class="modal-body">
-            <form action="route('bulk_schedule')" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('bulk_schedule') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="">
-                    <input type="file" name="namaSchedule" class="form-control">
+                    <input type="file" name="schedule" class="form-control">
                 </div>
         </div>
         <div class="modal-footer bg-whitesmoke br">
@@ -105,6 +105,6 @@
         </div>
       </div>
     </div>
-</div> --}}
+</div>
 
 @endsection

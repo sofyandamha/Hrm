@@ -6,6 +6,7 @@
  * @package  Laravel
  * @author   Taylor Otwell <taylor@laravel.com>
  */
+set_time_limit(7200);
 
 define('LARAVEL_START', microtime(true));
 

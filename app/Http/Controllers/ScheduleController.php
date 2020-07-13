@@ -9,13 +9,21 @@ use Carbon\Carbon;
 use App\Department;
 use App\log_em_stat;
 use App\WorkingTime;
+use Carbon\CarbonPeriod;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class ScheduleController extends Controller
 {
     public function __construct() {
         $this->middleware('auth');
-
+        
+        
+        // $period = CarbonPeriod::create('2018-01-01', '2030-12-31');
+        
+        // Convert the period to an array of dates
+        // $dates = $period->toArray();
         // $firstofthismonth =  Carbon::now()->firstOfMonth(); // get this first day in month now
         // $lastofthismonth =  Carbon::now()->lastOfMonth(); // get this last day in month now
         // $thismonth = Carbon::now()->format('m'); // get this month now
@@ -35,6 +43,26 @@ class ScheduleController extends Controller
         //         $data->save();
         //     }
         // }
+    }
+
+    public function generateDate(){
+        $period = CarbonPeriod::create('2020-01-01', '2020-12-31');
+
+        // Iterate over the period
+        foreach ($period as $date) {
+            $tgl=  $date->format('Y-m-d');
+            $check  = Date::where('full_date',  $tgl)->get();
+            if (count($check) > 0) {
+
+            }
+            else{
+               
+                    $data  = new Date();
+                    $data->full_date = $tgl;
+                    $data->save();
+                
+            }
+        }
     }
 
     public function index(Request $request)
@@ -73,41 +101,29 @@ class ScheduleController extends Controller
     public function addSchedule(Request $request)
     {
 
-        // $firstofthismonth =  Carbon::now()->firstOfMonth();
-        // $lastofthismonth =   Carbon::now()->lastOfMonth();
-        $thismonth = Carbon::now()->addMonths(1)->format('Y-m'); //angka this month
-        // $i = $firstofthismonth->format('d'); //1
-        // $y = $lastofthismonth->format('d'); //31
-        // $check  = Date::where('full_date',  $firstofthismonth)->get();
-        // if (count($check) > 0) {
-
-        // }
-        // else{
-        //     for ($i;  $i<= $y ; $i++) {
-        //         $month = '2020-'.$thismonth.'-'.$i;
-        //         // dd($month);
-        //         $data  = new Date();
-        //         $data->full_date = $month;
-        //         $data->save();
-        //     }
-        // }
-
+        // $thismonth = Carbon::now()->addMonths(1)->format('Y-m'); //angka this month
+        $thismonth = '2020-02'; //angka this month
+    
         $datatgl = Date::where('full_date','like','%'.$thismonth.'%')->get();
-        // dd($datatgl);
         $employee = Employee::all();
         $department = Department::all();
-        $workingtime = WorkingTime::all();
+        // $workingtime = WorkingTime::all();
+        $workingtime = WorkingTime::where('id',3)->get();
         return view('schedule.add', compact('employee','department','workingtime','datatgl'));
     }
 
     public function insertSchedule(Request $request)
     {
+        // dd($request->all());
         foreach ($request->schedule_detail as $row) {
+            if ($request->working_time != '0') {
                 $data  = new Schedule();
                 $data->id_date = $row['date_id'];
-                $data->id_working_time = $row['working_time'];
+                $data->id_work_time = $row['working_time'];
                 $data->id_emp = $request->employee_id;
                 $data->save();
+            }
+                
         }
         return redirect()->route('show_schedule');
     }
@@ -140,4 +156,23 @@ class ScheduleController extends Controller
         $data->delete();
         return redirect()->back();
     }
+
+    public function importSchedule(Request $request)
+    {
+        // dd($request->hasFile('namaStaff'));
+        if ($request->hasFile('schedule')) {
+            try{
+               $data =  Excel::import(new \App\Imports\ScheduleImport, $request->file('schedule'));
+              
+            }
+            catch(\Exception $e)
+            {
+                Alert::error('Error', $e->getMessage());
+            }
+        }
+        else{
+        }
+        return redirect()->back();
+    }
+
 }
