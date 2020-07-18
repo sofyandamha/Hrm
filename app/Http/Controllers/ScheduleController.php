@@ -9,6 +9,7 @@ use Carbon\Carbon;
 use App\Department;
 use App\log_em_stat;
 use App\WorkingTime;
+use App\ScheduleBulk;
 use Carbon\CarbonPeriod;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
@@ -51,6 +52,7 @@ class ScheduleController extends Controller
         // Iterate over the period
         foreach ($period as $date) {
             $tgl=  $date->format('Y-m-d');
+            // dd($tgl);
             $check  = Date::where('full_date',  $tgl)->get();
             if (count($check) > 0) {
 
@@ -174,5 +176,63 @@ class ScheduleController extends Controller
         }
         return redirect()->back();
     }
+
+    public function importyeah()
+    {
+        $data = ScheduleBulk::all();
+        foreach($data as $row)
+        {
+            // dd($row);
+
+                
+                    $time = explode('/', $row->tgl);
+
+                    $converted = $time[2]."-".$time[1]."-".$time[0];
+    
+                    $working_time = WorkingTime::all();
+                    $schedule = Schedule::all();
+                    $date = Date::where('full_date', 'like', '2020-06%')->get();
+                    $id_date = "";
+                    $id_work_time = "";
+    
+                    foreach($date as $dateKu)
+                    {
+    
+                        if($dateKu->full_date == $converted){
+                            $id_date = $dateKu->id;
+                        }
+                    }
+    
+                    foreach($working_time as $working_timeKu)
+                    {
+                        if($working_timeKu->workingTime_name == $row->jamkerja){
+                           $id_work_time =$working_timeKu->id;
+                        //    dd($id_work_time);
+                        }
+                    }
+    
+                    $data =  Schedule::where('id_emp',$row->scanid)
+                                        ->where('id_date', $id_date)
+                                        ->where('id_work_time', $id_work_time)
+                        ->get();
+    
+                       if($data->count() >0)
+                       {
+                       }
+                       else{
+                        $schedule = Schedule::create([
+                                'id_emp'=> $row->scanid,
+                                'id_date'=> $id_date,
+                                'id_work_time'=> $id_work_time
+                            ]);
+                            $schedule->save();
+                       }
+                    }
+               
+            
+        
+    }
+
+ 
 
 }

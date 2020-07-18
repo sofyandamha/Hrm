@@ -21,7 +21,7 @@ class EmployeeImport implements ToCollection
         $depart_id = 0;
         foreach($collection as $key => $row)
         {
-            if($key>=2){
+            if($key>=1){
                 // dd($row[1]);
                 $data =  Employee::where('scan_id', $row[0])
                     ->where('full_name',$row[1])

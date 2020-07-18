@@ -21,14 +21,14 @@ class DepartmentImport implements ToCollection
         {
             if($key>=1){
                 // dd($collection);
-                $data =  Department::where('name',$row[1])
+                $data =  Department::where('name',$row[0])
                     ->get();
                    if($data->count() >0)
                    {
                    }
                    else{
                       $x =  Department::firstOrCreate([
-                            'name'=> $row[1]
+                            'name'=> $row[0]
                         ]);
                    }
                 }

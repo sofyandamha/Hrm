@@ -6,6 +6,7 @@ use App\Employee;
 use Carbon\Carbon;
 use App\Attendance;
 use App\Department;
+use App\AttendanceBulk;
 use Illuminate\Http\Request;
 use App\Imports\WorkShiftImport;
 use Illuminate\Support\Facades\DB;
@@ -27,8 +28,8 @@ class AttendanceController extends Controller
     public function indexReport(Request $request)
     {   
         // dd($request->all());
-        $scanid = "9014";
-        $month = "2020-01";
+        $scanid = "900009014";
+        $month = "2020-06";
            if ($request->scan_id != "") {
                $scanid = $request->scan_id;
            }
@@ -38,13 +39,13 @@ class AttendanceController extends Controller
             
         $data = DB::select(DB::raw("
         SELECT 
-		e.full_name AS 'Full_Name' , 
+		e.scan_id as 'scanid', e.full_name AS 'Full_Name' , 
 		d.full_date AS 'Jadwal_Masuk', 
 		w.in_time AS 'Jam_Masuk', w.out_time AS 'Jam_Keluar', 
 		a.tanggal AS 'Tanggal_Scan' , a.in_time AS 'Scan_Masuk', 
 		a.out_time AS 'Scan_Keluar' 
         FROM
-            employees e LEFT JOIN attendancebulks a 
+            employees e LEFT JOIN attendances a 
         on e.scan_id = a.id_employee
         JOIN schedules s ON s.id_emp = e.scan_id AND  e.scan_id= $scanid
         JOIN date d ON d.id = s.id_date
@@ -146,5 +147,39 @@ class AttendanceController extends Controller
     public function destroy(Attendance $attendance)
     {
         //
+    }
+
+    public function importabsensi()
+    {
+        $data = AttendanceBulk::select('id_employee','tanggal','in_time','out_time')->get();
+        foreach($data as $row)
+        {
+
+                
+                    $time = explode('/', $row->tanggal);
+                    $converted = $time[2]."-".$time[1]."-".$time[0];
+
+                    $data =  Attendance::where('id_employee', $row->id_employee)
+                                        ->where('tanggal', $converted)
+                                        ->where('in_time', $row->in_time)
+                                        ->where('out_time', $row->out_time)
+                        ->get();
+    
+                       if($data->count() >0)
+                       {
+                       }
+                       else{
+                        $attendance = Attendance::create([
+                                'id_employee'=> $row->id_employee,
+                                'tanggal'=> $converted,
+                                'in_time'=> $row->in_time,
+                                'out_time'=> $row->out_time
+                            ]);
+                            $attendance->save();
+                       }
+                    }
+               
+            
+        
     }
 }

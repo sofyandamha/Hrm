@@ -24,7 +24,7 @@ class EmployeeTableSeeder extends Seeder
             'scan_id' => '999',
             'full_name' => 'Admin',
             'email' => 'admin@example.com',
-            'password' => bcrypt('secret')
+            'password' => bcrypt(' ')
         ]);
         $y = Employee::where('full_name','Admin')->first();
 

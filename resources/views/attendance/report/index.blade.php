@@ -36,7 +36,7 @@
               <tbody>
                 <tr>
                     {{-- <th>No</th> --}}
-                    {{-- <th>Scan_id</th> --}}
+                    <th>NIK</th>
                     <th>Employee Name</th>
                     <th>Jadwal Masuk</th>
                     <th>Jam Masuk</th>
@@ -50,7 +50,7 @@
               @foreach ($data as $row)
                 <tr>
                     {{-- <td>{{ $loop->iteration + $perPage * ($page - 1) }}</td> --}}
-                    {{-- <td>{{$row->id_employee}}</td> --}}
+                    <td>{{$row->scanid}}</td>
                     <td>{{$row->Full_Name }}</td>
                     
                     <td>{{$row->Jadwal_Masuk}}</td>

@@ -53,6 +53,9 @@ Route::group(['middleware' => ['role:Employee|Super Admin']], function () {
     Route::get('/schedule/{id}/editSchedule','ScheduleController@editSchedule')->name('edit_schedule');
     Route::post('/updateSchedule','ScheduleController@updateSchedule')->name('update_schedule');
     Route::get('/schedule/{id}/deleteSchedule','ScheduleController@deleteSchedule')->name('delete_schedule');
+
+    Route::get('/importschedule','ScheduleController@importyeah')->name('import_schedule');
+    Route::get('/importsattendance','AttendanceController@importabsensi')->name('import_attendance');
 });
 
 Route::group(['middleware' => ['role:Super Admin']], function(){

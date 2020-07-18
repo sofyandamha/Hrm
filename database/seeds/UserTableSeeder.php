@@ -1,7 +1,10 @@
 <?php
 
+use App\Role;
 use App\User;
+use App\Employee;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class UserTableSeeder extends Seeder
 {
@@ -12,7 +15,11 @@ class UserTableSeeder extends Seeder
      */
     public function run()
     {
-        // Role::create(['name' => 'Super Admin']); // add role in table role
+        Role::create([
+            'name' => 'Super Admin',
+            'guard_name'=>'web'
+
+            ]); // add role in table role
         // Role::create(['name' => 'Manager']); // add role in table role
         // Role::create(['name' => 'Head HRD']); // add role in table role
         // Role::create(['name' => 'HRD Asistan']); // add role in table role
@@ -22,16 +29,16 @@ class UserTableSeeder extends Seeder
             // 'scan_id' => '999',
             'name' => 'Admin',
             'email' => 'admin@example.com',
-            'password' => bcrypt('secret')
+            'password' => bcrypt('1234')
         ]);
-        // $y = Employee::where('full_name','Admin')->first();
+        $y = Employee::where('full_name','Admin')->first();
 
-        // $data = DB::table('model_has_roles')->insert([
-        //     [
-        //         'role_id' => 1,
-        //         'model_type' => 'App\User',
-        //         'model_id' => $y['id']
-        //     ]
-        // ]);
+        $data = DB::table('model_has_roles')->insert([
+            [
+                'role_id' => 1,
+                'model_type' => 'App\User',
+                'model_id' => 1
+            ]
+        ]);
     }
 }
