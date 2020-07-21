@@ -25,7 +25,7 @@ class APIAbsensiReport extends Controller
         JOIN schedules s ON s.id_emp = e.scan_id AND  e.scan_id= $scanid
         JOIN date d ON d.id = s.id_date
         JOIN working_times w ON w.id = s.id_work_time
-        where e.scan_id = a.id_employee AND a.tanggal = d.full_date  AND a.tanggal LIKE '$month%';
+        where e.scan_id = a.id_employee AND a.tanggal = d.full_date  AND a.tanggal LIKE '%$month%';
                         "));
        return $data;
 
