@@ -19,7 +19,7 @@ class APIAbsensiReport extends Controller
 		w.in_time AS 'Jam_Masuk', w.out_time AS 'Jam_Keluar', 
 		a.tanggal AS 'Tanggal_Scan' , a.in_time AS 'Scan_Masuk', 
 		a.out_time AS 'Scan_Keluar',
-		TIMEDIFF(a.in_time,  w.in_time) AS Status
+		TIMEDIFF(a.in_time,  w.in_time) AS 'Time_Diff'
         FROM
             employees e LEFT JOIN attendances a 
         on e.scan_id = a.id_employee
