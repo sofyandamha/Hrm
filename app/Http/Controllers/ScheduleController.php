@@ -19,10 +19,10 @@ class ScheduleController extends Controller
 {
     public function __construct() {
         $this->middleware('auth');
-        
-        
+
+
         // $period = CarbonPeriod::create('2018-01-01', '2030-12-31');
-        
+
         // Convert the period to an array of dates
         // $dates = $period->toArray();
         // $firstofthismonth =  Carbon::now()->firstOfMonth(); // get this first day in month now
@@ -58,28 +58,21 @@ class ScheduleController extends Controller
 
             }
             else{
-               
+
                     $data  = new Date();
                     $data->full_date = $tgl;
                     $data->save();
-                
+
             }
         }
     }
 
     public function index(Request $request)
     {
-        $data = log_em_stat::orderBy('id_employee', 'asc');
-        // if ($request->r) {
-        //     $data->where('id_employee','like', '%'.$request->r.'%')
-        //          ->orWhere('id_department','like', '%'.$request->r.'%');
-        // }
+        $data = Schedule::orderBy('id', 'desc');
         if ($request->r) {
             $data->WhereHas('Employee', function ($query) use ($request) {
                     $query->Where('full_name', 'like', '%' . $request->r . '%');
-                })
-                ->orWhereHas('Department', function ($query) use ($request) {
-                    $query->Where('name', 'like', '%' . $request->r . '%');
                 });
 
         }
@@ -104,51 +97,74 @@ class ScheduleController extends Controller
     {
 
         // $thismonth = Carbon::now()->addMonths(1)->format('Y-m'); //angka this month
-        $thismonth = '2020-02'; //angka this month
-    
+        // dd($thismonth);
+        $thismonth = date('Y-m'); //angka this month
+
         $datatgl = Date::where('full_date','like','%'.$thismonth.'%')->get();
+        // dd($datatgl);
         $employee = Employee::all();
         $department = Department::all();
         // $workingtime = WorkingTime::all();
-        $workingtime = WorkingTime::where('id',3)->get();
+        $workingtime = WorkingTime::select('in_time','out_time', 'workingTime_name' )->get();
         return view('schedule.add', compact('employee','department','workingtime','datatgl'));
+    }
+
+    public function checkSchedule(Request $request)
+    {
+        $employee = Employee::all();
+        return view('schedule.check', compact('employee'));
+    }
+
+    public function findSchedule(Request $request)
+    {
+       $scan_id = $request->employee_id;
+       $month = $request->month;
+       $schedule = Schedule::where('id_emp', $scan_id)
+                        ->where('date_work', 'like', '%'.$request->month.'%')->first();
+
+        if(isset($schedule)) {
+            Alert::info('Info', "Data Has Been Added");
+            $scheduledetail = Schedule::where('id_emp', $scan_id)
+            ->where('date_work', 'like', '%'.$request->month.'%')->get();
+            return view('schedule.update', compact('schedule','scheduledetail'));
+        }
+        else{
+            $datatgl = Date::where('full_date','like','%'.$month.'%')->get();
+            $employee = Employee::where('scan_id', $scan_id)->first();
+            return view('schedule.add', compact('employee','datatgl'));
+
+        }
     }
 
     public function insertSchedule(Request $request)
     {
-        // dd($request->all());
         foreach ($request->schedule_detail as $row) {
-            if ($request->working_time != '0') {
                 $data  = new Schedule();
-                $data->id_date = $row['date_id'];
-                $data->id_work_time = $row['working_time'];
-                $data->id_emp = $request->employee_id;
+                $data->date_work = $row['date_work'];
+                $data->in_time = date("H:i", strtotime($row['in_time']));
+                $data->out_time = date("H:i", strtotime($row['out_time']));
+                $data->id_emp = $request->id_emp;
                 $data->save();
-            }
-                
         }
         return redirect()->route('show_schedule');
     }
 
     public function editSchedule($id)
     {
-        $editSchedule = log_em_stat::find($id);
         $employee = Employee::all();
-        $department = Department::all();
-        $workingtime = WorkingTime::all();
-        return view('schedule.update', compact('editSchedule','employee','department','workingtime'));
+        $schedule = WorkingTime::all();
+        return view('schedule.update', compact('employee','schedule'));
     }
 
     public function updateSchedule(Request $request)
     {
-        $data = log_em_stat::find($request->id);
-        $data->id_employee = $request->employee_name;
-        $data->id_department = $request->department_name;
-        $data->id_work_time = $request->working_time;
-        $data->is_supervisor = $request->is_supervisor;
-        $data->month = $request->is_month;
-        $data->save();
-
+        foreach ($request->schedule_det as $row) {
+            Schedule::where('id', $row['sched_id'])
+            ->update([
+                'in_time' => date("H:i", strtotime($row['in_time'])),
+                'out_time' =>  date("H:i", strtotime($row['out_time']))
+                ]);
+        }
         return redirect()->route('show_schedule');
     }
 
@@ -165,7 +181,7 @@ class ScheduleController extends Controller
         if ($request->hasFile('schedule')) {
             try{
                $data =  Excel::import(new \App\Imports\ScheduleImport, $request->file('schedule'));
-              
+
             }
             catch(\Exception $e)
             {
@@ -184,25 +200,25 @@ class ScheduleController extends Controller
         {
             // dd($row);
 
-                
+
                     $time = explode('/', $row->tgl);
 
                     $converted = $time[2]."-".$time[1]."-".$time[0];
-    
+
                     $working_time = WorkingTime::all();
                     $schedule = Schedule::all();
                     $date = Date::where('full_date', 'like', '2020-06%')->get();
                     $id_date = "";
                     $id_work_time = "";
-    
+
                     foreach($date as $dateKu)
                     {
-    
+
                         if($dateKu->full_date == $converted){
                             $id_date = $dateKu->id;
                         }
                     }
-    
+
                     foreach($working_time as $working_timeKu)
                     {
                         if($working_timeKu->workingTime_name == $row->jamkerja){
@@ -210,12 +226,12 @@ class ScheduleController extends Controller
                         //    dd($id_work_time);
                         }
                     }
-    
+
                     $data =  Schedule::where('id_emp',$row->scanid)
                                         ->where('id_date', $id_date)
                                         ->where('id_work_time', $id_work_time)
                         ->get();
-    
+
                        if($data->count() >0)
                        {
                        }
@@ -228,11 +244,11 @@ class ScheduleController extends Controller
                             $schedule->save();
                        }
                     }
-               
-            
-        
+
+
+
     }
 
- 
+
 
 }

@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Employee;
+use Carbon\Carbon;
 use App\Leave_type;
+use App\LeaveDetEmp;
 use App\Leave_managament;
 use Illuminate\Http\Request;
 
@@ -26,16 +28,7 @@ class LeaveManagamentController extends Controller
 
     public function indexRequestapp(Request $request)
     {
-        $data = Leave_managament::orderBy('id_employee', 'asc');
-
-        if ($request->r) {
-            $data->WhereHas('Employee', function ($query) use ($request) {
-                    $query->Where('name', 'like', '%' . $request->r . '%');
-                })
-                ->orWhereHas('Leave_type',function ($query) use ($request){
-                    $query->Where('leave_type', 'like', '%' . $request . '%');
-                });
-        }
+        $data = LeaveDetEmp::orderBy('id_emp', 'desc');
 
         if ($request->has('page') ? $request->get('page') : 1) {
             $page    = $request->has('page') ? $request->get('page') : 1;
@@ -64,6 +57,31 @@ class LeaveManagamentController extends Controller
         $employee = Employee::all();
         $leave_type = Leave_type::all();
         return view('leave.request.add', compact('employee','leave_type'));
+    }
+    public function checkRequestapp(Request $request)
+    {
+        $year = date('Y');
+        $date = explode(' - ', $request->leave_date);
+        $from = Carbon::createFromFormat('Y-m-d', $date[0]);
+        $to = Carbon::createFromFormat('Y-m-d', $date[1]);
+        $diff_in_days = $from->diffInDays($to);
+
+        // $check = LeaveDetEmp::where('id_emp', $request->employee_id)
+        //                         ->where('year', $year)->get();
+        $data = new LeaveDetEmp();
+        $data->id_emp = $request->employee_id;
+        $data->id_leave_type= $request->leave_type_id;
+        $data->start_leave= $date[0];
+        $data->end_leave=  $date[1];
+        $data->year= $year;
+        $data->remarks= $request->remak;
+        $data->totalhari= $diff_in_days;
+        $data->status= 0;
+        $data->created_by= auth()->user()->id;
+
+        $data->save();
+        return redirect()->route('show_requestApp');
+
     }
 
     public function insertRequestapp(Request $request)
@@ -102,69 +120,38 @@ class LeaveManagamentController extends Controller
         return redirect()->back();
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
+   public function approvedRequestapp($id)
+   {
+        $data = LeaveDetEmp::find($id);
+        $data->status = 1; //Approved
+        $data->approved_by = Auth()->user()->id;
+        $data->approved_at = date('Y-m-d H:i');
+        $data->updated_by = Auth()->user()->id;
+        $data->save();
+        return redirect()->route('show_requestApp');
+   }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+   public function rejectedRequestapp($id)
+   {
+        $data = LeaveDetEmp::find($id);
+        $data->status = 2; //Rejected
+        $data->approved_by = Auth()->user()->id;
+        $data->approved_at = date('Y-m-d H:i');
+        $data->updated_by = Auth()->user()->id;
+        $data->save();
+        return redirect()->route('show_requestApp');
+   }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Leave_managament  $leave_managament
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Leave_managament $leave_managament)
-    {
-        //
-    }
+   public function cancel_requestApp($id)
+   {
+        $data = LeaveDetEmp::find($id);
+        $data->status = 0; //Pending
+        $data->approved_by = null;
+        $data->approved_at = null;
+        $data->updated_by = null;
+        $data->save();
+        return redirect()->route('show_requestApp');
+   }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Leave_managament  $leave_managament
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Leave_managament $leave_managament)
-    {
-        //
-    }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Leave_managament  $leave_managament
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Leave_managament $leave_managament)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Leave_managament  $leave_managament
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Leave_managament $leave_managament)
-    {
-        //
-    }
 }

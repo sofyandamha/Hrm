@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Employee;
 use App\Department;
+use App\Designation;
 use App\Model_has_role;
 use Illuminate\Http\Request;
 use App\Exports\EmployeeExport;
@@ -28,15 +29,15 @@ class EmployeeController extends Controller
     public function index(Request $request)
     {
         // $data = Employee::orderBy('full_name', 'asc');
-        // $data = DB::select('SELECT c.`scan_id`,c.`full_name`,c.`id_department`,c.`address`,c.`nik`,c.`birth_date`,c.`id_status`,c.`created_by`,b.id FROM model_has_roles a
+        // $data = DB::select('SELECT c.`scan_id`,c.`full_name`,c.`id_designation`,c.`address`,c.`nik`,c.`birth_date`,c.`id_status`,c.`created_by`,b.id FROM model_has_roles a
 		// JOIN roles b ON a.role_id = b.id
         // JOIN `employees` c ON a.model_id = c.`id`');
         $role = Role::all();
-        $department = Department::all();
+        $designation = Designation::all();
         $data = DB::table('employees')
         ->leftJoin('model_has_roles', 'model_has_roles.model_id', '=', 'employees.id')
         ->leftJoin('roles', 'model_has_roles.role_id', '=', 'roles.id')
-        ->select('employees.id as idemp', 'employees.scan_id', 'employees.full_name', 'employees.id_department','employees.address','employees.nik','employees.birth_date','employees.id_status','employees.created_by','roles.id');
+        ->select('employees.id as idemp', 'employees.scan_id', 'employees.full_name', 'employees.id_designation','employees.address','employees.nik','employees.birth_date','employees.id_status','employees.created_by','roles.id');
         if ($request->r) {
             // $data->where('full_name','like', '%'.$request->r.'%')
             //      ->orWhere('scan_id','like', '%'.$request->r.'%')
@@ -46,11 +47,11 @@ class EmployeeController extends Controller
             $data = DB::table('employees')
                     ->leftJoin('model_has_roles', 'model_has_roles.model_id', '=', 'employees.id')
                     ->leftJoin('roles', 'model_has_roles.role_id', '=', 'roles.id')
-                    ->leftJoin('departments','employees.id_department','=','departments.id')
-                    ->select('employees.id as idemp', 'employees.scan_id', 'employees.full_name', 'employees.id_department','employees.address','employees.nik','employees.birth_date','employees.id_status','employees.created_by','roles.id','departments.name')
+                    ->leftJoin('designation','employees.id_designation','=','designation.id')
+                    ->select('employees.id as idemp', 'employees.scan_id', 'employees.full_name', 'employees.id_designation','employees.address','employees.nik','employees.birth_date','employees.id_status','employees.created_by','roles.id','designation.name')
                     ->where('full_name','like','%'.$request->r.'%')
                     ->orWhere('scan_id','like','%'.$request->r.'%')
-                    ->orWhere('departments.name','like','%'.$request->r.'%');
+                    ->orWhere('designation.name','like','%'.$request->r.'%');
         }
 
         if ($request->has('page') ? $request->get('page') : 1) {
@@ -68,7 +69,7 @@ class EmployeeController extends Controller
         $data->appends($request->all());
         // dd($data);
 
-        return view('employee.index', compact('data','tableinfo','perPage','page','role','department'));
+        return view('employee.index', compact('data','tableinfo','perPage','page','role','designation'));
     }
 
     public function addEmployee()
@@ -80,7 +81,7 @@ class EmployeeController extends Controller
     public function insertEmployee(Request $request)
     {
         $data = new Employee();
-        $data->id_department = $request->department_name;
+        $data->id_designation = $request->department_name;
         $data->scan_id = $request->scan_id;
         $data->full_name = $request->full_name;
         $data->address = $request->address;
@@ -100,7 +101,7 @@ class EmployeeController extends Controller
         ->leftJoin('model_has_roles', 'model_has_roles.model_id', '=', 'employees.id')
         ->leftJoin('roles', 'model_has_roles.role_id', '=', 'roles.id')
         ->where('employees.scan_id', $id)
-        ->select('employees.id','employees.scan_id', 'employees.full_name', 'employees.id_department','employees.address','employees.nik','employees.birth_date','employees.id_status','employees.created_by','roles.id as role_id')->first();
+        ->select('employees.id','employees.scan_id', 'employees.full_name', 'employees.id_designation','employees.address','employees.nik','employees.birth_date','employees.id_status','employees.created_by','roles.id as role_id')->first();
         // dd($editEmp);
 
         $data = Department::all();

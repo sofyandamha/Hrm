@@ -29,7 +29,7 @@ class UserTableSeeder extends Seeder
             // 'scan_id' => '999',
             'name' => 'Admin',
             'email' => 'admin@example.com',
-            'password' => bcrypt('1234')
+            'password' => bcrypt('secret')
         ]);
         $y = Employee::where('full_name','Admin')->first();
 

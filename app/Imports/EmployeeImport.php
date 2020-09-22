@@ -4,7 +4,7 @@ namespace App\Imports;
 
 use App\Employee;
 use Carbon\Carbon;
-use App\Department;
+use App\Designation;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToCollection;
@@ -17,29 +17,28 @@ class EmployeeImport implements ToCollection
 
     public function collection(Collection $collection)
     {
-        $department = Department::all();
-        $depart_id = 0;
+        $designation = Designation::all();
+        $design_id = 0;
         foreach($collection as $key => $row)
         {
             if($key>=1){
-                // dd($row[1]);
-                $data =  Employee::where('scan_id', $row[0])
-                    ->where('full_name',$row[1])
+                $data =  Employee::where('scan_id', $row[2])
                     ->get();
 
                    if($data->count() >0)
                    {
                    }
                    else{
-                    foreach ($department as $depart) {
-                        if ($depart->name == $row[2]) {
-                            $depart_id = $depart->id;
+                    foreach ($designation as $design) {
+                        if ($design->name == $row[6]) {
+                            $design_id = $design->id;
                         }
                     }
-                        $x =  Employee::firstOrCreate(['scan_id'=>$row[0],
-                            'full_name'=> $row[1],
-                            'id_department' => $depart_id,
-                            'password' => bcrypt('123456')
+
+                        $x =  Employee::firstOrCreate(['scan_id'=>$row[2],
+                            'full_name'=> $row[0],
+                            'id_designation' => $design_id,
+                            'password' => bcrypt('secret')
                         ]);
                    }
                 }

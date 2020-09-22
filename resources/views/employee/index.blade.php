@@ -41,10 +41,9 @@
               <tbody>
                 <tr>
                     <th>No</th>
-                    <th>Scan_id</th>
                     <th>NIK</th>
                     <th>Employee Name</th>
-                    <th>Department Name</th>
+                    <th>Designation - Department Name</th>
                     <th>Address</th>
                     <th>Birthday</th>
                     <th>Status</th>
@@ -55,8 +54,6 @@
                 <tr>
                     <td>{{ $loop->iteration + $perPage * ($page - 1) }}</td>
                     <td>{{$row->scan_id}}</td>
-
-                    <td>{{ $row->nik }}</td>
                     <td>
                         {{ $row->full_name }}
                         @foreach ($role as $roleku)
@@ -70,9 +67,9 @@
                         {{-- <div class="badge badge-warning"></div> --}}
                     </td>
                     <td>
-                        @foreach ($department as $departments)
-                            @if ($departments->id == $row->id_department)
-                                {{ $departments->name }}
+                        @foreach ($designation as $designations)
+                            @if ($designations->id == $row->id_designation)
+                                {{$designations->name." - ".$designations->department->name }}
                             @else
 
                             @endif

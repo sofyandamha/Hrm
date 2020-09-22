@@ -16,7 +16,7 @@
                 <div class="row">
                     <div class="col-md-3">
                         <div class="text-left">
-                            <a class="btn btn-success " href="{{ route('addSchedule') }}" ><i class="fas fa-upload"></i> Add</a>
+                            <a class="btn btn-success " href="{{ route('checkSchedule') }}" ><i class="fas fa-upload"></i> Add</a>
                             <a class="btn btn-warning " href="" data-toggle="modal" data-target="#modalBulk"><i class="fas fa-upload"></i> Import</a>
                             {{-- <a class="btn btn-warning " href="route('eksportSchedule')" ><i class="fas fa-download"></i> Eksport</a> --}}
                         </div>
@@ -41,25 +41,22 @@
               <tbody>
                 <tr>
                     <th>No</th>
+                    <th>NIK</th>
                     <th>Employee Name</th>
-                    <th>Department Name</th>
+                    <th>Date</th>
                     <th>Working Time</th>
-                    <th>at Month</th>
-                    <th>Created By</th>
-                    <th>Action</th>
+                    <th>Month</th>
+                    <th>Created at</th>
                 </tr>
               @foreach ($data as $row)
                 <tr>
                     <td>{{ $loop->iteration + $perPage * ($page - 1) }}</td>
+                    <td>{{ $row->employee->scan_id }}</td>
                     <td>{{ $row->employee->full_name }}</td>
-                    <td>{{ $row->department->name }}</td>
-                    <td>{{ $row->workingtimge->workingTime_name.' : '.$row->workingtime->in_time." - ".$row->workingtime->out_time }}</td>
-                    <td>{{ $row->month }}</td>
-                    <td>{{$row->created_by}}</td>
-                    <td>
-                        <a class="btn btn-warning" href="{{route('edit_schedule',$row->id)}}"><i class="fas fa-edit"></i></a>
-                        <a class="btn btn-danger" href="{{route('delete_schedule',$row->id)}}"><i class="fas fa-trash"></i></a>
-                    </td>
+                    <td>{{ $row->date_work }}</td>
+                    <td>{{ $row->in_time." - ".$row->out_time }}</td>
+                    <td>{{ date('F', strtotime($row->date_work)) }}</td>
+                    <td>{{ $row->created_at}}</td>
                 </tr>
               @endforeach
                 </tbody>

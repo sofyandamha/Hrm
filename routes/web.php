@@ -29,11 +29,17 @@ Route::group(['middleware' => ['role:Employee|Super Admin']], function () {
     // Leave Management
     Route::get('/leaveMaagement/requestApp','LeaveManagamentController@indexRequestapp')->name('show_requestApp');
     Route::get('/leaveMaagement/requestApp/add','LeaveManagamentController@addRequestapp')->name('add_requestApp');
+    Route::get('/leaveMaagement/requestApp/check','LeaveManagamentController@checkRequestapp')->name('check_requestApp');
     Route::post('/leaveMaagement/requestApp/insert','LeaveManagamentController@insertRequestapp')->name('insert_requestApp');
     Route::get('/leaveMaagement/requestApp/{id}/edit','LeaveManagamentController@editRequestapp')->name('edit_requestApp');
     Route::get('/leaveMaagement/requestApp/update','LeaveManagamentController@updateRequestapp')->name('update_requestApp');
     Route::get('/leaveMaagement/requestApp/{id}/delete','LeaveManagamentController@deleteRequestapp')->name('delete_requestApp');
     Route::get('/leaveMaagement/leaveReport','LeaveManagamentController@indexLeavereport')->name('show_leaveReport');
+
+    Route::get('/leaveMaagement/requestApp/approved/{id}','LeaveManagamentController@approvedRequestapp')->name('approved_requestApp');
+    Route::get('/leaveMaagement/requestApp/rejected/{id}','LeaveManagamentController@rejectedRequestapp')->name('rejected_requestApp');
+    Route::get('/leaveMaagement/requestApp/canceled/{id}','LeaveManagamentController@cancel_requestApp')->name('cancel_requestApp');
+
 
     // Attendance
     Route::get('/attendance/workshift','AttendanceController@indexWorkshift')->name('show_workshift');
@@ -48,7 +54,8 @@ Route::group(['middleware' => ['role:Employee|Super Admin']], function () {
     Route::get('/schedule','ScheduleController@index')->name('show_schedule');
     Route::post('/schedule','ScheduleController@importSchedule')->name('bulk_schedule');
     Route::get('/generateDate','ScheduleController@generateDate')->name('gen_date');
-    Route::get('/schedule/addSchedule','ScheduleController@addSchedule')->name('addSchedule');
+    Route::get('/schedule/checkSchedule','ScheduleController@checkSchedule')->name('checkSchedule');
+    Route::POST('/schedule/findSchedule','ScheduleController@findSchedule')->name('findSchedule');
     Route::post('/insertSchedule','ScheduleController@insertSchedule')->name('insert_schedule');
     Route::get('/schedule/{id}/editSchedule','ScheduleController@editSchedule')->name('edit_schedule');
     Route::post('/updateSchedule','ScheduleController@updateSchedule')->name('update_schedule');

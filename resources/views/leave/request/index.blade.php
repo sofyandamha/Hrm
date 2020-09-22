@@ -41,12 +41,12 @@
               <tbody>
                 <tr>
                     <th>Scan ID</th>
-                    <th>Department Name</th>
                     <th>Employee Name</th>
+                    <th>Department Name</th>
                     <th>Leave Type</th>
                     <th>Request Duration</th>
+                    <th>Days</th>
                     <th>Request Date</th>
-                    <th>Number of Day</th>
                     <th>Remark</th>
                     <th>Status</th>
                     <th>Action</th>
@@ -56,17 +56,15 @@
                 <tr>
                     {{-- <td>{{ $loop->iteration + $perPage * ($page - 1) }}</td> --}}
                     <td>{{$row->employee->scan_id}}</td>
-                    <td>{{ $row->employee->department->name }}</td>
                     <td>{{ $row->employee->full_name }}</td>
-                    <td>{{ $row->leave_type->leave_type}}</td>
+                    <td>{{ $row->employee->designation->name.' - '.$row->employee->designation->department->name }}</td>
+                    <td>{{ $row->leavetype->leave_type.' ('.$row->leavetype->is_day.')'}}</td>
                     <td>{{ $row->start_leave}}<b>  to  </b>{{ $row->end_leave }}</td>
-                    <td>{{ $row->created_at->format('Y-m-d')}}</td>
                     <td>
-                        {{
-                            round((strtotime($row->end_leave) - strtotime($row->start_leave)) / (60 * 60 * 24))
-                        }}
-                    </td>
-                    <td>{{ $row->remak}}</td>
+                        {{ $row->totalhari }}
+                     </td>
+                    <td>{{ $row->created_at->format('Y-m-d')}}</td>
+                    <td>{{ $row->remarks}}</td>
                     <td>
                         @if ($row->status == 1)
                             <div class="badge badge-success">Approved</div>
@@ -78,8 +76,13 @@
                     </td>
                     <td>
                         @if (Auth()->user()->id == 1)
-                            <a class="btn btn-warning" href="{{route('edit_requestApp',$row->id)}}"><i class="fas fa-edit"></i></a>
-                            <a class="btn btn-danger" href="{{route('delete_requestApp',$row->id)}}"><i class="fas fa-trash"></i></a>
+                            @if ($row->status == 0)
+                                <a class="badge badge-primary" href="{{route('approved_requestApp',$row->id)}}"><i class="fas fa-check"></i> Approve</a>
+                                <a class="badge badge-danger" href="{{route('rejected_requestApp',$row->id)}}"><i class="fas fa-times"></i> Reject</a>
+                            @else
+                                <a class="badge badge-warning" href="{{route('cancel_requestApp',$row->id)}}"><i class="fas fa-times"></i> Cancel</a>
+                            @endif
+
                         @elseif($row->status == 0)
                             <a class="btn btn-warning" href="{{route('edit_requestApp',$row->id)}}"><i class="fas fa-edit"></i></a>
                             <a class="btn btn-danger" href="{{route('delete_requestApp',$row->id)}}"><i class="fas fa-trash"></i></a>

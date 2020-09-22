@@ -14,25 +14,23 @@ class EmployeeTableSeeder extends Seeder
      */
     public function run()
     {
-        Role::create(['name' => 'Super Admin']); // add role in table role
-        Role::create(['name' => 'Manager']); // add role in table role
-        Role::create(['name' => 'Head HRD']); // add role in table role
-        Role::create(['name' => 'HRD Asistan']); // add role in table role
-        Role::create(['name' => 'Supervisor']); // add role in table role
-        Role::create(['name' => 'Employee']); // add role in table role
+        Role::create([
+            'name' => 'Super Admin',
+            'guard_name'=>'web'
+
+            ]);
         $x = Employee::create([
-            'scan_id' => '999',
+            // 'scan_id' => '999',
             'full_name' => 'Admin',
             'email' => 'admin@example.com',
-            'password' => bcrypt(' ')
+            'password' => bcrypt('secret')
         ]);
-        $y = Employee::where('full_name','Admin')->first();
 
         $data = DB::table('model_has_roles')->insert([
             [
                 'role_id' => 1,
                 'model_type' => 'App\Employee',
-                'model_id' => $y['id']
+                'model_id' => 1
             ]
         ]);
     }
