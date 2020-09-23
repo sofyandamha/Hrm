@@ -55,7 +55,7 @@ class LeaveManagamentController extends Controller
     public function addRequestapp()
     {
         $employee = Employee::all();
-        $leave_type = Leave_type::all();
+        $leave_type = Leave_type::where('id', '<', 4)->get();
         return view('leave.request.add', compact('employee','leave_type'));
     }
     public function checkRequestapp(Request $request)
