@@ -20,4 +20,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::get('/bulkScheduleku', 'ScheduleBulkcontroller@importyeah');
 Route::get('/bulkAttendanceku', 'AttendanceController@importabsensi');
 
-Route::post('/getAbsensiMonth', 'APIAbsensiReport@getAbsensi'); 
+Route::post('/getAbsensiMonth', 'APIAbsensiReport@getAbsensi');
+Route::post('/formTgsLr', 'APIFormController@formTgsLr');
+Route::post('/formIznTdkMsk', 'APIFormController@formIznTdkMsk');
+Route::post('/formAbsnMnl', 'APIFormController@formAbsnMnl');
