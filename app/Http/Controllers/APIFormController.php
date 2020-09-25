@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use App\Leave_type;
 use App\LeaveDetEmp;
 use Illuminate\Http\Request;
+use Carbon\CarbonPeriod;
 
 class APIFormController extends Controller
 {
@@ -14,6 +15,14 @@ class APIFormController extends Controller
     {
         $year = Carbon::now()->format('Y');
         $id_emp = Employee::where('scan_id', $request->scan_id)->first();
+        $from =  Carbon::createFromFormat('Y-m-d', $request->start_leave);
+        $to =  Carbon::createFromFormat('Y-m-d', $request->end_leave);
+        $all_dates = array();
+        while ($from->lte($to)){
+            $all_dates[] = $from->toDateString();
+            $from->addDay();
+        }
+
         $leave_det_emp = LeaveDetEmp::create([
             'id_emp' => $id_emp->id,
             'id_leave_type' => $request->id_leave_type,
@@ -22,7 +31,7 @@ class APIFormController extends Controller
             'end_leave' => $request->end_leave,
             'remarks' => $request->remarks,
             'totalhari' => $request->total_hari,
-            'det_tgl' => $request->det_tgl,
+            'det_tgl' => json_encode($all_dates),
             'status' => 0,
         ]);
 
