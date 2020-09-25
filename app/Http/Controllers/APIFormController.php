@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Employee;
 use Carbon\Carbon;
+use App\Leave_type;
 use App\LeaveDetEmp;
 use Illuminate\Http\Request;
 
@@ -30,13 +31,18 @@ class APIFormController extends Controller
         ], 200);
     }
 
-    public function formIznTdkMsk(Request $request)
+    public function getLeaveType()
     {
+        $data = Leave_type::all();
 
+        return $data;
     }
 
-    public function formAbsnMnl(Request $request)
+    public function getHistoryForm(Request $request)
     {
-        # code...
+        $id_emp = Employee::where('scan_id', $request->scan_id)->first();
+        $dataHistoryForm = LeaveDetEmp::where('id_emp', $id_emp->id)->get();
+
+        return $dataHistoryForm;
     }
 }
