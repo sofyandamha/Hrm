@@ -34,7 +34,7 @@
                         </li>
                     </ul>
                 </li>
-                <li class="dropdown">
+                {{-- <li class="dropdown">
                     <a href="#" class="nav-link has-dropdown" ><i class="fas fa-money-bill-alt"></i> <span>Payroll</span></a>
                     <ul class="dropdown-menu">
                         <li class="dropdown">
@@ -61,7 +61,7 @@
                             <a href="#" class="nav-link" > <span>Notice Board</span></a>
                         </li>
                     </ul>
-                </li>
+                </li> --}}
 
                 <li class="dropdown {{ Request::segment(1) === 'schedule' ? 'active' : null }}">
                     <a href="#" class="nav-link has-dropdown" ><i class="fas fa-calendar-alt"></i> <span>Scheduling</span></a>

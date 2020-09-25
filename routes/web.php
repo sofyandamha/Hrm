@@ -53,6 +53,7 @@ Route::group(['middleware' => ['role:Employee|Super Admin']], function () {
     // schedule
     Route::get('/schedule','ScheduleController@index')->name('show_schedule');
     Route::post('/schedule','ScheduleController@importSchedule')->name('bulk_schedule');
+    Route::post('/schedule/attlog','ScheduleController@importAttlog')->name('bulk_attlog');
     Route::get('/generateDate','ScheduleController@generateDate')->name('gen_date');
     Route::get('/schedule/checkSchedule','ScheduleController@checkSchedule')->name('checkSchedule');
     Route::POST('/schedule/findSchedule','ScheduleController@findSchedule')->name('findSchedule');

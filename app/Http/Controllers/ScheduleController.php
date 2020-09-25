@@ -193,6 +193,26 @@ class ScheduleController extends Controller
         return redirect()->back();
     }
 
+    public function importAttlog(Request $request)
+    {
+        // dd($request->hasFile('namaStaff'));
+        if ($request->hasFile('attlog')) {
+            try{
+               $data =  Excel::import(new \App\Imports\AttlogImport, $request->file('attlog'));
+
+            }
+            catch(\Exception $e)
+            {
+                Alert::error('Error', $e->getMessage());
+            }
+        }
+        else{
+        }
+        return redirect()->back();
+    }
+
+
+
     public function importyeah()
     {
         $data = ScheduleBulk::all();

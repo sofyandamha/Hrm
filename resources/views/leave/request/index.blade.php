@@ -77,10 +77,10 @@
                     <td>
                         @if (Auth()->user()->id == 1)
                             @if ($row->status == 0)
-                                <a class="badge badge-primary" href="{{route('approved_requestApp',$row->id)}}"><i class="fas fa-check"></i> Approve</a>
-                                <a class="badge badge-danger" href="{{route('rejected_requestApp',$row->id)}}"><i class="fas fa-times"></i> Reject</a>
+                                <a class="badge badge-primary" href="{{route('approved_requestApp',$row->id)}}"><i class="fas fa-check"></i></a>
+                                <a class="badge badge-danger" href="{{route('rejected_requestApp',$row->id)}}"><i class="fas fa-times"></i></a>
                             @else
-                                <a class="badge badge-warning" href="{{route('cancel_requestApp',$row->id)}}"><i class="fas fa-times"></i> Cancel</a>
+                                <a class="badge badge-warning" href="{{route('cancel_requestApp',$row->id)}}"><i class="fas fa-undo"></i></a>
                             @endif
 
                         @elseif($row->status == 0)

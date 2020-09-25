@@ -17,8 +17,8 @@
                     <div class="col-md-3">
                         <div class="text-left">
                             <a class="btn btn-success " href="{{ route('checkSchedule') }}" ><i class="fas fa-upload"></i> Add</a>
-                            <a class="btn btn-warning " href="" data-toggle="modal" data-target="#modalBulk"><i class="fas fa-upload"></i> Import</a>
-                            {{-- <a class="btn btn-warning " href="route('eksportSchedule')" ><i class="fas fa-download"></i> Eksport</a> --}}
+                            <a class="btn btn-warning " href="" data-toggle="modal" data-target="#modalBulk"><i class="fas fa-upload"></i> Import Schedule</a>
+                            <a class="btn btn-primary " href="" data-toggle="modal" data-target="#modalBulkAttLog"><i class="fas fa-upload"></i> Import AttLog</a>
                         </div>
                     </div>
                     <div class="col-md-7"></div>
@@ -93,6 +93,31 @@
                 @csrf
                 <div class="">
                     <input type="file" name="schedule" class="form-control">
+                </div>
+        </div>
+        <div class="modal-footer bg-whitesmoke br">
+          <input type="submit" class="btn btn-secondary float-left" value="Close" data-dismiss="modal">
+          <input type="submit" class="btn btn-primary" value="Submit">
+            </form>
+        </div>
+      </div>
+    </div>
+</div>
+
+<div class="modal fade" tabindex="-1" role="dialog" id="modalBulkAttLog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Bulk AttLog</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <form action="{{ route('bulk_attlog') }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                <div class="">
+                    <input type="file" name="attlog" class="form-control">
                 </div>
         </div>
         <div class="modal-footer bg-whitesmoke br">

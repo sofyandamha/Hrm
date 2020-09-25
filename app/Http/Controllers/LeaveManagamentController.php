@@ -3,11 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Employee;
+use App\Schedule;
 use Carbon\Carbon;
 use App\Leave_type;
 use App\LeaveDetEmp;
+use Carbon\CarbonPeriod;
 use App\Leave_managament;
 use Illuminate\Http\Request;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class LeaveManagamentController extends Controller
 {
@@ -61,27 +64,110 @@ class LeaveManagamentController extends Controller
     public function checkRequestapp(Request $request)
     {
         $year = date('Y');
+        $datenow = Carbon::createFromFormat('Y-m-d', date('Y-m-d'));
         $date = explode(' - ', $request->leave_date);
         $from = Carbon::createFromFormat('Y-m-d', $date[0]);
+        $fromTwo = Carbon::createFromFormat('Y-m-d', $date[0]);
         $to = Carbon::createFromFormat('Y-m-d', $date[1]);
-        $diff_in_days = $from->diffInDays($to);
+        $diff_in_days = $from->diffInDays($to) + 1;
 
-        // $check = LeaveDetEmp::where('id_emp', $request->employee_id)
-        //                         ->where('year', $year)->get();
-        $data = new LeaveDetEmp();
-        $data->id_emp = $request->employee_id;
-        $data->id_leave_type= $request->leave_type_id;
-        $data->start_leave= $date[0];
-        $data->end_leave=  $date[1];
-        $data->year= $year;
-        $data->remarks= $request->remak;
-        $data->totalhari= $diff_in_days;
-        $data->status= 0;
-        $data->created_by= auth()->user()->id;
+        $all_dates = array();
+        while ($from->lte($to)){
+            $all_dates[] = $from->toDateString();
+            $from->addDay();
+        }
 
-        $data->save();
-        return redirect()->route('show_requestApp');
+        $checkHmin = $datenow->diffInDays($fromTwo);
+        if ($request->leave_type_id == 3 || $request->leave_type_id == 2) {
+            if ($checkHmin >= 7) {
+               if ($request->leave_type_id == 3) {
+                $getTotalCuti = LeaveDetEmp::groupBy('id_emp','status', 'year')
+                            ->selectRaw('sum(totalhari) as total')
+                            ->where('status', 1)
+                            ->where('year', date('Y'))
+                            ->where('id_emp', $request->employee_id)
+                            ->first();
+                if (!isset($getTotalCuti)) { // klo data ga ada
+                    $data = new LeaveDetEmp();
+                    $data->id_emp = $request->employee_id;
+                    $data->id_leave_type= $request->leave_type_id;
+                    $data->start_leave= $date[0];
+                    $data->end_leave=  $date[1];
+                    $data->year= $year;
+                    $data->remarks= $request->remak;
+                    $data->totalhari= $diff_in_days;
+                    $data->det_tgl = json_encode($all_dates);
+                    // $data->det_tgl = str_replace('"', '', json_encode($all_dates));
+                    $data->status= 0;
+                    $data->created_by= auth()->user()->id;
 
+                    $data->save();
+                    return redirect()->route('show_requestApp');
+                } else { // klo ada
+                  $sisaCuti = 12 - $getTotalCuti->total;
+                  $checkCuti = $sisaCuti - $diff_in_days;
+                  if ($checkCuti < 0) {
+                    Alert::info('Info', "Sisa Cuti Tahun ".$year." = ".$sisaCuti);
+                    return redirect()->back();
+                  } else {
+                    $data = new LeaveDetEmp();
+                    $data->id_emp = $request->employee_id;
+                    $data->id_leave_type= $request->leave_type_id;
+                    $data->start_leave= $date[0];
+                    $data->end_leave=  $date[1];
+                    $data->year= $year;
+                    $data->remarks= $request->remak;
+                    $data->totalhari= $diff_in_days;
+                    $data->det_tgl = json_encode($all_dates);
+                    // $data->det_tgl = str_replace('"', '', json_encode($all_dates));
+                    $data->status= 0;
+                    $data->created_by= auth()->user()->id;
+
+                    $data->save();
+                    return redirect()->route('show_requestApp');
+                  }
+
+                }
+
+            } else {
+                $data = new LeaveDetEmp();
+                $data->id_emp = $request->employee_id;
+                $data->id_leave_type= $request->leave_type_id;
+                $data->start_leave= $date[0];
+                $data->end_leave=  $date[1];
+                $data->year= $year;
+                $data->remarks= $request->remak;
+                $data->totalhari= $diff_in_days;
+                $data->det_tgl = json_encode($all_dates);
+                // $data->det_tgl = str_replace('"', '', json_encode($all_dates));
+                $data->status= 0;
+                $data->created_by= auth()->user()->id;
+
+                $data->save();
+                return redirect()->route('show_requestApp');
+            }
+            } else {
+                Alert::info('Info', "Pengajuan Maxs H-7");
+                return redirect()->back();
+            }
+
+        } else {
+            $data = new LeaveDetEmp();
+            $data->id_emp = $request->employee_id;
+            $data->id_leave_type= $request->leave_type_id;
+            $data->start_leave= $date[0];
+            $data->end_leave=  $date[1];
+            $data->year= $year;
+            $data->remarks= $request->remak;
+            $data->totalhari= $diff_in_days;
+            $data->det_tgl = json_encode($all_dates);
+            // $data->det_tgl = str_replace('"', '', json_encode($all_dates));
+            $data->status= 0;
+            $data->created_by= auth()->user()->id;
+
+            $data->save();
+            return redirect()->route('show_requestApp');
+        }
     }
 
     public function insertRequestapp(Request $request)
@@ -122,12 +208,80 @@ class LeaveManagamentController extends Controller
 
    public function approvedRequestapp($id)
    {
-        $data = LeaveDetEmp::find($id);
-        $data->status = 1; //Approved
-        $data->approved_by = Auth()->user()->id;
-        $data->approved_at = date('Y-m-d H:i');
-        $data->updated_by = Auth()->user()->id;
-        $data->save();
+        $year = date('Y');
+        $getLeaveData = LeaveDetEmp::where('id', $id)->first();
+        $getTotalCuti = LeaveDetEmp::groupBy('id_emp','status', 'year')
+            ->selectRaw('sum(totalhari) as total')
+            ->where('status', 1)
+            ->where('year', date('Y'))
+            ->where('id_emp', $getLeaveData->id_emp)
+            ->first();
+        if ($getLeaveData->id_leave_type == 3) {
+            if (!isset($getTotalCuti)) {
+                $getLeaveData->status = 1; //Approved
+                $getLeaveData->approved_by = Auth()->user()->id;
+                $getLeaveData->approved_at = now();
+                $getLeaveData->updated_by = Auth()->user()->id;
+                $getLeaveData->save();
+
+                $dateSched = json_decode($getLeaveData->det_tgl);
+                $dataEmp = Employee::find($getLeaveData->id_emp);
+                $dataSched = Schedule::select('id')->where('id_emp', $dataEmp->scan_id )->whereIn('date_work', $dateSched)->get();
+                foreach ($dataSched as $row) {
+                    Schedule::where('id', $row->id)
+                    ->update([
+                        'status' => $getLeaveData->id_leave_type
+                        ]);
+                }
+
+            }else{
+                $sisaCuti = 12 - $getTotalCuti->total;
+                $from = Carbon::createFromFormat('Y-m-d', $getLeaveData->start_leave);
+                $to = Carbon::createFromFormat('Y-m-d', $getLeaveData->end_leave);
+                $diff_in_days = $from->diffInDays($to) + 1;
+                $checkCuti = $sisaCuti - $diff_in_days;
+                if ($checkCuti < 0) {
+                    Alert::info('Info', "Sisa Cuti Hanya ".$sisaCuti.". Data Rejected");
+                    $getLeaveData->status = 2; //Rejected
+                    $getLeaveData->approved_by = Auth()->user()->id;
+                    $getLeaveData->approved_at = now();
+                    $getLeaveData->updated_by = Auth()->user()->id;
+                    $getLeaveData->save();
+                } else {
+                    $getLeaveData->status = 1; //Approved
+                    $getLeaveData->approved_by = Auth()->user()->id;
+                    $getLeaveData->approved_at = now();
+                    $getLeaveData->updated_by = Auth()->user()->id;
+                    $getLeaveData->save();
+
+                    $dateSched = json_decode($getLeaveData->det_tgl);
+                    $dataEmp = Employee::find($getLeaveData->id_emp);
+                    $dataSched = Schedule::select('id')->where('id_emp', $dataEmp->scan_id )->whereIn('date_work', $dateSched)->get();
+                    foreach ($dataSched as $row) {
+                        Schedule::where('id', $row->id)
+                        ->update([
+                            'status' => $getLeaveData->id_leave_type
+                            ]);
+                    }
+                }
+            }
+        } else {
+            $getLeaveData->status = 1; //Approved
+            $getLeaveData->approved_by = Auth()->user()->id;
+            $getLeaveData->approved_at = now();
+            $getLeaveData->updated_by = Auth()->user()->id;
+            $getLeaveData->save();
+
+            $dateSched = json_decode($getLeaveData->det_tgl);
+            $dataEmp = Employee::find($getLeaveData->id_emp);
+            $dataSched = Schedule::select('id')->where('id_emp', $dataEmp->scan_id )->whereIn('date_work', $dateSched)->get();
+            foreach ($dataSched as $row) {
+                Schedule::where('id', $row->id)
+                ->update([
+                    'status' => $getLeaveData->id_leave_type
+                    ]);
+            }
+        }
         return redirect()->route('show_requestApp');
    }
 
@@ -150,6 +304,16 @@ class LeaveManagamentController extends Controller
         $data->approved_at = null;
         $data->updated_by = null;
         $data->save();
+
+        $dateSched = json_decode($data->det_tgl);
+        $dataEmp = Employee::find($data->id_emp);
+        $dataSched = Schedule::select('id')->where('id_emp', $dataEmp->scan_id )->whereIn('date_work', $dateSched)->get();
+        foreach ($dataSched as $row) {
+            Schedule::where('id', $row->id)
+            ->update([
+                'status' => 0
+                ]);
+        }
         return redirect()->route('show_requestApp');
    }
 
