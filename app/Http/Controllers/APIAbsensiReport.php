@@ -75,6 +75,24 @@ class APIAbsensiReport extends Controller
 
     }
 
+    public function getAbsensiLogMonthEmp(Request $request)
+    {
+        $scanid = $request->nik;
+        $month = $request->month;
+        $data = DB::select(DB::raw("
+        SELECT scan_id , tgl, DATE_FORMAT(STR_TO_DATE(tgl, '%Y-%m-%d %H:%i'), '%H:%i') AS Jam, STATUS,
+		case
+			when status = 0 then 'Absen Masuk'
+			when STATUS = 1 then 'Absen Keluar'
+		END AS 'Keterangan'
+		from
+				attlog WHERE scan_id =  $scanid and tgl LIKE '$month%'
+		GROUP BY
+            scan_id, tgl, status;
+        "));
+       return $data;
+    }
+
     public function getAbsensiEmp(Request $request)
     {
         $scanid = $request->nik;
