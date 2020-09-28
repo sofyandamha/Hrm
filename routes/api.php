@@ -21,6 +21,7 @@ Route::get('/bulkScheduleku', 'ScheduleBulkcontroller@importyeah');
 Route::get('/bulkAttendanceku', 'AttendanceController@importabsensi');
 
 Route::post('/getAbsensiMonth', 'APIAbsensiReport@getAbsensi');
+Route::post('/getAbsensiMonthEmp', 'APIAbsensiReport@getAbsensiEmp');
 Route::post('/formTgsLr', 'APIFormController@formTgsLr');
 Route::post('/formIznTdkMsk', 'APIFormController@formIznTdkMsk');
 Route::post('/formAbsnMnl', 'APIFormController@formAbsnMnl');
