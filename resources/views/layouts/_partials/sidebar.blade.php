@@ -93,9 +93,9 @@
                         <li class="dropdown {{ Request::segment(1) === 'status' ? 'active' : null}}">
                             <a href="{{route('show_statusEmployee')}}" class="nav-link" > <span>Status Employee</span></a>
                         </li>
-                        <li class="dropdown {{ Request::segment(1) === 'workingTime' ? 'active' : null}}">
+                        {{-- <li class="dropdown {{ Request::segment(1) === 'workingTime' ? 'active' : null}}">
                             <a href="{{route('show_workingTime')}}" class="nav-link" > <span>Working Time</span></a>
-                        </li>
+                        </li> --}}
                     </ul>
                 </li>
                 @else
