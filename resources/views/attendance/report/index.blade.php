@@ -10,17 +10,18 @@
     <div class="card">
         <div class="card-header">
             <h4>Report Attendance</h4>
-           
+
         </div>
         <div class="card-body">
           <div class="float-right">
             <form method="get" action="{{ route('show_report') }}">
               <div class="input-group">
                 <select class="form-control select2 " name="scan_id" >
-                  <option value="">Select Employee Name</option>
-                    @foreach ($employee as $emp)
-                      <option value="{{ $emp->scan_id }}">{{ $emp->full_name }}</option>
-                    @endforeach
+                    <option value="">Select Employee</option>
+                 @foreach ($employee as $emp)
+                   <option value="{{ $emp->scan_id }}">{{ $emp->full_name }}</option>
+                 @endforeach
+
                 </select>
                 <input name="date_attendance" type="text" class="form-control input-append date" id="datepicker"  data-date-format="yyyy-mm" placeholder="Choose Month" autocomplete="off">
                 <div class="input-group-append">
@@ -35,82 +36,52 @@
             <table class="table table-striped table-md">
               <tbody>
                 <tr>
-                    {{-- <th>No</th> --}}
                     <th>NIK</th>
                     <th>Employee Name</th>
-                    <th>Jadwal Masuk</th>
+                    <th>Tanggal</th>
+                    <th>Scan Masuk Min</th>
+                    <th>Scan Masuk Max</th>
+                    <th>Scan Keluar Min</th>
+                    <th>Scan Keluar Max</th>
+                    <th>Scan Masuk Min FIX</th>
+                    <th>Scan Keluar Max FIX</th>
                     <th>Jam Masuk</th>
                     <th>Jam Keluar</th>
-                    {{-- <th>Tanggal Scan</th> --}}
-                    <th>Scan Masuk</th>
-                    <th>Scan Keluar</th>
-                    <th>Total Jam Kerja</th>
-                    {{-- <th>Action</th> --}}
+                    <th>Selisih Masuk</th>
+                    <th>Selisih Keluar</th>
+                    <th>Keterangan Masuk</th>
+                    <th>Keterangan Pulang</th>
                 </tr>
               @foreach ($data as $row)
                 <tr>
-                    {{-- <td>{{ $loop->iteration + $perPage * ($page - 1) }}</td> --}}
-                    <td>{{$row->scanid}}</td>
-                    <td>{{$row->Full_Name }}</td>
-                    
-                    <td>{{$row->Jadwal_Masuk}}</td>
-                    <td>{{$row->Jam_Masuk}}</td>
-                    <td>{{$row->Jam_Keluar}}</td>
-                    {{-- <td>{{$row->Tanggal_Scan}}</td> --}}
+                    <td>{{$row->scan_id}}</td>
                     <td>
-                      @php
-                        $loginTime = strtotime($row->Scan_Masuk);
-                        $jam_masuk = strtotime($row->Jam_Masuk);
-                        $difff = $jam_masuk - $loginTime;
-                      @endphp 
-                      
-                      {{$row->Scan_Masuk}}
-                      @if ($row->Scan_Masuk != "")
-                        {{  ($difff < 0)? 'Terlambat!' : 'Right time!' }}
-                          
-                      @else
-                          
-                      @endif
-                    
-                    </td>
-                    <td>{{$row->Scan_Keluar}}</td>
-                    <td>
-                      @php
-                          $time_out = strtotime($row->Scan_Keluar);
-                          $time_in = strtotime($row->Scan_Masuk);
-                          $diff = $time_out - $time_in;
-                      @endphp 
+                        @foreach ($employee as $emp)
+                            @if ($emp->nik == $row->scan_id )
+                                {{ $emp->full_name }}
+                            @else
 
-                      @if ($row->Scan_Masuk != "" && $row->Scan_Keluar != "")
-                      {{ date('H:i', $diff) }}
-                      
-                        
-                      @else
-                        
-                      @endif
-                      
+                            @endif
+                        @endforeach
                     </td>
-                    {{-- <td>
-                        <a class="btn btn-warning" href="{{route('edit_employee',$row->id)}}"><i class="fas fa-edit"></i></a>
-                        <a class="btn btn-danger" href="{{route('delete_employee',$row->id)}}"><i class="fas fa-trash"></i></a>
-                    </td> --}}
+                    <td>{{$row->tglku }}</td>
+                    <td>{{$row->JamMasukMin }}</td>
+                    <td>{{$row->JamMasukMax }}</td>
+                    <td>{{$row->JamKelMin }}</td>
+                    <td>{{$row->JamKelMax }}</td>
+                    <td>{{$row->JamMasukMinFix }}</td>
+                    <td>{{$row->JamKelMaxFix }}</td>
+                    <td>{{$row->in_time }}</td>
+                    <td>{{$row->out_time }}</td>
+                    <td>{{$row->selisihmasuk }}</td>
+                    <td>{{$row->selisihkeluar }}</td>
+                    <td>{{$row->KeteranganMasuk }}</td>
+                    <td>{{$row->KeteranganPulang }}</td>
                 </tr>
               @endforeach
                 </tbody>
             </table>
           </div>
-        </div>
-
-        <div class="card-footer text-right">
-            <div class="float-left">
-                {{-- <p>{{$tableinfo}}</p> --}}
-              </div>
-
-          <nav class="d-inline-block">
-            <ul class="pagination mb-0">
-                {{-- {{ $data->links() }} --}}
-            </ul>
-          </nav>
         </div>
       </div>
     </div>
@@ -122,7 +93,7 @@
     <script>
         $("#datepicker").datepicker( {
           format: "yyyy-mm",
-          viewMode: "months", 
+          viewMode: "months",
           minViewMode: "months"
     });
     </script>
