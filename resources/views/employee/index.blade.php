@@ -67,6 +67,11 @@
                         {{-- <div class="badge badge-warning"></div> --}}
                     </td>
                     <td>
+                        @if ($row->is_supervisor == 1)
+                            Supervisor
+                        @else
+
+                        @endif
                         @foreach ($designation as $designations)
                             @if ($designations->id == $row->id_designation)
                                 {{$designations->name." - ".$designations->department->name }}

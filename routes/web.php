@@ -24,7 +24,6 @@ Route::get('/profile/{id}','UserController@index')->name('show_profile');
 
 Route::get('/dashboard','DashboardController@index')->name('show_dashboard');
 
-Route::group(['middleware' => ['role:Employee|Super Admin']], function () {
 
     // Leave Management
     Route::get('/leaveMaagement/requestApp','LeaveManagamentController@indexRequestapp')->name('show_requestApp');
@@ -32,7 +31,7 @@ Route::group(['middleware' => ['role:Employee|Super Admin']], function () {
     Route::get('/leaveMaagement/requestApp/check','LeaveManagamentController@checkRequestapp')->name('check_requestApp');
     Route::post('/leaveMaagement/requestApp/insert','LeaveManagamentController@insertRequestapp')->name('insert_requestApp');
     Route::get('/leaveMaagement/requestApp/{id}/edit','LeaveManagamentController@editRequestapp')->name('edit_requestApp');
-    Route::get('/leaveMaagement/requestApp/update','LeaveManagamentController@updateRequestapp')->name('update_requestApp');
+    Route::post('/leaveMaagement/requestApp/update','LeaveManagamentController@updateRequestapp')->name('update_requestApp');
     Route::get('/leaveMaagement/requestApp/{id}/delete','LeaveManagamentController@deleteRequestapp')->name('delete_requestApp');
     Route::get('/leaveMaagement/leaveReport','LeaveManagamentController@indexLeavereport')->name('show_leaveReport');
 
@@ -64,9 +63,8 @@ Route::group(['middleware' => ['role:Employee|Super Admin']], function () {
 
     Route::get('/importschedule','ScheduleController@importyeah')->name('import_schedule');
     Route::get('/importsattendance','AttendanceController@importabsensi')->name('import_attendance');
-});
 
-Route::group(['middleware' => ['role:Super Admin']], function(){
+
 
     //Master Data
 
@@ -149,5 +147,5 @@ Route::group(['middleware' => ['role:Super Admin']], function(){
     Route::post('/updateWorkingtime','WorkingTimeController@updateWorkingtime')->name('update_workingTime');
     Route::get('/workingTime/{id}/deleteWorkingtime','WorkingTimeController@deleteWorkingtime')->name('delete_workingTime');
     Route::get('/workingTime/export/', 'WorkingTimeController@eksportWorkingtime')->name('eksportWorkingtime');
-});
+
 

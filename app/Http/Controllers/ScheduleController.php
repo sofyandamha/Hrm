@@ -69,28 +69,87 @@ class ScheduleController extends Controller
 
     public function index(Request $request)
     {
-        $data = Schedule::orderBy('id', 'desc');
-        if ($request->r) {
-            $data->WhereHas('Employee', function ($query) use ($request) {
-                    $query->Where('full_name', 'like', '%' . $request->r . '%');
-                });
 
+
+        $user = Auth()->user();
+        $roles = $user->roles->pluck('name');
+
+        if ($roles[0] == "HRD Manager" || $roles[0] == "HRD Admin Supervisor") {
+            $data = Schedule::orderBy('id', 'desc');
+            if ($request->r) {
+                $data->WhereHas('Employee', function ($query) use ($request) {
+                        $query->Where('full_name', 'like', '%' . $request->r . '%');
+                    });
+
+            }
+            if ($request->has('page') ? $request->get('page') : 1) {
+                $page    = $request->has('page') ? $request->get('page') : 1;
+                $total   = $data->count();
+                $perPage = 10;
+                $showingTotal  = $page * $perPage;
+
+                $currentShowing = $showingTotal > $total ? $total : $showingTotal;
+                $showingStarted = $showingTotal - $perPage;
+                $tableinfo = "Showing $showingStarted to $currentShowing of $total entries";
+            }
+
+            $data = $data->paginate($perPage);
+            $data->appends($request->all());
+
+            return view('schedule.index', compact('data','tableinfo','perPage','page'));
         }
-        if ($request->has('page') ? $request->get('page') : 1) {
-            $page    = $request->has('page') ? $request->get('page') : 1;
-            $total   = $data->count();
-            $perPage = 10;
-            $showingTotal  = $page * $perPage;
+        else {
+            $id = Auth()->user()->id;
+            $empData = Employee::find($id);
+            if ($empData->is_supervisor == 1) {
+                $idEmp = Employee::select('nik')->where('id_designation', $empData->id_designation)->get();
+                $data = Schedule::whereIn('id_emp', $idEmp )->orderBy('id', 'desc');
+                if ($request->r) {
+                    $data->WhereHas('Employee', function ($query) use ($request) {
+                            $query->Where('full_name', 'like', '%' . $request->r . '%');
+                        });
 
-            $currentShowing = $showingTotal > $total ? $total : $showingTotal;
-            $showingStarted = $showingTotal - $perPage;
-            $tableinfo = "Showing $showingStarted to $currentShowing of $total entries";
+                }
+                if ($request->has('page') ? $request->get('page') : 1) {
+                    $page    = $request->has('page') ? $request->get('page') : 1;
+                    $total   = $data->count();
+                    $perPage = 10;
+                    $showingTotal  = $page * $perPage;
+
+                    $currentShowing = $showingTotal > $total ? $total : $showingTotal;
+                    $showingStarted = $showingTotal - $perPage;
+                    $tableinfo = "Showing $showingStarted to $currentShowing of $total entries";
+                }
+
+                $data = $data->paginate($perPage);
+                $data->appends($request->all());
+
+                return view('schedule.index', compact('data','tableinfo','perPage','page'));
+            } else {
+                $data = Schedule::where('id_emp', $empData->nik )->orderBy('id', 'desc');
+                if ($request->r) {
+                    $data->WhereHas('Employee', function ($query) use ($request) {
+                            $query->Where('full_name', 'like', '%' . $request->r . '%');
+                        });
+
+                }
+                if ($request->has('page') ? $request->get('page') : 1) {
+                    $page    = $request->has('page') ? $request->get('page') : 1;
+                    $total   = $data->count();
+                    $perPage = 10;
+                    $showingTotal  = $page * $perPage;
+
+                    $currentShowing = $showingTotal > $total ? $total : $showingTotal;
+                    $showingStarted = $showingTotal - $perPage;
+                    $tableinfo = "Showing $showingStarted to $currentShowing of $total entries";
+                }
+
+                $data = $data->paginate($perPage);
+                $data->appends($request->all());
+
+                return view('schedule.index', compact('data','tableinfo','perPage','page'));
+            }
         }
-
-        $data = $data->paginate($perPage);
-        $data->appends($request->all());
-
-        return view('schedule.index', compact('data','tableinfo','perPage','page'));
     }
 
     public function addSchedule(Request $request)
@@ -111,8 +170,26 @@ class ScheduleController extends Controller
 
     public function checkSchedule(Request $request)
     {
-        $employee = Employee::all();
-        return view('schedule.check', compact('employee'));
+        $user = Auth()->user();
+        $roles = $user->roles->pluck('name');
+        if ($roles[0] == "HRD Manager" || $roles[0] == "HRD Admin Supervisor")  {
+            $employee = Employee::all();
+            return view('schedule.check', compact('employee'));
+        }
+        else{
+            $id = Auth()->user()->id;
+            $empData = Employee::find($id);
+            if ($empData->is_supervisor == 1) {
+                $employee = Employee::where('id_designation', $empData->id_designation)->get();
+                return view('schedule.check', compact('employee'));
+            }
+            else{
+
+            }
+
+        }
+
+
     }
 
     public function findSchedule(Request $request)

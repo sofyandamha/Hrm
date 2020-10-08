@@ -16,9 +16,22 @@
                 <div class="row">
                     <div class="col-md-3">
                         <div class="text-left">
-                            <a class="btn btn-success " href="{{ route('checkSchedule') }}" ><i class="fas fa-upload"></i> Add</a>
-                            <a class="btn btn-warning " href="" data-toggle="modal" data-target="#modalBulk"><i class="fas fa-upload"></i> Import Schedule</a>
-                            <a class="btn btn-primary " href="" data-toggle="modal" data-target="#modalBulkAttLog"><i class="fas fa-upload"></i> Import AttLog</a>
+                            @php
+                                $user = Auth()->user();
+                                $roles = $user->roles->pluck('name');
+                                $is_supervisor = Auth()->user()->is_supervisor;
+                            @endphp
+
+                            @if ($roles[0] == "HRD Manager" || $roles[0] == "HRD Admin Supervisor" )
+                                <a class="btn btn-success " href="{{ route('checkSchedule') }}" ><i class="fas fa-upload"></i> Add</a>
+                                <a class="btn btn-warning " href="" data-toggle="modal" data-target="#modalBulk"><i class="fas fa-upload"></i> Import Schedule</a>
+                                <a class="btn btn-primary " href="" data-toggle="modal" data-target="#modalBulkAttLog"><i class="fas fa-upload"></i> Import AttLog</a>
+                            @else
+                                @if ($is_supervisor == 1 )
+                                    <a class="btn btn-success " href="{{ route('checkSchedule') }}" ><i class="fas fa-upload"></i> Add</a>
+                                @else
+                                @endif
+                            @endif
                         </div>
                     </div>
                     <div class="col-md-7"></div>

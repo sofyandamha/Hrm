@@ -18,20 +18,28 @@
                         <li class="dropdown {{ Request::segment(2) === 'requestApp' ? 'active' : null }}">
                             <a href="{{ route('show_requestApp') }}" class="nav-link" > <span>Request Application</span></a>
                         </li>
-                        <li class="dropdown {{ Request::segment(2) === 'leaveReport' ? 'active' : null }}">
-                            <a href="route('show_leaveReport')" class="nav-link" > <span>Leave Report</span></a>
-                        </li>
+                        {{-- <li class="dropdown {{ Request::segment(2) === 'leaveReport' ? 'active' : null }}">
+                            <a href="{{ route('show_leaveReport') }}" class="nav-link" > <span>Leave Report</span></a>
+                        </li> --}}
                     </ul>
                 </li>
                 <li class="dropdown">
                     <a href="#" class="nav-link has-dropdown" ><i class="fas fa-user-clock"></i> <span>Attendance</span></a>
                     <ul class="dropdown-menu">
+                        @if (Auth()->user()->getRoleNames() != 'Super Admin')
+                        <li class="dropdown {{ Request::segment(2) === 'report' ? 'active' : null }}">
+                            <a href="{{ route('show_report') }}" class="nav-link" > <span>Attendance Report</span></a>
+                        </li>
+                        @else
                         <li class="dropdown {{ Request::segment(2) === 'workshift' ? 'active' : null }}">
                             <a href="{{ route('show_workshift') }}" class="nav-link" > <span>Manage Work Shift</span></a>
                         </li>
                         <li class="dropdown {{ Request::segment(2) === 'report' ? 'active' : null }}">
                             <a href="{{ route('show_report') }}" class="nav-link" > <span>Attendance Report</span></a>
                         </li>
+
+                        @endif
+
                     </ul>
                 </li>
                 {{-- <li class="dropdown">
@@ -72,7 +80,11 @@
                     </ul>
                 </li>
 
-                @role('Super Admin')
+                @php
+                    $user = Auth()->user();
+                    $roles = $user->roles->pluck('name');
+                @endphp
+                @if ($roles[0] == "HRD Manager" || $roles[0] == "HRD Admin Supervisor" )
                 <li class="dropdown {{ Request::segment(1) === 'department' || Request::segment(1) === 'employee' || Request::segment(1) === 'payroll' || Request::segment(1) === 'leaveType' || Request::segment(1) === 'status' || Request::segment(1) === 'workingTime' ? 'active' : null }}">
                     <a href="#" class="nav-link has-dropdown" ><i class="fas fa-server"></i> <span>Master Data</span></a>
                     <ul class="dropdown-menu">
@@ -96,6 +108,9 @@
                         </li>
                     </ul>
                 </li>
-                @endrole
+                @else
+
+                @endif
+
           </ul>
           </aside>

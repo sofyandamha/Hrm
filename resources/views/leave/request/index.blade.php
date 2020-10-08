@@ -51,50 +51,116 @@
                     <th>Status</th>
                     <th>Action</th>
                 </tr>
-              @foreach ($data as $row)
-                @if (Auth()->user()->id == $row->id_employee || Auth()->user()->id == 1)
-                <tr>
-                    {{-- <td>{{ $loop->iteration + $perPage * ($page - 1) }}</td> --}}
-                    <td>{{$row->employee->scan_id}}</td>
-                    <td>{{ $row->employee->full_name }}</td>
-                    <td>{{ $row->employee->designation->name.' - '.$row->employee->designation->department->name }}</td>
-                    <td>{{ $row->leavetype->leave_type.' ('.$row->leavetype->is_day.')'}}</td>
-                    <td>{{ $row->start_leave}}<b>  to  </b>{{ $row->end_leave }}</td>
-                    <td>
-                        {{ $row->totalhari }}
-                     </td>
-                    <td>{{ $row->created_at->format('Y-m-d')}}</td>
-                    <td>{{ $row->remarks}}</td>
-                    <td>
-                        @if ($row->status == 1)
-                            <div class="badge badge-success">Approved</div>
-                        @elseif ($row->status == 2)
-                            <div class="badge badge-danger">Reject</div>
-                        @else
-                            <div class="badge badge-warning">Pending</div>
-                        @endif
-                    </td>
-                    <td>
-                        @if (Auth()->user()->id == 1)
-                            @if ($row->status == 0)
-                                <a class="badge badge-primary" href="{{route('approved_requestApp',$row->id)}}"><i class="fas fa-check"></i></a>
-                                <a class="badge badge-danger" href="{{route('rejected_requestApp',$row->id)}}"><i class="fas fa-times"></i></a>
-                            @else
-                                <a class="badge badge-warning" href="{{route('cancel_requestApp',$row->id)}}"><i class="fas fa-undo"></i></a>
-                            @endif
+                @php
+                    $user = Auth()->user();
+                    $roles = $user->roles->pluck('name');
+                @endphp
+                @if (isset($dataSingle))
+                    @foreach ($dataSingle as $row)
+                        <tr>
+                            <td>{{$row->employee->scan_id}}</td>
+                            <td>{{ $row->employee->full_name }}</td>
+                            <td>{{ $row->employee->designation->name.' - '.$row->employee->designation->department->name }}</td>
+                            <td>{{ $row->leavetype->leave_type.' ('.$row->leavetype->is_day.')'}}</td>
+                            <td>{{ $row->start_leave}}<b>  to  </b>{{ $row->end_leave }}</td>
+                            <td>
+                                {{ $row->totalhari }}
+                            </td>
+                            <td>{{ $row->created_at->format('Y-m-d')}}</td>
+                            <td>{{ $row->remarks}}</td>
+                            <td>
+                                @if ($row->status == 1)
+                                    <div class="badge badge-success">Approved</div>
+                                @elseif ($row->status == 2)
+                                    <div class="badge badge-danger">Reject</div>
+                                @else
+                                    <div class="badge badge-warning">Pending</div>
+                                @endif
+                            </td>
+                            <td>
+                                @if($row->status == 0)
+                                    {{-- <a class="btn btn-warning" href="{{route('edit_requestApp',$row->id)}}"><i class="fas fa-edit"></i></a> --}}
+                                    <a class="btn btn-danger" href="{{route('delete_requestApp',$row->id)}}"><i class="fas fa-trash"></i></a>
+                                @else
+                                <div class="form-group">
+                                    <label for="noaction"></label>
+                                </div>
+                                @endif
+                            </td>
+                        </tr>
+                    @endforeach
+                @elseif(isset($data))
+                    @foreach ($data as $row)
+                        <tr>
+                            <td>{{$row->employee->scan_id}}</td>
+                            <td>{{ $row->employee->full_name }}</td>
+                            <td>{{ $row->employee->designation->name.' - '.$row->employee->designation->department->name }}</td>
+                            <td>{{ $row->leavetype->leave_type.' ('.$row->leavetype->is_day.')'}}</td>
+                            <td>{{ $row->start_leave}}<b>  to  </b>{{ $row->end_leave }}</td>
+                            <td>
+                                {{ $row->totalhari }}
+                            </td>
+                            <td>{{ $row->created_at->format('Y-m-d')}}</td>
+                            <td>{{ $row->remarks}}</td>
+                            <td>
+                                @if ($row->status == 1)
+                                    <div class="badge badge-success">Approved</div>
+                                @elseif ($row->status == 2)
+                                    <div class="badge badge-danger">Reject</div>
+                                @else
+                                    <div class="badge badge-warning">Pending</div>
+                                @endif
+                            </td>
+                            <td>
+                                    @if ($row->status == 0)
+                                        <a class="badge badge-primary" href="{{route('approved_requestApp',$row->id)}}"><i class="fas fa-check"></i></a>
+                                        <a class="badge badge-danger" href="{{route('rejected_requestApp',$row->id)}}"><i class="fas fa-times"></i></a>
+                                    @else
+                                        <a class="badge badge-warning" href="{{route('cancel_requestApp',$row->id)}}"><i class="fas fa-undo"></i></a>
+                                    @endif
+                            </td>
+                        </tr>
+                    @endforeach
+                    @elseif(isset($dataSpv))
+                    @foreach ($dataSpv as $row)
+                        <tr>
+                            <td>{{$row->employee->scan_id}}</td>
+                            <td>{{ $row->employee->full_name }}</td>
+                            <td>{{ $row->employee->designation->name.' - '.$row->employee->designation->department->name }}</td>
+                            <td>{{ $row->leavetype->leave_type.' ('.$row->leavetype->is_day.')'}}</td>
+                            <td>{{ $row->start_leave}}<b>  to  </b>{{ $row->end_leave }}</td>
+                            <td>
+                                {{ $row->totalhari }}
+                            </td>
+                            <td>{{ $row->created_at->format('Y-m-d')}}</td>
+                            <td>{{ $row->remarks}}</td>
+                            <td>
+                                @if ($row->status == 1)
+                                    <div class="badge badge-success">Approved</div>
+                                @elseif ($row->status == 2)
+                                    <div class="badge badge-danger">Reject</div>
+                                @else
+                                    <div class="badge badge-warning">Pending</div>
+                                @endif
+                            </td>
+                            <td>
+                                {{-- {{ $row->id }} --}}
+                                @if($row->status == 0)
+                                    @if ($EmpDet->id == $row->id_emp)
+                                        <a class="btn btn-danger" href="{{route('delete_requestApp',$row->id)}}"><i class="fas fa-trash"></i></a>
 
-                        @elseif($row->status == 0)
-                            <a class="btn btn-warning" href="{{route('edit_requestApp',$row->id)}}"><i class="fas fa-edit"></i></a>
-                            <a class="btn btn-danger" href="{{route('delete_requestApp',$row->id)}}"><i class="fas fa-trash"></i></a>
-                        @else
-                        <div class="form-group">
-                            <label for="noaction">No Action</label>
-                        </div>
-                        @endif
-                    </td>
-                </tr>
+                                    @else
+
+                                    @endif
+                                @else
+                                <div class="form-group">
+                                    <label for="noaction"></label>
+                                </div>
+                                @endif
+                            </td>
+                        </tr>
+                    @endforeach
                 @endif
-              @endforeach
                 </tbody>
             </table>
           </div>
@@ -107,7 +173,13 @@
 
           <nav class="d-inline-block">
             <ul class="pagination mb-0">
+                @if (isset($dataSingle))
+                {{ $dataSingle->links() }}
+                @elseif (isset($data))
                 {{ $data->links() }}
+                @else
+                {{ $dataSpv->links() }}
+                @endif
             </ul>
           </nav>
         </div>

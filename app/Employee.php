@@ -17,7 +17,7 @@ class Employee extends Authenticatable
     use HasRoles;
 
     protected $table = 'employees';
-    protected $fillable = ['id','email','password','scan_id', 'jabatan','full_name','nik','birth_date','id_status','id_designation'];
+    protected $fillable = ['id','email','password','scan_id', 'jabatan','full_name','nik','birth_date','id_status','id_designation','is_supervisor'];
     // protected $primaryKey = 'scan_id';
 
     public function Designation()
@@ -36,6 +36,11 @@ class Employee extends Authenticatable
     }
     public function leavedet(){
         return $this->hasMany(LeaveDetEmp::class,'id','id_emp');
+
+    }
+
+    public function model_has_role(){
+        return $this->hasOne(Model_has_role::class,'model_id','id');
 
     }
 }

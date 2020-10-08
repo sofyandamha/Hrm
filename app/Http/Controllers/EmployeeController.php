@@ -37,7 +37,7 @@ class EmployeeController extends Controller
         $data = DB::table('employees')
         ->leftJoin('model_has_roles', 'model_has_roles.model_id', '=', 'employees.id')
         ->leftJoin('roles', 'model_has_roles.role_id', '=', 'roles.id')
-        ->select('employees.id as idemp', 'employees.scan_id', 'employees.full_name', 'employees.id_designation','employees.address','employees.nik','employees.birth_date','employees.id_status','employees.created_by','roles.id');
+        ->select('employees.id as idemp','employees.is_supervisor', 'employees.scan_id', 'employees.full_name', 'employees.id_designation','employees.address','employees.nik','employees.birth_date','employees.id_status','employees.created_by','roles.id');
         if ($request->r) {
             // $data->where('full_name','like', '%'.$request->r.'%')
             //      ->orWhere('scan_id','like', '%'.$request->r.'%')
@@ -67,7 +67,6 @@ class EmployeeController extends Controller
 
         $data = $data->paginate($perPage);
         $data->appends($request->all());
-        // dd($data);
 
         return view('employee.index', compact('data','tableinfo','perPage','page','role','designation'));
     }
@@ -157,7 +156,7 @@ class EmployeeController extends Controller
 
     public function importEmployee(Request $request)
     {
-        // dd($request->hasFile('namaStaff'));
+        // dd($request->hasFile('namaEmployee'));
         if ($request->hasFile('namaEmployee')) {
             try{
                 Excel::import(new \App\Imports\EmployeeImport, $request->file('namaEmployee'));

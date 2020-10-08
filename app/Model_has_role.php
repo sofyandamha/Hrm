@@ -13,4 +13,9 @@ class Model_has_role extends Model
     {
         return $this->belongsTo('App\Employee', 'model_id', 'id');
     }
+
+    public function role()
+    {
+        return $this->hasOne(Role::class, 'role_id', 'id');
+    }
 }

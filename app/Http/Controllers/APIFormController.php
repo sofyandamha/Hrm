@@ -128,7 +128,7 @@ class APIFormController extends Controller
 
     public function getLeaveType()
     {
-        $data = Leave_type::all();
+        $data = Leave_type::where('id', '!=', 5)->get();
 
         return $data;
     }

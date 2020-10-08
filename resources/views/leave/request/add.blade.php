@@ -20,7 +20,11 @@
                     <div class="col-md-6">
                         <div class="form-group">
                                 <label for="name">Employee Name :</label>
-                                @if (Auth()->user()->id == 1)
+                                @php
+                                    $user = Auth()->user();
+                                    $roles = $user->roles->pluck('name');
+                                @endphp
+                                @if ($roles[0] == "HRD Manager" || $roles[0] == "HRD Admin Supervisor")
                                 <select name="employee_id" class="form-control select2">
                                         <option value=""></option>
                                         @foreach ($employee as $employees)
@@ -28,7 +32,7 @@
                                         @endforeach
                                 </select>
                                 @else
-                                    <input type="hidden"  value="{{ Auth()->user()->id }}" name="employee_name">
+                                    <input type="hidden"  value="{{ Auth()->user()->id }}" name="employee_id">
                                     <input class="form-control" value="{{ Auth()->user()->full_name }}" type="text" readonly>
                                 @endif
                         </div>

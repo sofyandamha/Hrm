@@ -31,28 +31,81 @@ class LeaveManagamentController extends Controller
 
     public function indexRequestapp(Request $request)
     {
-        $data = LeaveDetEmp::orderBy('id_emp', 'desc');
+        $user = Auth()->user();
+        $roles = $user->roles->pluck('name');
+        if ($roles[0] == "HRD Manager" || $roles[0] == "HRD Admin Supervisor")  {
+            $data = LeaveDetEmp::orderBy('id_emp', 'desc');
 
-        if ($request->has('page') ? $request->get('page') : 1) {
-            $page    = $request->has('page') ? $request->get('page') : 1;
-            $total   = $data->count();
-            $perPage = 10;
-            $showingTotal  = $page * $perPage;
+            if ($request->has('page') ? $request->get('page') : 1) {
+                $page    = $request->has('page') ? $request->get('page') : 1;
+                $total   = $data->count();
+                $perPage = 10;
+                $showingTotal  = $page * $perPage;
 
-            $currentShowing = $showingTotal > $total ? $total : $showingTotal;
-            $showingStarted = $showingTotal - $perPage;
-            $tableinfo = "Showing $showingStarted to $currentShowing of $total entries";
+                $currentShowing = $showingTotal > $total ? $total : $showingTotal;
+                $showingStarted = $showingTotal - $perPage;
+                $tableinfo = "Showing $showingStarted to $currentShowing of $total entries";
+            }
+
+            $data = $data->paginate($perPage);
+            $data->appends($request->all());
+
+            return view('leave.request.index', compact('data','tableinfo','perPage','page'));
+
+        } else {
+            $id = Auth()->user()->id;
+            $empData = Employee::find($id);
+            $EmpDet = Employee::find(auth()->user()->id);
+            if ($empData->is_supervisor == 1) {
+                $idEmp = Employee::select('id')->where('id_designation', $empData->id_designation)->get();
+                // dd($idEmp);
+                $dataSpv = LeaveDetEmp::whereIn('id_emp', $idEmp);
+                // dd($dataSpv->get());
+                if ($request->has('page') ? $request->get('page') : 1) {
+                    $page    = $request->has('page') ? $request->get('page') : 1;
+                    $total   = $dataSpv->count();
+                    $perPage = 10;
+                    $showingTotal  = $page * $perPage;
+
+                    $currentShowing = $showingTotal > $total ? $total : $showingTotal;
+                    $showingStarted = $showingTotal - $perPage;
+                    $tableinfo = "Showing $showingStarted to $currentShowing of $total entries";
+                }
+
+                $dataSpv = $dataSpv->paginate($perPage);
+                $dataSpv->appends($request->all());
+
+                return view('leave.request.index', compact('dataSpv','tableinfo','perPage','page','EmpDet'));
+            }
+            else{
+                $dataSingle = LeaveDetEmp::where('id_emp', auth()->user()->id);
+                $EmpDet = Employee::find(auth()->user()->id);
+                if ($request->has('page') ? $request->get('page') : 1) {
+                    $page    = $request->has('page') ? $request->get('page') : 1;
+                    $total   = $dataSingle->count();
+                    $perPage = 10;
+                    $showingTotal  = $page * $perPage;
+
+                    $currentShowing = $showingTotal > $total ? $total : $showingTotal;
+                    $showingStarted = $showingTotal - $perPage;
+                    $tableinfo = "Showing $showingStarted to $currentShowing of $total entries";
+                }
+
+                $dataSingle = $dataSingle->paginate($perPage);
+                $dataSingle->appends($request->all());
+
+                return view('leave.request.index', compact('dataSingle','tableinfo','perPage','page','EmpDet'));
+
+            }
+
         }
 
-        $data = $data->paginate($perPage);
-        $data->appends($request->all());
 
-        return view('leave.request.index', compact('data','tableinfo','perPage','page'));
     }
 
     public function indexLeavereport()
     {
-        return view('leave.report.index');
+        dd(true);
     }
 
     public function addRequestapp()
@@ -64,6 +117,7 @@ class LeaveManagamentController extends Controller
     }
     public function checkRequestapp(Request $request)
     {
+        // dd($request->all());
         $year = date('Y');
         $datenow = Carbon::createFromFormat('Y-m-d', date('Y-m-d'));
         $date = explode(' - ', $request->leave_date);
@@ -196,11 +250,12 @@ class LeaveManagamentController extends Controller
 
     public function updateRequestapp(Request $request)
     {
-        $data = Leave_managament::find($request->id);
+        // $data = Leave_managament::find($request->leave_id);
     }
 
     public function deleteRequestapp($id)
     {
+        // dd($id);
         $data = Leave_managament::find($id);
         $data->delete();
 

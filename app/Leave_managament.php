@@ -6,8 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Leave_managament extends Model
 {
-    protected $fillable = ['id_employee','id_leave_type','start_leave','end_leave','remak','status','created_by','updated_by'];
-
+    protected $table = 'leave_det_emp';
+   protected $guarded =[];
     public function Employee()
     {
         return $this->belongsTo('App\Employee', 'id_employee', 'id');

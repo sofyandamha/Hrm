@@ -11,13 +11,14 @@
           <h4>Edit Request Leave</h4>
         </div>
         <div class="card-body">
-            <form action="{{route('insert_requestApp')}}" method="post">
+            <form action="{{route('update_requestApp')}}" method="post">
                     @csrf
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
+                            <input type="hidden" name="leave_id" value="{{ $edit_requestApp->id }}">
                                 <label for="name">Employee Name :</label>
-                                <select name="employee_name" class="form-control
+                                <select name="employee_id" class="form-control
                                 @if (!Auth()->user()->id)
                                     selected
                                 @endif">
@@ -44,7 +45,7 @@
                                 <option value=""></option>
                                 @foreach ($leave_type as $leave_types)
                                     <option value="{{ $leave_types->id }}"
-                                        @if ($edit_requestApp->id == $leave_types->id)
+                                        @if ($edit_requestApp->id_leave_type == $leave_types->id)
                                             selected
                                         @endif>
                                         {{ $leave_types->leave_type }}
@@ -73,7 +74,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="remak">Remak</label>
-                            <textarea name="remak" class="form-control">{{ $edit_requestApp->remak }}</textarea>
+                            <textarea name="remak" class="form-control">{{ $edit_requestApp->remarks }}</textarea>
                         </div>
                     </div>
                 </div>
