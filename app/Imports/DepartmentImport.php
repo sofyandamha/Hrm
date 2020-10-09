@@ -32,13 +32,16 @@ class DepartmentImport implements ToCollection
                         $is_office_hour = 1;
                        }
 
-                      $check = Department::where('name', $row[1])->where('is_officeHour', $is_office_hour)->get();
+                      $check = Department::where('name', $row[1])->get();
                       if (count($check)>0) {
-                          # code...
+                          $dataDept = Department::find($check->id);
+                          $dataDept->name = $row[5];
+                          $dataDept->is_officeHour = $is_officeHour;
+                          $dataDept->save();
                       } else {
                           Department::create([
                               'name' => $row[5],
-                              'is_officeHour' => $is_office_hour
+                              'is_officeHour' => $is_officeHour
                           ]);
                       }
 

@@ -30,32 +30,42 @@ class EmployeeImport implements ToCollection
         foreach($collection as $key => $row)
         {
             if($key>=1){
+
                 // dd($collection);
-                // $bagian = Designation::where('name', $row[4])->get();
-                // if ($bagian->count()>0) {
+                $bagian = Designation::where('name', $row[4])->get();
+                if ($bagian->count()>0) {
+                    $design = Designation::where('name',$row[4])->first();
+                    $id_dept = 0;
+                    foreach ($dept as $deptRow) {
+                       if ($deptRow->name == $row[5]) {
+                        $id_dept = $deptRow->id;
+                       }
+                    }
+                    $design->name=$row[4];
+                    $design->idDepartment=$id_dept;
+                    $design->save();
+                } else {
+                    $id_dept = 0;
+                    foreach ($dept as $deptRow) {
+                       if ($deptRow->name == $row[5]) {
+                        $id_dept = $deptRow->id;
+                       }
+                    }
+                    $bag = new Designation;
+                    $bag->name = $row[4];
+                    $bag->idDepartment = $id_dept;
+                    $bag->save();
+                }
 
-                // } else {
-                //     $id_dept = 0;
-                //     foreach ($dept as $deptRow) {
-                //        if ($deptRow->name == $row[5]) {
-                //         $id_dept = $deptRow->id;
-                //        }
-                //     }
-                //     $bag = new Designation;
-                //     $bag->name = $row[4];
-                //     $bag->idDepartment = $id_dept;
-                //     $bag->save();
-                // }
+                $role = Role::where('name', $row[2])->get();
+                if ($role->count()>0) {
 
-                // $role = Role::where('name', $row[2])->get();
-                // if ($role->count()>0) {
-
-                // } else {
-                //     $bag = new Role;
-                //     $bag->name = $row[2];
-                //     $bag->guard_name = 'web';
-                //     $bag->save();
-                // }
+                } else {
+                    $bag = new Role;
+                    $bag->name = $row[2];
+                    $bag->guard_name = 'web';
+                    $bag->save();
+                }
 
 
                     $data =  Employee::where('scan_id', $row[0])
