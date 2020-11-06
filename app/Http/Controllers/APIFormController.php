@@ -6,8 +6,11 @@ use App\Employee;
 use Carbon\Carbon;
 use App\Leave_type;
 use App\LeaveDetEmp;
-use Illuminate\Http\Request;
+use App\LngLat;
+use App\AttLogAndroid;
 use Carbon\CarbonPeriod;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class APIFormController extends Controller
 {
@@ -140,4 +143,57 @@ class APIFormController extends Controller
 
         return $dataHistoryForm;
     }
+
+    public function getAttendanceNow(Request $request)
+    {
+        // dd($request->tgl);
+        $scanid = $request->nik;
+        $tgl = $request->tgl;
+             $data = DB::select(DB::raw("
+        SELECT src.nik, src.tgl, min(src.ScanMasuk) AS scanIn, max(src.ScanKeluar)AS scanOut FROM (
+            SELECT nik, STR_TO_DATE(scan_at, '%Y-%m-%d') AS tgl,
+                case
+                    when STATUS = 1 then DATE_FORMAT(STR_TO_DATE(scan_at, '%Y-%m-%d %H:%i'), '%H:%i')
+                END AS 'ScanMasuk',
+                case
+                    when STATUS = 2 then DATE_FORMAT(STR_TO_DATE(scan_at, '%Y-%m-%d %H:%i'), '%H:%i')
+                END AS 'ScanKeluar'
+                FROM attlog_android GROUP BY nik, scan_at, STATUS
+                ) src
+                WHERE src.nik = $scanid AND src.tgl = '$tgl'
+                GROUP BY src.nik, src.tgl
+        "));
+       return $data;
+    }
+
+    public function getLngLat(Request $request)
+    {
+        $scanid = $request->nik;
+        $dataEmp =  Employee::where('nik',  $scanid)->first();
+        $dataLocation = LngLat::find($dataEmp->location_office_id);   
+        return $dataLocation;
+    }
+
+    public function signIn(Request $request)
+    {
+        $data =  AttLogAndroid::create([
+            "nik"=> $request->nik,
+            "scan_at"=> $request->scan_at,
+            "latitude"=> $request->lat,
+            "longtitude"=> $request->long,
+            "status"=> 1,
+        ]);
+    }
+
+    public function signOut(Request $request)
+    {
+        $data =  AttLogAndroid::create([
+            "nik"=> $request->nik,
+            "scan_at"=> $request->scan_at,
+            "latitude"=> $request->lat,
+            "longtitude"=> $request->long,
+            "status"=> 2,
+        ]);
+    }
+    
 }

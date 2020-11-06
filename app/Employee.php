@@ -3,8 +3,10 @@
 namespace App;
 
 // use Illuminate\Database\Eloquent\Model;
+use App\LngLat;
 use App\Employee;
 use App\Schedule;
+use Carbon\Carbon;
 use App\Department;
 use App\LeaveDetEmp;
 use Spatie\Permission\Traits\HasRoles;
@@ -17,12 +19,16 @@ class Employee extends Authenticatable
     use HasRoles;
 
     protected $table = 'employees';
-    protected $fillable = ['id','email','password','scan_id', 'jabatan','full_name','nik','birth_date','id_status','id_designation','is_supervisor'];
+    protected $fillable = ['id','email','password','scan_id', 'jabatan','full_name','nik','birth_date','id_status','location_office_id','id_designation','is_supervisor','join_date'];
     // protected $primaryKey = 'scan_id';
 
     public function Designation()
     {
         return $this->belongsTo(Designation::class,'id_designation','id');
+    }
+    public function LngLat()
+    {
+        return $this->belongsTo(LngLat::class,'location_office_id','id');
     }
 
     public function Attendance()

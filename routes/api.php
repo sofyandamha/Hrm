@@ -28,3 +28,8 @@ Route::post('/formIznTdkMsk', 'APIFormController@formIznTdkMsk');
 Route::post('/formAbsnMnl', 'APIFormController@formAbsnMnl');
 Route::get('/getLeaveType', 'APIFormController@getLeaveType');
 Route::post('/getHistoryForm', 'APIFormController@getHistoryForm');
+Route::post('/getAttendanceNow', 'APIFormController@getAttendanceNow');
+Route::post('/getLngLat', 'APIFormController@getLngLat');
+Route::post('/signIn', 'APIFormController@signIn');
+Route::post('/signOut', 'APIFormController@signOut');
+

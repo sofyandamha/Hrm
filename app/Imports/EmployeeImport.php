@@ -32,6 +32,8 @@ class EmployeeImport implements ToCollection
             if($key>=1){
 
                 // dd($collection);
+            $datejoin = Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row[7]));
+            $join_date = Carbon::parse($datejoin)->format('Y-m-d');
                 $bagian = Designation::where('name', $row[4])->get();
                 if ($bagian->count()>0) {
                     $design = Designation::where('name',$row[4])->first();
@@ -73,6 +75,9 @@ class EmployeeImport implements ToCollection
 
                    if($data->count() >0)
                    {
+                    $affected = DB::table('employees')
+                    ->where('scan_id', $row[0])
+                    ->update(['join_date' => $join_date]);
                    }
                    else{
                     foreach ($designation as $design) {
@@ -88,6 +93,7 @@ class EmployeeImport implements ToCollection
                     $bag->is_supervisor = $row[6];
                     $bag->cabang = $row[3];
                     $bag->password = bcrypt('secret');
+                    $bag->join_date =  $join_date;
                     $bag->save();
 
                     foreach ($role as $rol) {

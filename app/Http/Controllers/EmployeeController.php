@@ -28,30 +28,12 @@ class EmployeeController extends Controller
 
     public function index(Request $request)
     {
-        // $data = Employee::orderBy('full_name', 'asc');
-        // $data = DB::select('SELECT c.`scan_id`,c.`full_name`,c.`id_designation`,c.`address`,c.`nik`,c.`birth_date`,c.`id_status`,c.`created_by`,b.id FROM model_has_roles a
-		// JOIN roles b ON a.role_id = b.id
-        // JOIN `employees` c ON a.model_id = c.`id`');
         $role = Role::all();
         $designation = Designation::all();
-        $data = DB::table('employees')
-        ->leftJoin('model_has_roles', 'model_has_roles.model_id', '=', 'employees.id')
-        ->leftJoin('roles', 'model_has_roles.role_id', '=', 'roles.id')
-        ->select('employees.id as idemp','employees.is_supervisor', 'employees.scan_id', 'employees.full_name', 'employees.id_designation','employees.address','employees.nik','employees.birth_date','employees.id_status','employees.created_by','roles.id');
-        if ($request->r) {
-            // $data->where('full_name','like', '%'.$request->r.'%')
-            //      ->orWhere('scan_id','like', '%'.$request->r.'%')
-            //      ->orWhereHas('Department', function ($query) use ($request) {
-            //         $query->Where('name', 'like', '%' . $request->r . '%');
-            //     });
-            $data = DB::table('employees')
-                    ->leftJoin('model_has_roles', 'model_has_roles.model_id', '=', 'employees.id')
-                    ->leftJoin('roles', 'model_has_roles.role_id', '=', 'roles.id')
-                    ->leftJoin('designation','employees.id_designation','=','designation.id')
-                    ->select('employees.id as idemp', 'employees.scan_id', 'employees.full_name', 'employees.id_designation','employees.address','employees.nik','employees.birth_date','employees.id_status','employees.created_by','roles.id','designation.name')
-                    ->where('full_name','like','%'.$request->r.'%')
-                    ->orWhere('scan_id','like','%'.$request->r.'%')
-                    ->orWhere('designation.name','like','%'.$request->r.'%');
+        $data = Employee::orderBy('scan_id','desc');
+         if ($request->r) {
+            $data = Employee::where('full_name', 'like','%'.$request->r.'%')
+                            ->orWhere('scan_id','%'.$request->r.'%');
         }
 
         if ($request->has('page') ? $request->get('page') : 1) {

@@ -90,7 +90,8 @@ class APIAbsensiReport extends Controller
 		MAX(src.JamMasukMaksimal) AS JamMasukMax , MIN(src.JamKeluarMinimal) AS JamKelMin, MAX(src.JamKeluarMaksimal) AS JamKelMax,
 			MIN(src.JamMasukMinimal) AS JamMasukMinFix,
 			 IFNULL(MAX(src.JamKeluarMaksimal), MAX(src.JamMasukMaksimal)) AS JamKelMaxFix
-			FROM (SELECT scan_id, STR_TO_DATE(tgl, '%Y-%m-%d') AS tglku,
+			FROM (
+				SELECT scan_id, STR_TO_DATE(tgl, '%Y-%m-%d') AS tglku,
 		case
 			when status = 0 then MIN(DATE_FORMAT(STR_TO_DATE(tgl, '%Y-%m-%d %H:%i'), '%H:%i'))
 		END AS 'JamMasukMinimal',
@@ -106,7 +107,8 @@ class APIAbsensiReport extends Controller
 		from
 				attlog
 		GROUP BY
-			scan_id, tgl, STATUS) src where  src.scan_id = $scanid and src.tglku like '$month%'
+			scan_id, tgl, STATUS
+			) src where  src.scan_id = $scanid and src.tglku like '$month%'
 			GROUP BY src.scan_id , src.tglku;
         "));
        return $data;

@@ -45,7 +45,7 @@
                     <th>Employee Name</th>
                     <th>Designation - Department Name</th>
                     <th>Address</th>
-                    <th>Birthday</th>
+                    <th>Join Date</th>
                     <th>Status</th>
                     <th>Created By</th>
                     <th>Action</th>
@@ -81,12 +81,25 @@
                         @endforeach
                     </td>
                     <td>{{ $row->address }}</td>
-                    <td>{{ $row->birth_date }}</td>
+                    @php
+                        $date1 = $row->join_date;
+                        $date2 = date('y-m-d');
+
+                        $diff = abs(strtotime($date2) - strtotime($date1));
+
+                        $years = floor($diff / (365*60*60*24));
+                        $months = floor(($diff - $years * 365*60*60*24) / (30*60*60*24));
+                        $days = floor(($diff - $years * 365*60*60*24 - $months*30*60*60*24)/ (60*60*24));
+                    @endphp 
+
+                    <td>
+                    <button class="btn btn-primary" dta-toggle="tooltip" data-placement="top" title="{{$years}} Tahun {{$months}} Bulan {{$days}} Hari."">{{ $row->join_date }}</button>
+                    </td>
                     <td></td>
                     <td>{{$row->created_by}}</td>
                     <td>
                         <a class="btn btn-warning" href="{{route('edit_employee',$row->scan_id)}}"><i class="fas fa-edit"></i></a>
-                        <a class="btn btn-danger" href="{{route('delete_employee',$row->idemp)}}"><i class="fas fa-trash"></i></a>
+                        <a class="btn btn-danger" href="{{route('delete_employee',$row->id)}}"><i class="fas fa-trash"></i></a>
                     </td>
                 </tr>
               @endforeach
