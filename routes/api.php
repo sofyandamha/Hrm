@@ -24,6 +24,7 @@ Route::post('/getAbsensiMonth', 'APIAbsensiReport@getAbsensi');
 Route::post('/getAbsensiMonthEmp', 'APIAbsensiReport@getAbsensiEmp');
 Route::post('/getAbsensiLogMonthEmp', 'APIAbsensiReport@getAbsensiLogMonthEmp');
 Route::get('/getOtentikasiEmployee', 'APIAbsensiReport@getOtentikasiEmployee');
+Route::post('/regisOtentikasiHrd', 'APIAbsensiReport@regisOtentikasiHrd');
 Route::post('/formTgsLr', 'APIFormController@formTgsLr');
 Route::post('/formIznTdkMsk', 'APIFormController@formIznTdkMsk');
 Route::post('/formAbsnMnl', 'APIFormController@formAbsnMnl');

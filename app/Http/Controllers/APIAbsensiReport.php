@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Employee;
+use App\ImeiDevice;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -131,5 +132,24 @@ class APIAbsensiReport extends Controller
 		}
 	}
 	
+	public function regisOtentikasiHrd(Request $request)
+	{
+		$nikEmployee = $request->nikEmployee;
+		$dataEmployee = Employee::where('nik', $nikEmployee)->first();
+
+		if(isset($dataEmployee)){
+			foreach($request->imei as $imeis){
+				$dataImei = ImeiDevice::create([
+					'id_employee' => $dataEmployee->id,
+					'imei' => $imeis,
+				]);
+			}
+
+			return response()->json([
+				'success' => true,
+				'message' => 'Register Berhasil...',
+			], 200);
+		}
+	}
 
 }
