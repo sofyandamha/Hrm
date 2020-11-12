@@ -141,6 +141,18 @@ class APIFormController extends Controller
         $id_emp = Employee::where('scan_id', $request->scan_id)->first();
         $dataHistoryForm = LeaveDetEmp::where('id_emp', $id_emp->id)->get();
 
+        if(count($dataHistoryForm) > 0){
+            return response()->json([
+                'success' => true,
+                'data' => $dataHistoryForm,
+            ], 200);
+        }else{
+            return response()->json([
+                'success' => false,
+                'message' => "Data Tidak Ada",
+            ], 404);
+        }
+
         return $dataHistoryForm;
     }
 

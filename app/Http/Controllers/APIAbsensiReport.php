@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Employee;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -112,6 +113,23 @@ class APIAbsensiReport extends Controller
 			GROUP BY src.scan_id , src.tglku;
         "));
        return $data;
+	}
 
-    }
+	public function getOtentikasiEmployee()
+	{
+		$dataEmployee = Employee::whereDoesntHave('ImeiDevice')->orderBy('full_name', 'ASC')->get();
+		if(isset($dataEmployee)){
+			return response()->json([
+				'success' => true,
+				'data' => $dataEmployee,
+			]);
+		}else{
+			return response()->json([
+				'success' => false,
+				'message' => 'Data Tidak Ada',
+			], 404);
+		}
+	}
+	
+
 }

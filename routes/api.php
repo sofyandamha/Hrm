@@ -23,6 +23,7 @@ Route::get('/bulkAttendanceku', 'AttendanceController@importabsensi');
 Route::post('/getAbsensiMonth', 'APIAbsensiReport@getAbsensi');
 Route::post('/getAbsensiMonthEmp', 'APIAbsensiReport@getAbsensiEmp');
 Route::post('/getAbsensiLogMonthEmp', 'APIAbsensiReport@getAbsensiLogMonthEmp');
+Route::get('/getOtentikasiEmployee', 'APIAbsensiReport@getOtentikasiEmployee');
 Route::post('/formTgsLr', 'APIFormController@formTgsLr');
 Route::post('/formIznTdkMsk', 'APIFormController@formIznTdkMsk');
 Route::post('/formAbsnMnl', 'APIFormController@formAbsnMnl');
@@ -32,4 +33,6 @@ Route::post('/getAttendanceNow', 'APIFormController@getAttendanceNow');
 Route::post('/getLngLat', 'APIFormController@getLngLat');
 Route::post('/signIn', 'APIFormController@signIn');
 Route::post('/signOut', 'APIFormController@signOut');
+Route::post('/getImeiDevice', 'ImeiDeviceController@getImei');
+Route::post('/loginOtentikasiHrd', 'ImeiDeviceController@loginOtentikasiHrd');
 

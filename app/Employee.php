@@ -8,6 +8,7 @@ use App\Employee;
 use App\Schedule;
 use Carbon\Carbon;
 use App\Department;
+use App\ImeiDevice;
 use App\LeaveDetEmp;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
@@ -48,5 +49,10 @@ class Employee extends Authenticatable
     public function model_has_role(){
         return $this->hasOne(Model_has_role::class,'model_id','id');
 
+    }
+
+    public function ImeiDevice()
+    {
+        return $this->hasMany(ImeiDevice::class, 'id_employee', 'id');
     }
 }
