@@ -108,6 +108,28 @@ class ImeiDeviceController extends Controller
         }
     }
 
+    public function loginUser(Request $request)
+    {
+        $dataNik = Employee::where('nik', $request->nikEmployee)->first();
+        $tmpNik = $dataNik->id;
+        $dataUser = Employee::whereHas('ImeiDevice', function($query) use ($tmpNik){
+            $query->where('id_employee', $tmpNik);
+        })->get();
+
+        if(count($dataUser) > 0){
+            return response()->json([
+                'success' => true,
+                'data' => $dataUser,
+                'message' => 'Anda Terdaftar',
+            ], 200);
+        }else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Anda Belum Terdaftar',
+            ], 404);
+        }
+    }
+
     public function getImei(Request $request){
         $imei = $request->imei;
         

@@ -36,4 +36,5 @@ Route::post('/signIn', 'APIFormController@signIn');
 Route::post('/signOut', 'APIFormController@signOut');
 Route::post('/getImeiDevice', 'ImeiDeviceController@getImei');
 Route::post('/loginOtentikasiHrd', 'ImeiDeviceController@loginOtentikasiHrd');
+Route::post('/loginUser', 'ImeiDeviceController@loginUser');
 

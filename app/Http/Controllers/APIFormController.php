@@ -133,7 +133,17 @@ class APIFormController extends Controller
     {
         $data = Leave_type::where('id', '!=', 5)->get();
 
-        return $data;
+        if(count($data) > 0){
+            return response()->json([
+                'success' => true,
+                'data' => $data,
+            ], 200);
+        }else{
+            return response()->json([
+                'success' => false,
+                'message' => "Data Tidak Ada",
+            ], 404);
+        }
     }
 
     public function getHistoryForm(Request $request)
@@ -152,8 +162,6 @@ class APIFormController extends Controller
                 'message' => "Data Tidak Ada",
             ], 404);
         }
-
-        return $dataHistoryForm;
     }
 
     public function getAttendanceNow(Request $request)
@@ -161,7 +169,7 @@ class APIFormController extends Controller
         // dd($request->tgl);
         $scanid = $request->nik;
         $tgl = $request->tgl;
-             $data = DB::select(DB::raw("
+        $data = DB::select(DB::raw("
         SELECT src.nik, src.tgl, min(src.ScanMasuk) AS scanIn, max(src.ScanKeluar)AS scanOut FROM (
             SELECT nik, STR_TO_DATE(scan_at, '%Y-%m-%d') AS tgl,
                 case
@@ -175,14 +183,36 @@ class APIFormController extends Controller
                 WHERE src.nik = $scanid AND src.tgl = '$tgl'
                 GROUP BY src.nik, src.tgl
         "));
-       return $data;
+        if(count($data) > 0){
+            return response()->json([
+                'success' => true,
+                'data' => $data,
+                'message' => 'Data Ada',
+            ], 200);
+        }else{
+            return response()->json([
+                'success' => false,
+                'message' => 'Data Tidak Ada',
+            ], 404);
+        }
     }
 
     public function getLngLat(Request $request)
     {
         $scanid = $request->nik;
         $dataEmp =  Employee::where('nik',  $scanid)->first();
-        $dataLocation = LngLat::find($dataEmp->location_office_id);   
+        if(isset($dataEmp)){
+            $dataLocation = LngLat::find($dataEmp->location_office_id);
+            return response()->json([
+                'success' => true,
+                'data' => [$dataLocation],
+            ],200);
+        }else{
+            return response()->json([
+                'success' => false,
+                'message' => 'Data Tida Ada',
+            ],404);
+        }
         return $dataLocation;
     }
 
