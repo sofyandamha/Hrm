@@ -187,7 +187,6 @@ class APIFormController extends Controller
             return response()->json([
                 'success' => true,
                 'data' => $data,
-                'message' => 'Data Ada',
             ], 200);
         }else{
             return response()->json([
@@ -218,24 +217,49 @@ class APIFormController extends Controller
 
     public function signIn(Request $request)
     {
-        $data =  AttLogAndroid::create([
-            "nik"=> $request->nik,
-            "scan_at"=> $request->scan_at,
-            "latitude"=> $request->lat,
-            "longtitude"=> $request->long,
-            "status"=> 1,
-        ]);
+        if(isset($request->nik) || isset($request->scan_at) || isset($request->lat) || isset($request->long)){
+            $data =  AttLogAndroid::create([
+                "nik"=> $request->nik,
+                "scan_at"=> $request->scan_at,
+                "latitude"=> $request->lat,
+                "longtitude"=> $request->long,
+                "status"=> 1,
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Scan Berhasil',
+            ], 200);
+        }else{
+            return response()->json([
+                'success' => false,
+                'message' => 'Scan Gagal',
+            ], 404);
+        }
     }
 
     public function signOut(Request $request)
     {
-        $data =  AttLogAndroid::create([
-            "nik"=> $request->nik,
-            "scan_at"=> $request->scan_at,
-            "latitude"=> $request->lat,
-            "longtitude"=> $request->long,
-            "status"=> 2,
-        ]);
+
+        if(isset($request->nik) || isset($request->scan_at) || isset($request->lat) || isset($request->long)){
+            $data =  AttLogAndroid::create([
+                "nik"=> $request->nik,
+                "scan_at"=> $request->scan_at,
+                "latitude"=> $request->lat,
+                "longtitude"=> $request->long,
+                "status"=> 2,
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Scan Berhasil',
+            ], 200);
+        }else{
+            return response()->json([
+                'success' => false,
+                'message' => 'Scan Gagal',
+            ], 404);
+        }
     }
     
 }
