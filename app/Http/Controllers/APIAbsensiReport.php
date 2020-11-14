@@ -38,28 +38,29 @@ class APIAbsensiReport extends Controller
 				when MIN(src.JamMasukMinimal) IS not NULL then MIN(src.JamMasukMinimal)
 			END AS JamMasukMinFix,
 				 IFNULL(MAX(src.JamKeluarMaksimal), MAX(src.JamMasukMaksimal)) AS JamKelMaxFix
-				FROM (SELECT scan_id, STR_TO_DATE(tgl, '%Y-%m-%d') AS tglku,
-			case
-				when status = 0 then MIN(DATE_FORMAT(STR_TO_DATE(tgl, '%Y-%m-%d %H:%i'), '%H:%i'))
-			END AS 'JamMasukMinimal',
-			case
-				when status = 0 then MAX(DATE_FORMAT(STR_TO_DATE(tgl, '%Y-%m-%d %H:%i'), '%H:%i'))
-			END AS 'JamMasukMaksimal',
-			case
-				when status = 1 then MIN(DATE_FORMAT(STR_TO_DATE(tgl, '%Y-%m-%d %H:%i'), '%H:%i'))
-			END AS 'JamKeluarMinimal',
-			case
-				when status = 1 then MAX(DATE_FORMAT(STR_TO_DATE(tgl, '%Y-%m-%d %H:%i'), '%H:%i'))
-			END AS 'JamKeluarMaksimal'
-			from
-					attlog
-			GROUP BY
-				scan_id, tgl, STATUS) src
+				FROM (
+					SELECT nik as scan_id, DATE_FORMAT(scan_at, '%Y-%m-%d') AS tglku,
+		case
+			when status = 0 then MIN(DATE_FORMAT(scan_at, '%H:%i'))
+		END AS 'JamMasukMinimal',
+		case
+			when status = 0 then MAX(DATE_FORMAT(scan_at, '%H:%i'))
+		END AS 'JamMasukMaksimal',
+		case
+			when status = 1 then MIN(DATE_FORMAT(scan_at, '%H:%i'))
+		END AS 'JamKeluarMinimal',
+		case
+			when status = 1 then MAX(DATE_FORMAT(scan_at, '%H:%i'))
+		END AS 'JamKeluarMaksimal'
+		from
+				attlog_android
+		GROUP BY
+			nik, scan_at, STATUS) src
 				GROUP BY src.scan_id , src.tglku
 				) src1
 		JOIN schedules sched
 			left JOIN leave_types lt ON lt.id = sched.`status`
-				WHERE sched.id_emp = src1.scan_id AND  sched.date_work = src1.tglku and src1.scan_id = $scanid and src1.tglku LIKE '$month%'
+				WHERE sched.id_emp = src1.scan_id AND  sched.date_work = src1.tglku  and src1.scan_id = $scanid and src1.tglku LIKE '$month%'
         "));
        return $data;
 
@@ -70,15 +71,15 @@ class APIAbsensiReport extends Controller
         $scanid = $request->nik;
         $month = $request->month;
         $data = DB::select(DB::raw("
-        SELECT scan_id , DATE_FORMAT(STR_TO_DATE(tgl, '%Y-%m-%d %H:%i'),'%Y-%m-%d') as tglku, DATE_FORMAT(STR_TO_DATE(tgl, '%Y-%m-%d %H:%i'), '%H:%i') AS Jam, STATUS,
+        SELECT nik AS scan_id, scan_at as tglku, DATE_FORMAT(scan_at, '%H:%i') AS Jam, STATUS,
 		case
 			when status = 0 then 'Absen Masuk'
 			when STATUS = 1 then 'Absen Keluar'
 		END AS 'Keterangan'
 		from
-				attlog WHERE scan_id =  $scanid and tgl LIKE '$month%'
+				attlog_android  WHERE nik = $scanid  and scan_at LIKE '$month%'
 		GROUP BY
-            scan_id, tgl, status;
+            nik, scan_at, status;
         "));
        return $data;
     }
@@ -88,28 +89,29 @@ class APIAbsensiReport extends Controller
         $scanid = $request->nik;
         $month = $request->month;
         $data = DB::select(DB::raw("
-        SELECT src.scan_id , src.tglku, MIN(src.JamMasukMinimal) AS JamMasukMin ,
+        SELECT
+		src.scan_id , src.tglku, MIN(src.JamMasukMinimal) AS JamMasukMin ,
 		MAX(src.JamMasukMaksimal) AS JamMasukMax , MIN(src.JamKeluarMinimal) AS JamKelMin, MAX(src.JamKeluarMaksimal) AS JamKelMax,
 			MIN(src.JamMasukMinimal) AS JamMasukMinFix,
 			 IFNULL(MAX(src.JamKeluarMaksimal), MAX(src.JamMasukMaksimal)) AS JamKelMaxFix
 			FROM (
-				SELECT scan_id, STR_TO_DATE(tgl, '%Y-%m-%d') AS tglku,
+				SELECT nik as scan_id, DATE_FORMAT(scan_at, '%Y-%m-%d') AS tglku,
 		case
-			when status = 0 then MIN(DATE_FORMAT(STR_TO_DATE(tgl, '%Y-%m-%d %H:%i'), '%H:%i'))
+			when status = 0 then MIN(DATE_FORMAT(scan_at, '%H:%i'))
 		END AS 'JamMasukMinimal',
 		case
-			when status = 0 then MAX(DATE_FORMAT(STR_TO_DATE(tgl, '%Y-%m-%d %H:%i'), '%H:%i'))
+			when status = 0 then MAX(DATE_FORMAT(scan_at, '%H:%i'))
 		END AS 'JamMasukMaksimal',
 		case
-			when status = 1 then MIN(DATE_FORMAT(STR_TO_DATE(tgl, '%Y-%m-%d %H:%i'), '%H:%i'))
+			when status = 1 then MIN(DATE_FORMAT(scan_at, '%H:%i'))
 		END AS 'JamKeluarMinimal',
 		case
-			when status = 1 then MAX(DATE_FORMAT(STR_TO_DATE(tgl, '%Y-%m-%d %H:%i'), '%H:%i'))
+			when status = 1 then MAX(DATE_FORMAT(scan_at, '%H:%i'))
 		END AS 'JamKeluarMaksimal'
 		from
-				attlog
+				attlog_android
 		GROUP BY
-			scan_id, tgl, STATUS
+			nik, scan_at, STATUS
 			) src where  src.scan_id = $scanid and src.tglku like '$month%'
 			GROUP BY src.scan_id , src.tglku;
         "));
@@ -131,7 +133,7 @@ class APIAbsensiReport extends Controller
 			], 404);
 		}
 	}
-	
+
 	public function regisOtentikasiHrd(Request $request)
 	{
 		$nikEmployee = $request->nikEmployee;
