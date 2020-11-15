@@ -125,6 +125,7 @@ class ImeiDeviceController extends Controller
         }else {
             return response()->json([
                 'success' => false,
+                'data' => $dataUser,
                 'message' => 'Anda Belum Terdaftar',
             ], 404);
         }
