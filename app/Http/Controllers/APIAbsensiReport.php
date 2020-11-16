@@ -61,8 +61,19 @@ class APIAbsensiReport extends Controller
 		JOIN schedules sched
 			left JOIN leave_types lt ON lt.id = sched.`status`
 				WHERE sched.id_emp = src1.scan_id AND  sched.date_work = src1.tglku  and src1.scan_id = $scanid and src1.tglku LIKE '$month%'
-        "));
-       return $data;
+		"));
+		
+		if(count($data) > 0){
+			return response()->json([
+				'success' => true,
+				'data' => $data,
+			],200);
+		}else{
+			return response()->json([
+				'success' => false,
+				'data' => $data,
+			],404);
+		}
 
     }
 
@@ -80,8 +91,19 @@ class APIAbsensiReport extends Controller
 				attlog_android  WHERE nik = $scanid  and scan_at LIKE '$month%'
 		GROUP BY
             nik, scan_at, status;
-        "));
-       return $data;
+		"));
+		
+		if(count($data) > 0){
+			return response()->json([
+				'success' => true,
+				'data' => $data,
+			],200);
+		}else{
+			return response()->json([
+				'success' => false,
+				'data' => $data,
+			],404);
+		}
     }
 
     public function getAbsensiEmp(Request $request)
@@ -114,8 +136,19 @@ class APIAbsensiReport extends Controller
 			nik, scan_at, STATUS
 			) src where  src.scan_id = $scanid and src.tglku like '$month%'
 			GROUP BY src.scan_id , src.tglku;
-        "));
-       return $data;
+		"));
+		
+		if(count($data) > 0){
+			return response()->json([
+				'success' => true,
+				'data' => $data,
+			],200);
+		}else{
+			return response()->json([
+				'success' => false,
+				'data' => $data,
+			],404);
+		}
 	}
 
 	public function getOtentikasiEmployee()
