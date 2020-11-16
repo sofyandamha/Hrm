@@ -112,8 +112,15 @@ class LeaveManagamentController extends Controller
     {
         $employee = Employee::all();
         $leave_type = Leave_type::whereIn('id', ["1","2","3","4","7","8"])->get();
+        $getTotalCuti = LeaveDetEmp::groupBy('id_emp','status', 'year')
+        ->selectRaw('sum(totalhari) as total')
+        ->where('status', 1)
+        ->where('year', date('Y'))
+        ->where('id_emp', Auth()->user()->id)
+        ->first();
+        $totalCuti = isset($getTotalCuti->total) ? $getTotalCuti->total : 0;
         // dd($leave_type);
-        return view('leave.request.add', compact('employee','leave_type'));
+        return view('leave.request.add', compact('employee','leave_type','totalCuti'));
     }
     public function checkRequestapp(Request $request)
     {

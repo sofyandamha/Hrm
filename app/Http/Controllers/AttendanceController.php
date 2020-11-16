@@ -61,30 +61,31 @@ class AttendanceController extends Controller
                         when MIN(src.JamMasukMinimal) IS not NULL then MIN(src.JamMasukMinimal)
                     END AS JamMasukMinFix,
                         IFNULL(MAX(src.JamKeluarMaksimal), MAX(src.JamMasukMaksimal)) AS JamKelMaxFix
-                        FROM (SELECT scan_id, STR_TO_DATE(tgl, '%Y-%m-%d') AS tglku,
-                    case
-                        when status = 0 then MIN(DATE_FORMAT(STR_TO_DATE(tgl, '%Y-%m-%d %H:%i'), '%H:%i'))
-                    END AS 'JamMasukMinimal',
-                    case
-                        when status = 0 then MAX(DATE_FORMAT(STR_TO_DATE(tgl, '%Y-%m-%d %H:%i'), '%H:%i'))
-                    END AS 'JamMasukMaksimal',
-                    case
-                        when status = 1 then MIN(DATE_FORMAT(STR_TO_DATE(tgl, '%Y-%m-%d %H:%i'), '%H:%i'))
-                    END AS 'JamKeluarMinimal',
-                    case
-                        when status = 1 then MAX(DATE_FORMAT(STR_TO_DATE(tgl, '%Y-%m-%d %H:%i'), '%H:%i'))
-                    END AS 'JamKeluarMaksimal'
-                    from
-                            attlog
-                    GROUP BY
-                        scan_id, tgl, STATUS) src
+                        FROM (
+                            SELECT nik as scan_id, DATE_FORMAT(scan_at, '%Y-%m-%d') AS tglku,
+                case
+                    when status = 0 then MIN(DATE_FORMAT(scan_at, '%H:%i'))
+                END AS 'JamMasukMinimal',
+                case
+                    when status = 0 then MAX(DATE_FORMAT(scan_at, '%H:%i'))
+                END AS 'JamMasukMaksimal',
+                case
+                    when status = 1 then MIN(DATE_FORMAT(scan_at, '%H:%i'))
+                END AS 'JamKeluarMinimal',
+                case
+                    when status = 1 then MAX(DATE_FORMAT(scan_at, '%H:%i'))
+                END AS 'JamKeluarMaksimal'
+                from
+                        attlog_android
+                GROUP BY
+                    nik, scan_at, STATUS) src
                         GROUP BY src.scan_id , src.tglku
                         ) src1
                 JOIN schedules sched
                     left JOIN leave_types lt ON lt.id = sched.`status`
-                        WHERE sched.id_emp = src1.scan_id AND  sched.date_work = src1.tglku
-                        and src1.scan_id = $scan_id and src1.tglku LIKE '$date_att%'
-                                "));
+                WHERE sched.id_emp = src1.scan_id AND  sched.date_work = src1.tglku  and src1.scan_id = $scanid and src1.tglku LIKE '$date_att%'
+
+            "));
             }
             if ($request->scan_id == null && $request->date_attendance != null) { //cuma date
                 $date_att =$request->date_attendance;
@@ -112,28 +113,29 @@ class AttendanceController extends Controller
                         when MIN(src.JamMasukMinimal) IS not NULL then MIN(src.JamMasukMinimal)
                     END AS JamMasukMinFix,
                         IFNULL(MAX(src.JamKeluarMaksimal), MAX(src.JamMasukMaksimal)) AS JamKelMaxFix
-                        FROM (SELECT scan_id, STR_TO_DATE(tgl, '%Y-%m-%d') AS tglku,
-                    case
-                        when status = 0 then MIN(DATE_FORMAT(STR_TO_DATE(tgl, '%Y-%m-%d %H:%i'), '%H:%i'))
-                    END AS 'JamMasukMinimal',
-                    case
-                        when status = 0 then MAX(DATE_FORMAT(STR_TO_DATE(tgl, '%Y-%m-%d %H:%i'), '%H:%i'))
-                    END AS 'JamMasukMaksimal',
-                    case
-                        when status = 1 then MIN(DATE_FORMAT(STR_TO_DATE(tgl, '%Y-%m-%d %H:%i'), '%H:%i'))
-                    END AS 'JamKeluarMinimal',
-                    case
-                        when status = 1 then MAX(DATE_FORMAT(STR_TO_DATE(tgl, '%Y-%m-%d %H:%i'), '%H:%i'))
-                    END AS 'JamKeluarMaksimal'
-                    from
-                            attlog
-                    GROUP BY
-                        scan_id, tgl, STATUS) src
+                        FROM (
+                            SELECT nik as scan_id, DATE_FORMAT(scan_at, '%Y-%m-%d') AS tglku,
+                case
+                    when status = 0 then MIN(DATE_FORMAT(scan_at, '%H:%i'))
+                END AS 'JamMasukMinimal',
+                case
+                    when status = 0 then MAX(DATE_FORMAT(scan_at, '%H:%i'))
+                END AS 'JamMasukMaksimal',
+                case
+                    when status = 1 then MIN(DATE_FORMAT(scan_at, '%H:%i'))
+                END AS 'JamKeluarMinimal',
+                case
+                    when status = 1 then MAX(DATE_FORMAT(scan_at, '%H:%i'))
+                END AS 'JamKeluarMaksimal'
+                from
+                        attlog_android
+                GROUP BY
+                    nik, scan_at, STATUS) src
                         GROUP BY src.scan_id , src.tglku
                         ) src1
                 JOIN schedules sched
                     left JOIN leave_types lt ON lt.id = sched.`status`
-                        WHERE sched.id_emp = src1.scan_id AND  sched.date_work = src1.tglku
+                WHERE sched.id_emp = src1.scan_id AND  sched.date_work = src1.tglku
                         and src1.tglku LIKE '$date_att%'
                                 "));
             }
@@ -163,28 +165,29 @@ class AttendanceController extends Controller
                         when MIN(src.JamMasukMinimal) IS not NULL then MIN(src.JamMasukMinimal)
                     END AS JamMasukMinFix,
                         IFNULL(MAX(src.JamKeluarMaksimal), MAX(src.JamMasukMaksimal)) AS JamKelMaxFix
-                        FROM (SELECT scan_id, STR_TO_DATE(tgl, '%Y-%m-%d') AS tglku,
-                    case
-                        when status = 0 then MIN(DATE_FORMAT(STR_TO_DATE(tgl, '%Y-%m-%d %H:%i'), '%H:%i'))
-                    END AS 'JamMasukMinimal',
-                    case
-                        when status = 0 then MAX(DATE_FORMAT(STR_TO_DATE(tgl, '%Y-%m-%d %H:%i'), '%H:%i'))
-                    END AS 'JamMasukMaksimal',
-                    case
-                        when status = 1 then MIN(DATE_FORMAT(STR_TO_DATE(tgl, '%Y-%m-%d %H:%i'), '%H:%i'))
-                    END AS 'JamKeluarMinimal',
-                    case
-                        when status = 1 then MAX(DATE_FORMAT(STR_TO_DATE(tgl, '%Y-%m-%d %H:%i'), '%H:%i'))
-                    END AS 'JamKeluarMaksimal'
-                    from
-                            attlog
-                    GROUP BY
-                        scan_id, tgl, STATUS) src
+                        FROM (
+                            SELECT nik as scan_id, DATE_FORMAT(scan_at, '%Y-%m-%d') AS tglku,
+                case
+                    when status = 0 then MIN(DATE_FORMAT(scan_at, '%H:%i'))
+                END AS 'JamMasukMinimal',
+                case
+                    when status = 0 then MAX(DATE_FORMAT(scan_at, '%H:%i'))
+                END AS 'JamMasukMaksimal',
+                case
+                    when status = 1 then MIN(DATE_FORMAT(scan_at, '%H:%i'))
+                END AS 'JamKeluarMinimal',
+                case
+                    when status = 1 then MAX(DATE_FORMAT(scan_at, '%H:%i'))
+                END AS 'JamKeluarMaksimal'
+                from
+                        attlog_android
+                GROUP BY
+                    nik, scan_at, STATUS) src
                         GROUP BY src.scan_id , src.tglku
                         ) src1
                 JOIN schedules sched
                     left JOIN leave_types lt ON lt.id = sched.`status`
-                        WHERE sched.id_emp = src1.scan_id AND  sched.date_work = src1.tglku
+                WHERE sched.id_emp = src1.scan_id AND  sched.date_work = src1.tglku
                         and src1.scan_id = $scan_id
                                 "));
             }
@@ -213,28 +216,29 @@ class AttendanceController extends Controller
                         when MIN(src.JamMasukMinimal) IS not NULL then MIN(src.JamMasukMinimal)
                     END AS JamMasukMinFix,
                         IFNULL(MAX(src.JamKeluarMaksimal), MAX(src.JamMasukMaksimal)) AS JamKelMaxFix
-                        FROM (SELECT scan_id, STR_TO_DATE(tgl, '%Y-%m-%d') AS tglku,
-                    case
-                        when status = 0 then MIN(DATE_FORMAT(STR_TO_DATE(tgl, '%Y-%m-%d %H:%i'), '%H:%i'))
-                    END AS 'JamMasukMinimal',
-                    case
-                        when status = 0 then MAX(DATE_FORMAT(STR_TO_DATE(tgl, '%Y-%m-%d %H:%i'), '%H:%i'))
-                    END AS 'JamMasukMaksimal',
-                    case
-                        when status = 1 then MIN(DATE_FORMAT(STR_TO_DATE(tgl, '%Y-%m-%d %H:%i'), '%H:%i'))
-                    END AS 'JamKeluarMinimal',
-                    case
-                        when status = 1 then MAX(DATE_FORMAT(STR_TO_DATE(tgl, '%Y-%m-%d %H:%i'), '%H:%i'))
-                    END AS 'JamKeluarMaksimal'
-                    from
-                            attlog
-                    GROUP BY
-                        scan_id, tgl, STATUS) src
+                        FROM (
+                            SELECT nik as scan_id, DATE_FORMAT(scan_at, '%Y-%m-%d') AS tglku,
+                case
+                    when status = 0 then MIN(DATE_FORMAT(scan_at, '%H:%i'))
+                END AS 'JamMasukMinimal',
+                case
+                    when status = 0 then MAX(DATE_FORMAT(scan_at, '%H:%i'))
+                END AS 'JamMasukMaksimal',
+                case
+                    when status = 1 then MIN(DATE_FORMAT(scan_at, '%H:%i'))
+                END AS 'JamKeluarMinimal',
+                case
+                    when status = 1 then MAX(DATE_FORMAT(scan_at, '%H:%i'))
+                END AS 'JamKeluarMaksimal'
+                from
+                        attlog_android
+                GROUP BY
+                    nik, scan_at, STATUS) src
                         GROUP BY src.scan_id , src.tglku
                         ) src1
                 JOIN schedules sched
                     left JOIN leave_types lt ON lt.id = sched.`status`
-                        WHERE sched.id_emp = src1.scan_id AND  sched.date_work = src1.tglku limit 10
+                WHERE sched.id_emp = src1.scan_id AND  sched.date_work = src1.tglku limit 10
                                 "));
             }
             return view('attendance.report.index', compact('data','employee'));
@@ -276,28 +280,29 @@ class AttendanceController extends Controller
                             when MIN(src.JamMasukMinimal) IS not NULL then MIN(src.JamMasukMinimal)
                         END AS JamMasukMinFix,
                             IFNULL(MAX(src.JamKeluarMaksimal), MAX(src.JamMasukMaksimal)) AS JamKelMaxFix
-                            FROM (SELECT scan_id, STR_TO_DATE(tgl, '%Y-%m-%d') AS tglku,
-                        case
-                            when status = 0 then MIN(DATE_FORMAT(STR_TO_DATE(tgl, '%Y-%m-%d %H:%i'), '%H:%i'))
-                        END AS 'JamMasukMinimal',
-                        case
-                            when status = 0 then MAX(DATE_FORMAT(STR_TO_DATE(tgl, '%Y-%m-%d %H:%i'), '%H:%i'))
-                        END AS 'JamMasukMaksimal',
-                        case
-                            when status = 1 then MIN(DATE_FORMAT(STR_TO_DATE(tgl, '%Y-%m-%d %H:%i'), '%H:%i'))
-                        END AS 'JamKeluarMinimal',
-                        case
-                            when status = 1 then MAX(DATE_FORMAT(STR_TO_DATE(tgl, '%Y-%m-%d %H:%i'), '%H:%i'))
-                        END AS 'JamKeluarMaksimal'
-                        from
-                                attlog
-                        GROUP BY
-                            scan_id, tgl, STATUS) src
+                            FROM (
+                                SELECT nik as scan_id, DATE_FORMAT(scan_at, '%Y-%m-%d') AS tglku,
+                    case
+                        when status = 0 then MIN(DATE_FORMAT(scan_at, '%H:%i'))
+                    END AS 'JamMasukMinimal',
+                    case
+                        when status = 0 then MAX(DATE_FORMAT(scan_at, '%H:%i'))
+                    END AS 'JamMasukMaksimal',
+                    case
+                        when status = 1 then MIN(DATE_FORMAT(scan_at, '%H:%i'))
+                    END AS 'JamKeluarMinimal',
+                    case
+                        when status = 1 then MAX(DATE_FORMAT(scan_at, '%H:%i'))
+                    END AS 'JamKeluarMaksimal'
+                    from
+                            attlog_android
+                    GROUP BY
+                        nik, scan_at, STATUS) src
                             GROUP BY src.scan_id , src.tglku
                             ) src1
                     JOIN schedules sched
                         left JOIN leave_types lt ON lt.id = sched.`status`
-                            WHERE sched.id_emp = src1.scan_id AND  sched.date_work = src1.tglku
+                    WHERE sched.id_emp = src1.scan_id AND  sched.date_work = src1.tglku
                             and src1.scan_id = $scan_id and src1.tglku LIKE '$date_att%'
                                     "));
                 }
@@ -327,28 +332,29 @@ class AttendanceController extends Controller
                             when MIN(src.JamMasukMinimal) IS not NULL then MIN(src.JamMasukMinimal)
                         END AS JamMasukMinFix,
                             IFNULL(MAX(src.JamKeluarMaksimal), MAX(src.JamMasukMaksimal)) AS JamKelMaxFix
-                            FROM (SELECT scan_id, STR_TO_DATE(tgl, '%Y-%m-%d') AS tglku,
-                        case
-                            when status = 0 then MIN(DATE_FORMAT(STR_TO_DATE(tgl, '%Y-%m-%d %H:%i'), '%H:%i'))
-                        END AS 'JamMasukMinimal',
-                        case
-                            when status = 0 then MAX(DATE_FORMAT(STR_TO_DATE(tgl, '%Y-%m-%d %H:%i'), '%H:%i'))
-                        END AS 'JamMasukMaksimal',
-                        case
-                            when status = 1 then MIN(DATE_FORMAT(STR_TO_DATE(tgl, '%Y-%m-%d %H:%i'), '%H:%i'))
-                        END AS 'JamKeluarMinimal',
-                        case
-                            when status = 1 then MAX(DATE_FORMAT(STR_TO_DATE(tgl, '%Y-%m-%d %H:%i'), '%H:%i'))
-                        END AS 'JamKeluarMaksimal'
-                        from
-                                attlog
-                        GROUP BY
-                            scan_id, tgl, STATUS) src
+                            FROM (
+                                SELECT nik as scan_id, DATE_FORMAT(scan_at, '%Y-%m-%d') AS tglku,
+                    case
+                        when status = 0 then MIN(DATE_FORMAT(scan_at, '%H:%i'))
+                    END AS 'JamMasukMinimal',
+                    case
+                        when status = 0 then MAX(DATE_FORMAT(scan_at, '%H:%i'))
+                    END AS 'JamMasukMaksimal',
+                    case
+                        when status = 1 then MIN(DATE_FORMAT(scan_at, '%H:%i'))
+                    END AS 'JamKeluarMinimal',
+                    case
+                        when status = 1 then MAX(DATE_FORMAT(scan_at, '%H:%i'))
+                    END AS 'JamKeluarMaksimal'
+                    from
+                            attlog_android
+                    GROUP BY
+                        nik, scan_at, STATUS) src
                             GROUP BY src.scan_id , src.tglku
                             ) src1
                     JOIN schedules sched
                         left JOIN leave_types lt ON lt.id = sched.`status`
-                            WHERE sched.id_emp = src1.scan_id AND  sched.date_work = src1.tglku
+                    WHERE sched.id_emp = src1.scan_id AND  sched.date_work = src1.tglku
                             and src1.tglku LIKE '$date_att%'
                                     "));
                 }
@@ -378,28 +384,29 @@ class AttendanceController extends Controller
                             when MIN(src.JamMasukMinimal) IS not NULL then MIN(src.JamMasukMinimal)
                         END AS JamMasukMinFix,
                             IFNULL(MAX(src.JamKeluarMaksimal), MAX(src.JamMasukMaksimal)) AS JamKelMaxFix
-                            FROM (SELECT scan_id, STR_TO_DATE(tgl, '%Y-%m-%d') AS tglku,
-                        case
-                            when status = 0 then MIN(DATE_FORMAT(STR_TO_DATE(tgl, '%Y-%m-%d %H:%i'), '%H:%i'))
-                        END AS 'JamMasukMinimal',
-                        case
-                            when status = 0 then MAX(DATE_FORMAT(STR_TO_DATE(tgl, '%Y-%m-%d %H:%i'), '%H:%i'))
-                        END AS 'JamMasukMaksimal',
-                        case
-                            when status = 1 then MIN(DATE_FORMAT(STR_TO_DATE(tgl, '%Y-%m-%d %H:%i'), '%H:%i'))
-                        END AS 'JamKeluarMinimal',
-                        case
-                            when status = 1 then MAX(DATE_FORMAT(STR_TO_DATE(tgl, '%Y-%m-%d %H:%i'), '%H:%i'))
-                        END AS 'JamKeluarMaksimal'
-                        from
-                                attlog
-                        GROUP BY
-                            scan_id, tgl, STATUS) src
+                            FROM (
+                                SELECT nik as scan_id, DATE_FORMAT(scan_at, '%Y-%m-%d') AS tglku,
+                    case
+                        when status = 0 then MIN(DATE_FORMAT(scan_at, '%H:%i'))
+                    END AS 'JamMasukMinimal',
+                    case
+                        when status = 0 then MAX(DATE_FORMAT(scan_at, '%H:%i'))
+                    END AS 'JamMasukMaksimal',
+                    case
+                        when status = 1 then MIN(DATE_FORMAT(scan_at, '%H:%i'))
+                    END AS 'JamKeluarMinimal',
+                    case
+                        when status = 1 then MAX(DATE_FORMAT(scan_at, '%H:%i'))
+                    END AS 'JamKeluarMaksimal'
+                    from
+                            attlog_android
+                    GROUP BY
+                        nik, scan_at, STATUS) src
                             GROUP BY src.scan_id , src.tglku
                             ) src1
                     JOIN schedules sched
                         left JOIN leave_types lt ON lt.id = sched.`status`
-                            WHERE sched.id_emp = src1.scan_id AND  sched.date_work = src1.tglku
+                    WHERE sched.id_emp = src1.scan_id AND  sched.date_work = src1.tglku
                             and src1.scan_id = $scan_id
                                     "));
                 }
@@ -428,28 +435,29 @@ class AttendanceController extends Controller
                             when MIN(src.JamMasukMinimal) IS not NULL then MIN(src.JamMasukMinimal)
                         END AS JamMasukMinFix,
                             IFNULL(MAX(src.JamKeluarMaksimal), MAX(src.JamMasukMaksimal)) AS JamKelMaxFix
-                            FROM (SELECT scan_id, STR_TO_DATE(tgl, '%Y-%m-%d') AS tglku,
-                        case
-                            when status = 0 then MIN(DATE_FORMAT(STR_TO_DATE(tgl, '%Y-%m-%d %H:%i'), '%H:%i'))
-                        END AS 'JamMasukMinimal',
-                        case
-                            when status = 0 then MAX(DATE_FORMAT(STR_TO_DATE(tgl, '%Y-%m-%d %H:%i'), '%H:%i'))
-                        END AS 'JamMasukMaksimal',
-                        case
-                            when status = 1 then MIN(DATE_FORMAT(STR_TO_DATE(tgl, '%Y-%m-%d %H:%i'), '%H:%i'))
-                        END AS 'JamKeluarMinimal',
-                        case
-                            when status = 1 then MAX(DATE_FORMAT(STR_TO_DATE(tgl, '%Y-%m-%d %H:%i'), '%H:%i'))
-                        END AS 'JamKeluarMaksimal'
-                        from
-                                attlog
-                        GROUP BY
-                            scan_id, tgl, STATUS) src
+                            FROM (
+                                SELECT nik as scan_id, DATE_FORMAT(scan_at, '%Y-%m-%d') AS tglku,
+                    case
+                        when status = 0 then MIN(DATE_FORMAT(scan_at, '%H:%i'))
+                    END AS 'JamMasukMinimal',
+                    case
+                        when status = 0 then MAX(DATE_FORMAT(scan_at, '%H:%i'))
+                    END AS 'JamMasukMaksimal',
+                    case
+                        when status = 1 then MIN(DATE_FORMAT(scan_at, '%H:%i'))
+                    END AS 'JamKeluarMinimal',
+                    case
+                        when status = 1 then MAX(DATE_FORMAT(scan_at, '%H:%i'))
+                    END AS 'JamKeluarMaksimal'
+                    from
+                            attlog_android
+                    GROUP BY
+                        nik, scan_at, STATUS) src
                             GROUP BY src.scan_id , src.tglku
                             ) src1
                     JOIN schedules sched
                         left JOIN leave_types lt ON lt.id = sched.`status`
-                            WHERE sched.id_emp = src1.scan_id AND  sched.date_work = src1.tglku and src1.scan_id in ($nik)
+                    WHERE sched.id_emp = src1.scan_id AND  sched.date_work = src1.tglku and src1.scan_id in ($nik)
                                     "));
                 }
                 return view('attendance.report.index', compact('data','employee'));
@@ -483,28 +491,29 @@ class AttendanceController extends Controller
                             when MIN(src.JamMasukMinimal) IS not NULL then MIN(src.JamMasukMinimal)
                         END AS JamMasukMinFix,
                             IFNULL(MAX(src.JamKeluarMaksimal), MAX(src.JamMasukMaksimal)) AS JamKelMaxFix
-                            FROM (SELECT scan_id, STR_TO_DATE(tgl, '%Y-%m-%d') AS tglku,
-                        case
-                            when status = 0 then MIN(DATE_FORMAT(STR_TO_DATE(tgl, '%Y-%m-%d %H:%i'), '%H:%i'))
-                        END AS 'JamMasukMinimal',
-                        case
-                            when status = 0 then MAX(DATE_FORMAT(STR_TO_DATE(tgl, '%Y-%m-%d %H:%i'), '%H:%i'))
-                        END AS 'JamMasukMaksimal',
-                        case
-                            when status = 1 then MIN(DATE_FORMAT(STR_TO_DATE(tgl, '%Y-%m-%d %H:%i'), '%H:%i'))
-                        END AS 'JamKeluarMinimal',
-                        case
-                            when status = 1 then MAX(DATE_FORMAT(STR_TO_DATE(tgl, '%Y-%m-%d %H:%i'), '%H:%i'))
-                        END AS 'JamKeluarMaksimal'
-                        from
-                                attlog
-                        GROUP BY
-                            scan_id, tgl, STATUS) src
+                            FROM (
+                                SELECT nik as scan_id, DATE_FORMAT(scan_at, '%Y-%m-%d') AS tglku,
+                    case
+                        when status = 0 then MIN(DATE_FORMAT(scan_at, '%H:%i'))
+                    END AS 'JamMasukMinimal',
+                    case
+                        when status = 0 then MAX(DATE_FORMAT(scan_at, '%H:%i'))
+                    END AS 'JamMasukMaksimal',
+                    case
+                        when status = 1 then MIN(DATE_FORMAT(scan_at, '%H:%i'))
+                    END AS 'JamKeluarMinimal',
+                    case
+                        when status = 1 then MAX(DATE_FORMAT(scan_at, '%H:%i'))
+                    END AS 'JamKeluarMaksimal'
+                    from
+                            attlog_android
+                    GROUP BY
+                        nik, scan_at, STATUS) src
                             GROUP BY src.scan_id , src.tglku
                             ) src1
                     JOIN schedules sched
                         left JOIN leave_types lt ON lt.id = sched.`status`
-                            WHERE sched.id_emp = src1.scan_id AND  sched.date_work = src1.tglku
+                    WHERE sched.id_emp = src1.scan_id AND  sched.date_work = src1.tglku
                             and src1.scan_id = $scan_id and src1.tglku LIKE '$date_att%'
                                     "));
                 }
@@ -535,28 +544,29 @@ class AttendanceController extends Controller
                             when MIN(src.JamMasukMinimal) IS not NULL then MIN(src.JamMasukMinimal)
                         END AS JamMasukMinFix,
                             IFNULL(MAX(src.JamKeluarMaksimal), MAX(src.JamMasukMaksimal)) AS JamKelMaxFix
-                            FROM (SELECT scan_id, STR_TO_DATE(tgl, '%Y-%m-%d') AS tglku,
-                        case
-                            when status = 0 then MIN(DATE_FORMAT(STR_TO_DATE(tgl, '%Y-%m-%d %H:%i'), '%H:%i'))
-                        END AS 'JamMasukMinimal',
-                        case
-                            when status = 0 then MAX(DATE_FORMAT(STR_TO_DATE(tgl, '%Y-%m-%d %H:%i'), '%H:%i'))
-                        END AS 'JamMasukMaksimal',
-                        case
-                            when status = 1 then MIN(DATE_FORMAT(STR_TO_DATE(tgl, '%Y-%m-%d %H:%i'), '%H:%i'))
-                        END AS 'JamKeluarMinimal',
-                        case
-                            when status = 1 then MAX(DATE_FORMAT(STR_TO_DATE(tgl, '%Y-%m-%d %H:%i'), '%H:%i'))
-                        END AS 'JamKeluarMaksimal'
-                        from
-                                attlog
-                        GROUP BY
-                            scan_id, tgl, STATUS) src
+                            FROM (
+                                SELECT nik as scan_id, DATE_FORMAT(scan_at, '%Y-%m-%d') AS tglku,
+                    case
+                        when status = 0 then MIN(DATE_FORMAT(scan_at, '%H:%i'))
+                    END AS 'JamMasukMinimal',
+                    case
+                        when status = 0 then MAX(DATE_FORMAT(scan_at, '%H:%i'))
+                    END AS 'JamMasukMaksimal',
+                    case
+                        when status = 1 then MIN(DATE_FORMAT(scan_at, '%H:%i'))
+                    END AS 'JamKeluarMinimal',
+                    case
+                        when status = 1 then MAX(DATE_FORMAT(scan_at, '%H:%i'))
+                    END AS 'JamKeluarMaksimal'
+                    from
+                            attlog_android
+                    GROUP BY
+                        nik, scan_at, STATUS) src
                             GROUP BY src.scan_id , src.tglku
                             ) src1
                     JOIN schedules sched
                         left JOIN leave_types lt ON lt.id = sched.`status`
-                            WHERE sched.id_emp = src1.scan_id AND  sched.date_work = src1.tglku  and src1.scan_id = $scan_id
+                    WHERE sched.id_emp = src1.scan_id AND  sched.date_work = src1.tglku  and src1.scan_id = $scan_id
                             and src1.tglku LIKE '$date_att%'
                                     "));
                 }
@@ -586,28 +596,29 @@ class AttendanceController extends Controller
                             when MIN(src.JamMasukMinimal) IS not NULL then MIN(src.JamMasukMinimal)
                         END AS JamMasukMinFix,
                             IFNULL(MAX(src.JamKeluarMaksimal), MAX(src.JamMasukMaksimal)) AS JamKelMaxFix
-                            FROM (SELECT scan_id, STR_TO_DATE(tgl, '%Y-%m-%d') AS tglku,
-                        case
-                            when status = 0 then MIN(DATE_FORMAT(STR_TO_DATE(tgl, '%Y-%m-%d %H:%i'), '%H:%i'))
-                        END AS 'JamMasukMinimal',
-                        case
-                            when status = 0 then MAX(DATE_FORMAT(STR_TO_DATE(tgl, '%Y-%m-%d %H:%i'), '%H:%i'))
-                        END AS 'JamMasukMaksimal',
-                        case
-                            when status = 1 then MIN(DATE_FORMAT(STR_TO_DATE(tgl, '%Y-%m-%d %H:%i'), '%H:%i'))
-                        END AS 'JamKeluarMinimal',
-                        case
-                            when status = 1 then MAX(DATE_FORMAT(STR_TO_DATE(tgl, '%Y-%m-%d %H:%i'), '%H:%i'))
-                        END AS 'JamKeluarMaksimal'
-                        from
-                                attlog
-                        GROUP BY
-                            scan_id, tgl, STATUS) src
+                            FROM (
+                                SELECT nik as scan_id, DATE_FORMAT(scan_at, '%Y-%m-%d') AS tglku,
+                    case
+                        when status = 0 then MIN(DATE_FORMAT(scan_at, '%H:%i'))
+                    END AS 'JamMasukMinimal',
+                    case
+                        when status = 0 then MAX(DATE_FORMAT(scan_at, '%H:%i'))
+                    END AS 'JamMasukMaksimal',
+                    case
+                        when status = 1 then MIN(DATE_FORMAT(scan_at, '%H:%i'))
+                    END AS 'JamKeluarMinimal',
+                    case
+                        when status = 1 then MAX(DATE_FORMAT(scan_at, '%H:%i'))
+                    END AS 'JamKeluarMaksimal'
+                    from
+                            attlog_android
+                    GROUP BY
+                        nik, scan_at, STATUS) src
                             GROUP BY src.scan_id , src.tglku
                             ) src1
                     JOIN schedules sched
                         left JOIN leave_types lt ON lt.id = sched.`status`
-                            WHERE sched.id_emp = src1.scan_id AND  sched.date_work = src1.tglku
+                    WHERE sched.id_emp = src1.scan_id AND  sched.date_work = src1.tglku
                             and src1.scan_id = $scan_id
                                     "));
                 }
@@ -637,28 +648,29 @@ class AttendanceController extends Controller
                             when MIN(src.JamMasukMinimal) IS not NULL then MIN(src.JamMasukMinimal)
                         END AS JamMasukMinFix,
                             IFNULL(MAX(src.JamKeluarMaksimal), MAX(src.JamMasukMaksimal)) AS JamKelMaxFix
-                            FROM (SELECT scan_id, STR_TO_DATE(tgl, '%Y-%m-%d') AS tglku,
-                        case
-                            when status = 0 then MIN(DATE_FORMAT(STR_TO_DATE(tgl, '%Y-%m-%d %H:%i'), '%H:%i'))
-                        END AS 'JamMasukMinimal',
-                        case
-                            when status = 0 then MAX(DATE_FORMAT(STR_TO_DATE(tgl, '%Y-%m-%d %H:%i'), '%H:%i'))
-                        END AS 'JamMasukMaksimal',
-                        case
-                            when status = 1 then MIN(DATE_FORMAT(STR_TO_DATE(tgl, '%Y-%m-%d %H:%i'), '%H:%i'))
-                        END AS 'JamKeluarMinimal',
-                        case
-                            when status = 1 then MAX(DATE_FORMAT(STR_TO_DATE(tgl, '%Y-%m-%d %H:%i'), '%H:%i'))
-                        END AS 'JamKeluarMaksimal'
-                        from
-                                attlog
-                        GROUP BY
-                            scan_id, tgl, STATUS) src
+                            FROM (
+                                SELECT nik as scan_id, DATE_FORMAT(scan_at, '%Y-%m-%d') AS tglku,
+                    case
+                        when status = 0 then MIN(DATE_FORMAT(scan_at, '%H:%i'))
+                    END AS 'JamMasukMinimal',
+                    case
+                        when status = 0 then MAX(DATE_FORMAT(scan_at, '%H:%i'))
+                    END AS 'JamMasukMaksimal',
+                    case
+                        when status = 1 then MIN(DATE_FORMAT(scan_at, '%H:%i'))
+                    END AS 'JamKeluarMinimal',
+                    case
+                        when status = 1 then MAX(DATE_FORMAT(scan_at, '%H:%i'))
+                    END AS 'JamKeluarMaksimal'
+                    from
+                            attlog_android
+                    GROUP BY
+                        nik, scan_at, STATUS) src
                             GROUP BY src.scan_id , src.tglku
                             ) src1
                     JOIN schedules sched
                         left JOIN leave_types lt ON lt.id = sched.`status`
-                            WHERE sched.id_emp = src1.scan_id AND  sched.date_work = src1.tglku and src1.scan_id = $scan_id
+                    WHERE sched.id_emp = src1.scan_id AND  sched.date_work = src1.tglku and src1.scan_id = $scan_id
                                     "));
                 }
                 return view('attendance.report.index', compact('data','employee'));
