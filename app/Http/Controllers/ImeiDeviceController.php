@@ -149,4 +149,40 @@ class ImeiDeviceController extends Controller
             ], 404);
         }
     }
+
+    public function getOtentikasiEmployee()
+	{
+		$dataEmployee = Employee::whereDoesntHave('ImeiDevice')->orderBy('full_name', 'ASC')->get();
+		if(isset($dataEmployee)){
+			return response()->json([
+				'success' => true,
+				'data' => $dataEmployee,
+			]);
+		}else{
+			return response()->json([
+				'success' => false,
+				'message' => 'Data Tidak Ada',
+			], 404);
+		}
+	}
+
+	public function regisOtentikasiHrd(Request $request)
+	{
+		$nikEmployee = $request->nikEmployee;
+		$dataEmployee = Employee::where('nik', $nikEmployee)->first();
+
+		if(isset($dataEmployee)){
+			foreach($request->imei as $imeis){
+				$dataImei = ImeiDevice::create([
+					'id_employee' => $dataEmployee->id,
+					'imei' => $imeis,
+				]);
+			}
+
+			return response()->json([
+				'success' => true,
+				'message' => 'Register Berhasil...',
+			], 200);
+		}
+	}
 }

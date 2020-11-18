@@ -10,6 +10,7 @@ use App\LngLat;
 use App\AttLogAndroid;
 use Carbon\CarbonPeriod;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 
 class APIFormController extends Controller
@@ -262,4 +263,23 @@ class APIFormController extends Controller
         }
     }
 
+    public function changePassword(Request $request)
+    {
+        $user = Employee::where('scan_id', $request->nikEmployee)->first();
+        if (Hash::check($request->oldPassword, $user->password)) {
+            $user->update(['password' => Hash::make($request->password)]);
+            $response = [
+                'status' => 'Success',
+                'message' => 'Successfully Password Changed',
+            ];
+        } else {
+            $response = [
+                'status' => 'Fail',
+                'message' => 'Password does not match',
+            ];
+        }
+
+        return response()->json($response);
+    }
+    
 }
