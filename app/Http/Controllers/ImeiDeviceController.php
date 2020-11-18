@@ -172,12 +172,12 @@ class ImeiDeviceController extends Controller
 		$dataEmployee = Employee::where('nik', $nikEmployee)->first();
 
 		if(isset($dataEmployee)){
-			foreach($request->imei as $imeis){
+			// foreach($request->imei as $imeis){
 				$dataImei = ImeiDevice::create([
 					'id_employee' => $dataEmployee->id,
-					'imei' => $imeis,
+					'imei' => $request->imei,
 				]);
-			}
+			// }
 
 			return response()->json([
 				'success' => true,
