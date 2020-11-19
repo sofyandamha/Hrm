@@ -15,6 +15,20 @@ use Illuminate\Support\Facades\DB;
 
 class APIFormController extends Controller
 {
+
+    public function generateNoImage()
+    {
+        $year_month = Carbon::now()->format("ym");
+        $lastDate = LeaveDetEmp::where(DB::raw("DATE_FORMAT(created_at, '%y%m')"), $year_month)->latest()->first();
+        $lastNoProc = isset($lastDate->no_procurement) ? $lastDate->no_procurement : 'SAKIT'.$year_month.'000';
+        $strReplace = str_replace('SAKIT','',$lastNoProc);
+        if (substr($strReplace, -1) == 'A') {
+            $strReplace = str_replace('A', '', $strReplace);
+        }
+
+        return 'SAKIT'.($strReplace + 1);
+    }
+
     public function formTgsLr(Request $request)
     {
         $year = Carbon::now()->format('Y');
@@ -32,6 +46,16 @@ class APIFormController extends Controller
 
         // $selisih_tgl = $datenow->diffInDays($request->start_leave);
         $selisih_tgl = $dateStart->diffInDays($datenow);
+
+        if ($request->file) {
+            $file_name = $this->generateNoImage().'.'.'png';
+            \File::put(public_path('assets/images/leave'). '/' . $file_name, base64_decode($request->file));
+
+        }else{
+            $file_name = "";
+        }
+
+        // dd($file_name);
 
         // dd($selisih_tgl);
 
@@ -54,6 +78,7 @@ class APIFormController extends Controller
                         $data->remarks= $request->remarks;
                         $data->totalhari= $request->total_hari;
                         $data->det_tgl = json_encode($all_dates);
+                        $data->foto = $file_name;
                         $data->status= 0;
                         $data->save();
                         return response()->json([
@@ -77,6 +102,7 @@ class APIFormController extends Controller
                             $data->remarks= $request->remarks;
                             $data->totalhari= $request->total_hari;
                             $data->det_tgl = json_encode($all_dates);
+                            $data->foto = $file_name;
                             $data->status= 0;
                             $data->save();
 
@@ -96,6 +122,7 @@ class APIFormController extends Controller
                         'remarks' => $request->remarks,
                         'totalhari' => $request->total_hari,
                         'det_tgl' => json_encode($all_dates),
+                        'foto' => $file_name,
                         'status' => 0,
                     ]);
 
@@ -120,6 +147,7 @@ class APIFormController extends Controller
                 'remarks' => $request->remarks,
                 'totalhari' => $request->total_hari,
                 'det_tgl' => json_encode($all_dates),
+                'foto' => $file_name,
                 'status' => 0,
             ]);
 
