@@ -114,6 +114,7 @@ class LeaveManagamentController extends Controller
         $leave_type = Leave_type::whereIn('id', ["1","2","3","4","7","8"])->get();
         $getTotalCuti = LeaveDetEmp::groupBy('id_emp','status', 'year')
         ->selectRaw('sum(totalhari) as total')
+        ->where('id_leave_type', 3)
         ->where('status', 1)
         ->where('year', date('Y'))
         ->where('id_emp', Auth()->user()->id)
@@ -145,6 +146,7 @@ class LeaveManagamentController extends Controller
                if ($request->leave_type_id == 3) {
                 $getTotalCuti = LeaveDetEmp::groupBy('id_emp','status', 'year')
                             ->selectRaw('sum(totalhari) as total')
+                            ->where('id_leave_type', 3)
                             ->where('status', 1)
                             ->where('year', date('Y'))
                             ->where('id_emp', $request->employee_id)

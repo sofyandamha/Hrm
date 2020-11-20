@@ -64,6 +64,7 @@ class APIFormController extends Controller
                 if($request->id_leave_type == 3){
                     $getTotalCuti = LeaveDetEmp::groupBy('id_emp','status', 'year')
                                     ->selectRaw('sum(totalhari) as total')
+                                    ->where('id_leave_type', 3)
                                     ->where('status', 1)
                                     ->where('year', date('Y'))
                                     ->where('id_emp', $id_emp->id)
