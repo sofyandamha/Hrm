@@ -7,5 +7,5 @@ use Illuminate\Database\Eloquent\Model;
 class LngLat extends Model
 {
     protected $table = 'location_office';
-    protected $fillable = ['id','nama_lokasi','longtitude','latitude'];
+    protected $fillable = ['id','nama_lokasi','longtitude','latitude', 'minDistance'];
 }

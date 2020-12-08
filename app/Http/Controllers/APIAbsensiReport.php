@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\LngLat;
 use App\Employee;
 use App\ImeiDevice;
 use Illuminate\Http\Request;
@@ -148,6 +149,23 @@ class APIAbsensiReport extends Controller
 				'success' => false,
 				'data' => $data,
 			],404);
+		}
+	}
+
+	public function getLocAbsen()
+	{
+		$dataLocAbsen = LngLat::all();
+
+		if (count($dataLocAbsen) > 0) {
+			return response()->json([
+				'success' => true,
+				'data' => $dataLocAbsen,
+			], 200);
+		}else{
+			return response()->json([
+				'success' => false,
+				'message' => 'Data Tidak Ada',
+			], 404);
 		}
 	}
 
