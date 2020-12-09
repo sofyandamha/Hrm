@@ -93,9 +93,11 @@ class ImeiDeviceController extends Controller
         //     'password' =>  request('password')
         // ];
         $loginType = Employee::where('nik', request('email'))->first();
-        $checkImei = ImeiDevice::where('id_employee', $loginType->id)->where('imei', request('imei'))->where('status', 1)->first();
 
         if (isset($loginType)) {
+            
+            $checkImei = ImeiDevice::where('id_employee', $loginType->id)->where('imei', request('imei'))->where('status', 1)->first();
+
             if(isset($checkImei)){
                 return response()->json([
                     'success' => false,
