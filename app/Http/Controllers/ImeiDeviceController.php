@@ -87,24 +87,40 @@ class ImeiDeviceController extends Controller
 
     public function loginOtentikasiHrd()
     {
-        $loginType = filter_var(request('email'), FILTER_VALIDATE_EMAIL) ? 'email' : 'nik';
-        $login = [
-            $loginType => request('email'),
-            'password' =>  request('password')
-        ];
-        if (Auth::attempt($login)) {
-            $user = Auth::user();
-            return response()->json([
-                'success' => true,
-                'data' => [ $user ],
-            ]);
+        // $loginType = filter_var(request('email'), FILTER_VALIDATE_EMAIL) ? 'email' : 'nik';
+        // $login = [
+        //     $loginType => request('email'),
+        //     'password' =>  request('password')
+        // ];
+        $loginType = Employee::where('nik', request('email'))->first();
+        $checkImei = ImeiDevice::where('id_employee', $loginType->id)->where('imei', request('imei'))->where('status', 1)->first();
+
+        if (isset($loginType)) {
+            if(isset($checkImei)){
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Anda Sudah Terdaftar',
+                ], 404);
+
+            }else{
+                $createImei = ImeiDevice::create([
+                    'id_employee' => $loginType->id,
+                    'imei' => request('imei'),
+                    'device' => request('device'),
+                    'status' => 1,
+                ]);    
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Berhasil Daftar',
+                ], 200);
+            }
         }
         else {
             //if authentication is unsuccessfull, notice how I return json parameters
             return response()->json([
                 'success' => false,
-                'message' => 'Invalid Email or Password',
-            ], 401);
+                'message' => 'Anda Tidak Terdaftar',
+            ], 404);
         }
     }
 
@@ -114,6 +130,7 @@ class ImeiDeviceController extends Controller
         $tmpNik = $dataNik->id;
         $dataUser = Employee::whereHas('ImeiDevice', function($query) use ($tmpNik){
             $query->where('id_employee', $tmpNik);
+            $query->where('status', 2);
         })->get();
 
         if(count($dataUser) > 0){
@@ -134,7 +151,7 @@ class ImeiDeviceController extends Controller
     public function getImei(Request $request){
         $imei = $request->imei;
         
-        $dataImei = ImeiDevice::where('imei', $imei)->first();
+        $dataImei = ImeiDevice::where('imei', $imei)->where('status', 2)->first();
         
         if(isset($dataImei)){
             $dataEmployee = Employee::where('id', $dataImei->id_employee)->get();
@@ -152,8 +169,9 @@ class ImeiDeviceController extends Controller
 
     public function getOtentikasiEmployee()
 	{
-		$dataEmployee = Employee::whereDoesntHave('ImeiDevice')->orderBy('full_name', 'ASC')->get();
-		if(isset($dataEmployee)){
+        // $dataEmployee = Employee::whereDoesntHave('ImeiDevice')->orderBy('full_name', 'ASC')->get();
+        $dataEmployee = ImeiDevice::with('Employee2')->where('status', 1)->get();
+		if(count($dataEmployee) > 0){
 			return response()->json([
 				'success' => true,
 				'data' => $dataEmployee,
@@ -168,15 +186,13 @@ class ImeiDeviceController extends Controller
 
 	public function regisOtentikasiHrd(Request $request)
 	{
-		$nikEmployee = $request->nikEmployee;
-		$dataEmployee = Employee::where('nik', $nikEmployee)->first();
+		$id_employee = $request->id_employee;
+		$dataEmployee = ImeiDevice::where('id_employee', $id_employee)->where('status', 1)->first();
 
 		if(isset($dataEmployee)){
 			// foreach($request->imei as $imeis){
-				$dataImei = ImeiDevice::create([
-					'id_employee' => $dataEmployee->id,
-					'imei' => $request->imei,
-				]);
+                $dataEmployee->status = 2;
+                $dataEmployee->save();
 			// }
 
 			return response()->json([
@@ -184,5 +200,5 @@ class ImeiDeviceController extends Controller
 				'message' => 'Register Berhasil...',
 			], 200);
 		}
-	}
+    }
 }
