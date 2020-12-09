@@ -250,6 +250,7 @@ class APIFormController extends Controller
         if(isset($request->nik) || isset($request->scan_at) || isset($request->lat) || isset($request->long)){
             $data =  AttLogAndroid::create([
                 "nik"=> $request->nik,
+                "id_location_office" => $request->idLoc,
                 "scan_at"=> $request->scan_at,
                 "latitude"=> $request->lat,
                 "longtitude"=> $request->long,
@@ -274,6 +275,7 @@ class APIFormController extends Controller
         if(isset($request->nik) || isset($request->scan_at) || isset($request->lat) || isset($request->long)){
             $data =  AttLogAndroid::create([
                 "nik"=> $request->nik,
+                "id_location_office" => $request->idLoc,
                 "scan_at"=> $request->scan_at,
                 "latitude"=> $request->lat,
                 "longtitude"=> $request->long,
