@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class ImeiDevice extends Model
 {
-    protected $fillable = ['id', 'id_employee', 'imei' ,'device', 'status'];
+    protected $fillable = ['id', 'id_employee', 'imei' ,'device', 'status', 'created_at', 'updated_at'];
 
     public function Employee()
     {

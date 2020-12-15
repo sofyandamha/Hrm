@@ -110,6 +110,7 @@ class ImeiDeviceController extends Controller
                     'imei' => request('imei'),
                     'device' => request('device'),
                     'status' => 1,
+                    'created_at' => Carbon::now()
                 ]);    
                 return response()->json([
                     'success' => true,
