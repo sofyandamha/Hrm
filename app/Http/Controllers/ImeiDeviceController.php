@@ -188,19 +188,72 @@ class ImeiDeviceController extends Controller
 
 	public function regisOtentikasiHrd(Request $request)
 	{
-		$id_employee = $request->id_employee;
-		$dataEmployee = ImeiDevice::where('id_employee', $id_employee)->where('status', 1)->first();
+        $id_employee = $request->id_employee;
+        if($request->status == 0){
+            $dataEmployee = ImeiDevice::where('id_employee', $id_employee)->where(function ($query){
+                $query->where('status' , 1)->orWhere('status', 2);
+            })->first();
 
-		if(isset($dataEmployee)){
-			// foreach($request->imei as $imeis){
-                $dataEmployee->status = 2;
-                $dataEmployee->save();
-			// }
+            if(isset($dataEmployee)){
+                // foreach($request->imei as $imeis){
+                    $dataEmployee->delete();
+                // }
 
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Delete Data Berhasil...',
+                ], 200);
+            }
+        }else if($request->status == 1){
+            $dataEmployee = ImeiDevice::where('id_employee', $id_employee)->where('status', 1)->first();
+
+            if(isset($dataEmployee)){
+                // foreach($request->imei as $imeis){
+                    $dataEmployee->status = 2;
+                    $dataEmployee->save();
+                // }
+
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Register Berhasil...',
+                ], 200);
+            }
+        } else if($request->status == 3){
+            $dataEmployee = ImeiDevice::where('id_employee', $id_employee)->where('status', 2)->first();
+
+            if(isset($dataEmployee)){
+                // foreach($request->imei as $imeis){
+                    $dataEmployee->status = 3;
+                    $dataEmployee->save();
+                // }
+
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Terminate Berhasil...',
+                ], 200);
+            }
+        }
+        else{
+            return response()->json([
+                'success' => false,
+                'message' => 'Status Failed...',
+            ], 404);
+        }
+    }
+
+    public function getImeiApproved()
+    {
+        $dataEmployee = ImeiDevice::with('Employee2')->where('status', 2)->get();
+		if(count($dataEmployee) > 0){
 			return response()->json([
 				'success' => true,
-				'message' => 'Register Berhasil...',
-			], 200);
+				'data' => $dataEmployee,
+			]);
+		}else{
+			return response()->json([
+				'success' => false,
+				'message' => 'Data Tidak Ada',
+			], 404);
 		}
     }
 }

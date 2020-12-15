@@ -39,4 +39,6 @@ Route::post('/loginOtentikasiHrd', 'ImeiDeviceController@loginOtentikasiHrd');
 Route::get('/getOtentikasiEmployee', 'ImeiDeviceController@getOtentikasiEmployee');
 Route::post('/regisOtentikasiHrd', 'ImeiDeviceController@regisOtentikasiHrd');
 Route::post('/loginUser', 'ImeiDeviceController@loginUser');
+Route::get('/getImeiApproved', 'ImeiDeviceController@getImeiApproved');
+
 
