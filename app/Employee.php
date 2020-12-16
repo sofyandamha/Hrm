@@ -11,10 +11,11 @@ use App\Department;
 use App\ImeiDevice;
 use App\LeaveDetEmp;
 use Spatie\Permission\Traits\HasRoles;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class Employee extends Authenticatable
+class Employee extends Authenticatable implements JWTSubject
 {
     use Notifiable;
     use HasRoles;
@@ -54,5 +55,15 @@ class Employee extends Authenticatable
     public function ImeiDevice()
     {
         return $this->hasMany(ImeiDevice::class, 'id_employee', 'id');
+    }
+
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+
+    public function getJWTCustomClaims()
+    {
+        return [];
     }
 }

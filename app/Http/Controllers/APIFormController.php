@@ -2,16 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\LngLat;
 use App\Employee;
 use Carbon\Carbon;
 use App\Leave_type;
 use App\LeaveDetEmp;
-use App\LngLat;
 use App\AttLogAndroid;
 use Carbon\CarbonPeriod;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
+use Tymon\JWTAuth\Facades\JWTAuth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Crypt;
 
 class APIFormController extends Controller
 {
@@ -269,6 +271,15 @@ class APIFormController extends Controller
         }
     }
 
+    public function scanBarcodeIn(Request $request)
+    {
+        $passwordUser = Employee::where('nik', $request->nik)->first();
+        $jwtToken = null;
+        $jwtToken = JWTAuth::attempt(['nik' => $request->nik, 'password' => 'secret']);
+
+        dd($jwtToken);
+    }
+
     public function signOut(Request $request)
     {
 
@@ -311,6 +322,22 @@ class APIFormController extends Controller
         }
 
         return response()->json($response);
+    }
+
+    public function getEmployeeAbsenScan()
+    {
+        $dataEmployee = Employee::groupBy('full_name')->get();
+        if(count($dataEmployee)>0){
+            return response()->json([
+                'success' => true,
+                'data' => $dataEmployee,
+            ], 200);
+        }else{
+            return response()->json([
+                'success' => false,
+                'data' => $dataEmployee,
+            ], 404);
+        }
     }
     
 }
