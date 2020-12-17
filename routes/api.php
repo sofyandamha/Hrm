@@ -34,6 +34,7 @@ Route::post('/getLngLat', 'APIFormController@getLngLat');
 Route::post('/signIn', 'APIFormController@signIn');
 Route::post('/scanBarcodeIn', 'APIFormController@scanBarcodeIn');
 Route::post('/signOut', 'APIFormController@signOut');
+Route::post('/scanBarcodeOut', 'APIFormController@scanBarcodeOut');
 Route::post('/changePassword', 'APIFormController@changePassword');
 Route::get('/getEmployeeAbsenScan', 'APIFormController@getEmployeeAbsenScan');
 Route::post('/getImeiDevice', 'ImeiDeviceController@getImei');

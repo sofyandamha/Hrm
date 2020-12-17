@@ -12,6 +12,7 @@ use Carbon\CarbonPeriod;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Tymon\JWTAuth\Facades\JWTAuth;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Crypt;
 
@@ -273,16 +274,55 @@ class APIFormController extends Controller
 
     public function scanBarcodeIn(Request $request)
     {
-        $passwordUser = Employee::where('nik', $request->nik)->first();
-        $jwtToken = null;
-        $jwtToken = JWTAuth::attempt(['nik' => $request->nik, 'password' => 'secret']);
+        if(isset($request->nik) || isset($request->scan_at) || isset($request->lat) || isset($request->long)){
+            $data =  AttLogAndroid::create([
+                "nik"=> $request->nik,
+                "id_location_office" => $request->idLoc,
+                "scan_at"=> $request->scan_at,
+                "latitude"=> $request->lat,
+                "longtitude"=> $request->long,
+                "status"=> 0,
+            ]);
 
-        dd($jwtToken);
+            return response()->json([
+                'success' => true,
+                'message' => 'Scan Berhasil',
+            ], 200);
+        }else{
+            return response()->json([
+                'success' => false,
+                'message' => 'Scan Gagal',
+            ], 404);
+        }
     }
 
     public function signOut(Request $request)
     {
 
+        if(isset($request->nik) || isset($request->scan_at) || isset($request->lat) || isset($request->long)){
+            $data =  AttLogAndroid::create([
+                "nik"=> $request->nik,
+                "id_location_office" => $request->idLoc,
+                "scan_at"=> $request->scan_at,
+                "latitude"=> $request->lat,
+                "longtitude"=> $request->long,
+                "status"=> 1,
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Scan Berhasil',
+            ], 200);
+        }else{
+            return response()->json([
+                'success' => false,
+                'message' => 'Scan Gagal',
+            ], 404);
+        }
+    }
+
+    public function scanBarcodeOut(Request $request)
+    {
         if(isset($request->nik) || isset($request->scan_at) || isset($request->lat) || isset($request->long)){
             $data =  AttLogAndroid::create([
                 "nik"=> $request->nik,
