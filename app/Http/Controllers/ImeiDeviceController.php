@@ -156,16 +156,24 @@ class ImeiDeviceController extends Controller
     public function getImei(Request $request){
         $imei = $request->imei;
         
-        $dataImei = ImeiDevice::where('imei', $imei)->where('status', 2)->first();
-        
-        if(isset($dataImei)){
-            $dataEmployee = Employee::where('id', $dataImei->id_employee)->get();
+        $dataImei1 = ImeiDevice::where('imei', $imei)->where('status', 1)->first();
+        $dataImei2 = ImeiDevice::where('imei', $imei)->where('status', 2)->first();
+
+        if(isset($dataImei1)){
+            return response()->json([
+                'status' => 406,
+                'success' => false,
+                'message' => 'Anda Sudah Terdaftar, Silakan Hubungi Hrd'
+            ], 406);
+        }elseif(isset($dataImei2)){
+            $dataEmployee = Employee::where('id', $dataImei2->id_employee)->get();
             return response()->json([
                 'success' => true,
                 'data' => $dataEmployee,
             ], 200);
         }else{
             return response()->json([
+                'status' => 404,
                 'success' => false,
                 'message' => 'Data Tidak Ada',
             ], 404);
