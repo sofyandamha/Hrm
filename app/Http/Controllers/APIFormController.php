@@ -206,10 +206,10 @@ class APIFormController extends Controller
         SELECT src.nik, src.tgl, min(src.ScanMasuk) AS scanIn, max(src.ScanKeluar)AS scanOut FROM (
             SELECT nik, STR_TO_DATE(scan_at, '%Y-%m-%d') AS tgl,
                 case
-                    when STATUS = 0 then DATE_FORMAT(STR_TO_DATE(scan_at, '%Y-%m-%d %H:%i'), '%H:%i')
+                    when STATUS = 0 then DATE_FORMAT(STR_TO_DATE(scan_at, '%Y-%m-%d %H:%i:%s'), '%H:%i:%s')
                 END AS 'ScanMasuk',
                 case
-                    when STATUS = 1 then DATE_FORMAT(STR_TO_DATE(scan_at, '%Y-%m-%d %H:%i'), '%H:%i')
+                    when STATUS = 1 then DATE_FORMAT(STR_TO_DATE(scan_at, '%Y-%m-%d %H:%i:%s'), '%H:%i:%s')
                 END AS 'ScanKeluar'
                 FROM attlog_android GROUP BY nik, scan_at, STATUS
                 ) src
