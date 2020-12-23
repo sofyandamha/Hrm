@@ -262,6 +262,7 @@ class APIFormController extends Controller
 
             return response()->json([
                 'success' => true,
+                'scan_at' => Carbon::parse($request->scan_at)->toTimeString(),
                 'message' => 'Scan Berhasil',
             ], 200);
         }else{
@@ -287,6 +288,7 @@ class APIFormController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'Scan Berhasil',
+                'scan_at' => Carbon::parse($request->scan_at)->toTimeString(),
             ], 200);
         }else{
             return response()->json([
@@ -312,6 +314,7 @@ class APIFormController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'Scan Berhasil',
+                'scan_at' => Carbon::parse($request->scan_at)->toTimeString(),
             ], 200);
         }else{
             return response()->json([
@@ -336,6 +339,7 @@ class APIFormController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'Scan Berhasil',
+                'scan_at' => Carbon::parse($request->scan_at)->toTimeString(),
             ], 200);
         }else{
             return response()->json([
