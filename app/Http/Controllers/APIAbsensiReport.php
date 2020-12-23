@@ -83,7 +83,7 @@ class APIAbsensiReport extends Controller
         $scanid = $request->nik;
         $month = $request->month;
         $data = DB::select(DB::raw("
-        SELECT nik AS scan_id, scan_at as tglku, DATE_FORMAT(scan_at, '%H:%i') AS Jam, STATUS,
+        SELECT nik AS scan_id, scan_at as tglku, DATE_FORMAT(scan_at, '%H:%i:%s') AS Jam, STATUS,
 		case
 			when status = 0 then 'Absen Masuk'
 			when STATUS = 1 then 'Absen Keluar'
