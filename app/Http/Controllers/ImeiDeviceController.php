@@ -154,29 +154,40 @@ class ImeiDeviceController extends Controller
     }
 
     public function getImei(Request $request){
+        $nik = $request->nik;
         $imei = $request->imei;
-        
-        $dataImei1 = ImeiDevice::where('imei', $imei)->where('status', 1)->first();
-        $dataImei2 = ImeiDevice::where('imei', $imei)->where('status', 2)->first();
 
-        if(isset($dataImei1)){
-            return response()->json([
-                'status' => 406,
-                'success' => false,
-                'message' => 'Anda Sudah Terdaftar, Silakan Hubungi Hrd'
-            ], 406);
-        }elseif(isset($dataImei2)){
-            $dataEmployee = Employee::where('id', $dataImei2->id_employee)->get();
-            return response()->json([
-                'success' => true,
-                'data' => $dataEmployee,
-            ], 200);
+        $nikEmployee = Employee::where('nik', $nik)->first();
+
+        if(isset($nikEmployee->id)){
+            $dataImei1 = ImeiDevice::where('id_employee', $nikEmployee->id)->where('imei', $imei)->where('status', 1)->first();
+            $dataImei2 = ImeiDevice::where('id_employee', $nikEmployee->id)->where('imei', $imei)->where('status', 2)->first();
+
+            if(isset($dataImei1)){
+                return response()->json([
+                    'status' => 406,
+                    'success' => false,
+                    'message' => 'Anda Sudah Terdaftar, Silakan Hubungi Hrd'
+                ], 406);
+            }elseif(isset($dataImei2)){
+                $dataEmployee = Employee::where('id', $dataImei2->id_employee)->get();
+                return response()->json([
+                    'success' => true,
+                    'data' => $dataEmployee,
+                ], 200);
+            }else{
+                return response()->json([
+                    'status' => 404,
+                    'success' => false,
+                    'message' => 'Data Tidak Ada',
+                ], 404);
+            }
         }else{
             return response()->json([
-                'status' => 404,
+                'status' => 401,
                 'success' => false,
-                'message' => 'Data Tidak Ada',
-            ], 404);
+                'message' => 'Nik Anda Tidak Ada, Silakan Hubungi HRD',
+            ], 401);
         }
     }
 
