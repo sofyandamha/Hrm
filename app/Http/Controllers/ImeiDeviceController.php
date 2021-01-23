@@ -160,8 +160,8 @@ class ImeiDeviceController extends Controller
         $nikEmployee = Employee::where('nik', $nik)->first();
 
         if(isset($nikEmployee->id)){
-            $dataImei1 = ImeiDevice::where('id_employee', $nikEmployee->id)->where('imei', $imei)->where('status', 1)->first();
-            $dataImei2 = ImeiDevice::where('id_employee', $nikEmployee->id)->where('imei', $imei)->where('status', 2)->first();
+            $dataImei1 = ImeiDevice::where('id_employee', $nikEmployee->id)->where('device', $imei)->where('status', 1)->first();
+            $dataImei2 = ImeiDevice::where('id_employee', $nikEmployee->id)->where('device', $imei)->where('status', 2)->first();
 
             if(isset($dataImei1)){
                 return response()->json([
