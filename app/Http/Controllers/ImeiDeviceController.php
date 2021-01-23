@@ -135,6 +135,7 @@ class ImeiDeviceController extends Controller
         $tmpNik = $dataNik->id;
         $dataUser = Employee::whereHas('ImeiDevice', function($query) use ($tmpNik){
             $query->where('id_employee', $tmpNik);
+            $query->where('device', $request->imei);
             $query->where('status', 2);
         })->get();
 
